@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="from">Mistä</string>
+    <string name="to">Mihin</string>
+    <string name="inputHint">Osoite tai pysäkki</string>
+    <string name="datetime">Päivämäärä ja aika</string>
+    <string name="numberOfRoutes">Reittien määrä</string>
+    <string name="loadingText">Ladataan&#8230;</string>
+    <string name="addressNotFound">Osoitetta tai pysäkkiä ei löytynyt!</string>
+    <string name="tokenOk">Matkahuolto-token OK!</string>
+    <string name="locate">Paikanna Mistä/Mihin</string>
+    <string name="reverseDirection">Käänteinen reitti</string>
+    <string name="extraOptions">LISÄASETUKSET</string>
+    <string name="title_activity_route_results">Reitit</string>
+    <string name="departure">Lähtö</string>
+    <string name="duration">Kesto</string>
+    <string name="arrival">Perillä</string>
+    <string name="progressDialogTitle">Odota&#8230;</string>
+    <string name="progressDialogLoadingRoutes">Ladataan reittejä&#8230;</string>
+    <string name="progressDialogLocating">Paikannetaan nykyistä sijaintia&#8230;</string>
+    <string name="accuracy">Tarkkuus</string>
+    <string name="searchRoutes">Etsi reitit</string>
+    <string name="about_settings">Tietoja</string>
+    <string name="updateToken">Päivitä token</string>
+    <string name="routeMapDetailsTitle">Vaihtokuvat</string>
+    <string name="routeDetailsTitle">Vaiheet</string>
+    <string name="title_activity_route_details_activity">Reittitiedot</string>
+    <string name="walking">Kävely</string>
+    <string name="bus">Bussi</string>
+    <string name="favouritesDialogTitle">Suosikit</string>
+    <string name="addedToFavourites"> lisätty suosikkeihin!</string>
+    <string name="cancel">Peruuta</string>
+    <string name="removedFromFavourites"> poistettu suosikeista!</string>
+    <string name="addToFavourites">LISÄÄ SUOSIKKEIHIN</string>
+    <string name="network">verkko</string>
+    <string name="aboutTitle">Tietoja MH-Paikallisista</string>
+    <string name="noLocationingAvailable">Ei paikannuspalvelua käytössä!</string>
+
+    <string-array name="routingTypes">
+        <item>Oletus</item>
+        <item>Nopein</item>
+        <item>Vähiten vaihtoja</item>
+        <item>Lyhin kävelymatka</item>
+    </string-array>
+    <string-array name="walkingSpeeds">
+        <item>Hidas 30 m/min</item>
+        <item>Oletus 70 m/min</item>
+        <item>Nopea 100 m/min</item>
+        <item>Juoksu 200 m/min</item>
+        <item>Pyöräily 300 m/min</item>
+    </string-array>
+
+    <string name="showInMap">Näytä kartalla</string>
+    <string name="title_activity_route_gmap">Reittikartta</string>
+    <string name="playServicesLicense">Play Services -lisenssi</string>
+    <string name="routeType">Reittityyppi</string>
+    <string name="walkingSpeed">Kävelynopeus</string>
+    <string name="maxWalkingLength">Kävelymatka enintään</string>
+    <string name="transferSafetyMargin">Vaihtomarginaali</string>
+    <string name="noSaveableLocationgFound">Ei tallennettavaa paikkaa!</string>
+    <string name="laterLines">Myöhemmät</string>
+    <string name="earlierLines">Aikaisemmat</string>
+    <string name="fromToNotSet">Mistä/Minne ei asetettu oikein!</string>
+
+</resources>

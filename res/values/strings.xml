@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MH-Paikalliset</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="inputHint">Address or stop</string>
+    <string name="datetime">Date and time</string>
+    <string name="numberOfRoutes">Number of routes</string>
+    <string name="loadingText">Loading&#8230;</string>
+    <string name="addressNotFound">Address or stop not found!</string>
+    <string name="tokenOk">Matkahuolto-token OK!</string>
+    <string name="locate">Locate From/To</string>
+    <string name="reverseDirection">Reverse direction</string>
+    <string name="extraOptions">ADVANCED</string>
+    <string name="title_activity_route_results">Routes</string>
+    <string name="departure">Departure</string>
+    <string name="duration">Duration</string>
+    <string name="arrival">Arrival</string>
+    <string name="progressDialogTitle">Wait&#8230;</string>
+    <string name="progressDialogLoadingRoutes">Loading routes&#8230;</string>
+    <string name="progressDialogLocating">Locating current location&#8230;</string>
+    <string name="accuracy">Accuracy</string>
+    <string name="searchRoutes">Search routes</string>
+    <string name="about_settings">About</string>
+    <string name="updateToken">Update token</string>
+    <string name="routeMapDetailsTitle">Transfer images</string>
+    <string name="routeDetailsTitle">Stages</string>
+    <string name="title_activity_route_details_activity">Route Details</string>
+    <string name="walking">Walking</string>
+    <string name="bus">Bus</string>
+    <string name="favouritesDialogTitle">Favourites</string>
+    <string name="addedToFavourites"> added to favourites!</string>
+    <string name="cancel">Cancel</string>
+    <string name="removedFromFavourites"> removed from favourites!</string>
+    <string name="addToFavourites">ADD TO FAVOURITES</string>
+    <string name="network">network</string>
+    <string name="aboutTitle">About MH-Paikalliset</string>
+    <string name="noLocationingAvailable">No locationing service available!</string>
+
+    <string-array name="routingTypes">
+        <item>Default</item>
+        <item>Fastest</item>
+        <item>Least transfers</item>
+        <item>Least walking</item>
+    </string-array>
+    <string-array name="walkingSpeeds">
+        <item>Slow 30 m/min</item>
+        <item>Default 70 m/min</item>
+        <item>Fast 100 m/min</item>
+        <item>Running 200 m/min</item>
+        <item>Cycling 300 m/min</item>
+    </string-array>
+    <string-array name="maxWalkingDistances">
+        <item>250 m</item>
+        <item>500 m</item>
+        <item>1000 m</item>
+        <item>1500 m</item>
+        <item>2000 m</item>
+        <item>2500 m</item>
+        <item>3000 m</item>
+        <item>4000 m</item>
+        <item>5000 m</item>
+        <item>10 000 m</item>
+    </string-array>
+    <string-array name="changeMargins">
+        <item>0 min</item>
+        <item>1 min</item>
+        <item>2 min</item>
+        <item>3 min</item>
+        <item>4 min</item>
+        <item>5 min</item>
+        <item>6 min</item>
+        <item>7 min</item>
+        <item>8 min</item>
+        <item>9 min</item>
+        <item>10 min</item>
+        <item>11 min</item>
+        <item>12 min</item>
+        <item>13 min</item>
+        <item>14 min</item>
+        <item>15 min</item>
+    </string-array>
+
+    <string name="showInMap">Show on map</string>
+    <string name="title_activity_route_gmap">Route Map</string>
+    <string name="playServicesLicense">Play Services license</string>
+    <string name="routeType">Route type</string>
+    <string name="walkingSpeed">Walking speed</string>
+    <string name="maxWalkingLength">Max. walking length</string>
+    <string name="transferSafetyMargin">Transfer safety margin</string>
+    <string name="noSaveableLocationgFound">No savable location found!</string>
+
+    <string-array name="matkahuoltoCities">
+        <item>Hämeenlinna</item>
+        <item>Imatra / Lappeenranta</item>
+        <item>Iisalmi</item>
+        <item>Jyväskylä</item>
+        <item>Kajaani</item>
+        <item>Kotka</item>
+        <item>Kouvola</item>
+        <item>Kuopio</item>
+        <item>Lahti</item>
+        <item>Mikkeli</item>
+        <item>Pori</item>
+        <item>Porvoo</item>
+        <item>Raahe</item>
+        <item>Rauma</item>
+        <item>Riihimäki</item>
+        <item>Rovaniemi</item>
+        <item>Salo</item>
+        <item>Savonlinna</item>
+        <item>Seinäjoki</item>
+        <item>Tampere</item>
+        <item>Uusimaa</item>
+        <item>Varkaus</item>
+    </string-array>
+
+    <string name="laterLines">Later</string>
+    <string name="earlierLines">Earlier</string>
+    <string name="fromToNotSet">From/To not set properly!</string>
+
+</resources>

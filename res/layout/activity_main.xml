@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@android:color/background_light"
+    android:fadingEdge="none" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/background_light"
+        android:padding="10dp" >
+
+        <EditText
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/textView1"
+            android:layout_below="@+id/textView3"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="date"
+            android:longClickable="false"
+            android:onClick="pickDate" />
+
+        <AutoCompleteTextView
+            android:id="@+id/fromAddressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/textView1"
+            android:layout_toLeftOf="@+id/fromFavBtn"
+            android:ems="10"
+            android:hint="@string/inputHint"
+            android:imeOptions="actionNext|flagNoExtractUi"
+            android:inputType="textAutoCorrect"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textView3"
+            android:layout_below="@+id/fromAddressTextView"
+            android:layout_marginTop="16dp"
+            android:text="@string/to"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <AutoCompleteTextView
+            android:id="@+id/toAddressTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/fromAddressTextView"
+            android:layout_below="@+id/textView2"
+            android:ems="10"
+            android:hint="@string/inputHint"
+            android:imeOptions="actionDone|flagNoExtractUi"
+            android:inputType="textAutoCorrect"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/dateText"
+            android:layout_below="@+id/toAddressTextView"
+            android:layout_marginTop="19dp"
+            android:text="@string/datetime"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:hint="@string/inputHint"
+            android:text="@string/from"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/fromFavBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@+id/fromClearBtn"
+            android:background="@drawable/pressed_selector"
+            android:clickable="true"
+            android:onClick="onFavouriteButtonClicked"
+            android:src="@drawable/ic_action_favorites" />
+
+        <ImageButton
+            android:id="@+id/fromClearBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/fromAddressTextView"
+            android:layout_alignTop="@+id/fromAddressTextView"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/background_light"
+            android:focusable="false"
+            android:onClick="clearAddressSearch"
+            android:src="@drawable/ic_action_clear"
+            android:visibility="invisible" />
+
+        <ImageButton
+            android:id="@+id/toClearBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/fromClearBtn"
+            android:layout_alignTop="@+id/toAddressTextView"
+            android:background="@android:color/background_light"
+            android:focusable="false"
+            android:onClick="clearAddressSearch"
+            android:src="@drawable/ic_action_clear"
+            android:visibility="invisible" />
+
+        <Button
+            android:id="@+id/advancedBtn"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/extraOptionsLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@null"
+            android:drawableBottom="@drawable/ic_action_expand"
+            android:onClick="toggleExtraOptions"
+            android:text="@string/extraOptions"
+            android:textColor="#444444" />
+
+        <RelativeLayout
+            android:id="@+id/extraOptionsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/dateText"
+            android:layout_below="@+id/dateText"
+            android:layout_marginTop="30dp"
+            android:animateLayoutChanges="true"
+            android:background="@android:color/background_light"
+            android:visibility="gone" >
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textView5"
+                android:entries="@array/routingTypes" />
+
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textView6"
+                android:entries="@array/walkingSpeeds" />
+
+            <Spinner
+                android:id="@+id/spinner3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textView7"
+                android:entries="@array/maxWalkingDistances" />
+
+            <Spinner
+                android:id="@+id/spinner4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textView8"
+                android:entries="@array/changeMargins" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/numberOfRoutes"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/seekBar1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView4"
+                android:layout_toRightOf="@+id/editText5"
+                android:max="14"
+                android:progress="5" />
+
+            <EditText
+                android:id="@+id/editText5"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignTop="@+id/seekBar1"
+                android:clickable="false"
+                android:duplicateParentState="false"
+                android:ems="10"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="number"
+                android:longClickable="false"
+                android:text="5" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/editText5"
+                android:layout_marginTop="15dp"
+                android:text="@string/routeType"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/spinner1"
+                android:layout_marginTop="15dp"
+                android:text="@string/walkingSpeed"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/spinner2"
+                android:layout_marginTop="15dp"
+                android:text="@string/maxWalkingLength"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/spinner3"
+                android:layout_marginTop="15dp"
+                android:text="@string/transferSafetyMargin"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/editText4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView3"
+            android:layout_toRightOf="@+id/dateText"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="time"
+            android:longClickable="false"
+            android:onClick="pickTime"
+            android:width="100dp" >
+
+            <requestFocus />
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/fromFavBtn"
+            android:layout_alignTop="@+id/toClearBtn"
+            android:background="@drawable/pressed_selector"
+            android:clickable="true"
+            android:onClick="onFavouriteButtonClicked"
+            android:src="@drawable/ic_action_favorites" />
+
+    </RelativeLayout>
+
+</ScrollView>

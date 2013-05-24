@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/later_lines" android:title="@string/laterLines" android:showAsAction="always|withText" android:orderInCategory="110" android:icon="@drawable/ic_menu_later"></item>
+    <item android:id="@+id/earlier_lines" android:title="@string/earlierLines" android:showAsAction="always|withText" android:orderInCategory="100" android:icon="@drawable/ic_menu_earlier"></item>
+
+</menu>
