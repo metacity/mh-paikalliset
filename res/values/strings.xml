@@ -5,12 +5,12 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="inputHint">Address or stop</string>
-    <string name="datetime">Date and time</string>
+    <string name="when">When</string>
     <string name="numberOfRoutes">Number of routes</string>
     <string name="loadingText">Loading&#8230;</string>
     <string name="addressNotFound">Address or stop not found!</string>
     <string name="tokenOk">Matkahuolto-token OK!</string>
-    <string name="locate">Locate From/To</string>
+    <string name="locate">LOCATE</string>
     <string name="reverseDirection">Reverse direction</string>
     <string name="extraOptions">ADVANCED</string>
     <string name="title_activity_route_results">Routes</string>
@@ -119,5 +119,14 @@
     <string name="laterLines">Later</string>
     <string name="earlierLines">Earlier</string>
     <string name="fromToNotSet">From/To not set properly!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <color name="background">#e5e5e5</color>
+    <string name="fromFavourites">FROM FAVOURITES</string>
+    <color name="dark_grey">#454c4d</color>
+    <string name="swapStartAndEnd">Swap start and end points</string>
 
 </resources>

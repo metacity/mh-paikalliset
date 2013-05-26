@@ -5,7 +5,7 @@
     android:versionName="2.4.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="7"
         android:targetSdkVersion="17" />
 
     <uses-feature
@@ -14,7 +14,7 @@
 
     <permission
 		android:name="fi.metacity.klmobi.permission.MAPS_RECEIVE"
-		android:protectionLevel="signature"/>
+		android:protectionLevel="signature" />
     
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -24,55 +24,20 @@
 
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppBaseTheme"
-        android:name=".GlobalApp" >
+        android:theme="@style/Theme.Styled"
+        android:name=".MHApp" >
+        
         <activity
-            android:name="fi.metacity.klmobi.MainActivity"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:name="fi.metacity.klmobi.MainActivity_"
             android:label="@string/app_name"
-            android:launchMode="singleTask"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name="fi.metacity.klmobi.RouteResultsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_route_results"
-            android:launchMode="singleTop" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="fi.metacity.klmobi.MainActivity" />
-        </activity>
-        <activity
-            android:name="fi.metacity.klmobi.RouteDetailsActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_route_details_activity"
-            android:launchMode="singleTop" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="fi.metacity.klmobi.RouteResultsActivity" />
-        </activity>
-
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBugnWPLcxQaEm5IZHDyJvtdlwzqwks9HU" />
-
-        <activity
-            android:name="fi.metacity.klmobi.RouteGMapActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_route_gmap" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="fi.metacity.klmobi.RouteDetailsActivity" />
         </activity>
 
     </application>
