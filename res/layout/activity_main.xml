@@ -209,7 +209,6 @@
             android:paddingTop="5dp"
             android:scrollHorizontally="true"
             android:singleLine="true"
-            android:text="feffffffffffffffffffffffffffffffffffff fffffff ffffff jfjf wdw"
             android:textColor="@android:color/black" />
 
         <TextView
