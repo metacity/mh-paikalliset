@@ -9,4 +9,6 @@ public interface Preferences {
 	
 	@DefaultString("http://hameenlinna.matkahuolto.info/")
 	String baseUrl();
+
+	int selectedCityIndex();
 }

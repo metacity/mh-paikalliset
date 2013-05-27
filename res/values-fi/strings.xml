@@ -9,7 +9,7 @@
     <string name="loadingText">Ladataan&#8230;</string>
     <string name="addressNotFound">Osoitetta tai pysäkkiä ei löytynyt!</string>
     <string name="tokenOk">Matkahuolto-token OK!</string>
-    <string name="locate">Paikanna Mistä/Mihin</string>
+    <string name="locate">Paikanna</string>
     <string name="reverseDirection">Käänteinen reitti</string>
     <string name="extraOptions">LISÄASETUKSET</string>
     <string name="title_activity_route_results">Reitit</string>
@@ -20,7 +20,7 @@
     <string name="progressDialogLoadingRoutes">Ladataan reittejä&#8230;</string>
     <string name="progressDialogLocating">Paikannetaan nykyistä sijaintia&#8230;</string>
     <string name="accuracy">Tarkkuus</string>
-    <string name="searchRoutes">Etsi reitit</string>
+    <string name="findRoutes">ETSI ROUTES</string>
     <string name="about_settings">Tietoja</string>
     <string name="updateToken">Päivitä token</string>
     <string name="routeMapDetailsTitle">Vaihtokuvat</string>

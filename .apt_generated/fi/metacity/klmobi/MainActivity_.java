@@ -9,12 +9,19 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import com.googlecode.androidannotations.api.BackgroundExecutor;
 import fi.metacity.klmobi.R.id;
 import fi.metacity.klmobi.R.layout;
 
@@ -22,6 +29,7 @@ public final class MainActivity_
     extends MainActivity
 {
 
+    private Handler handler_ = new Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,14 +39,17 @@ public final class MainActivity_
     }
 
     private void init_(Bundle savedInstanceState) {
+        mPreferences = new Preferences_(this);
         mGlobals = ((MHApp) this.getApplication());
     }
 
     private void afterSetContentView_() {
-        mTimeText = ((TextView) findViewById(id.timeText));
         mEndText = ((AutoCompleteTextView) findViewById(id.endText));
-        mStartText = ((AutoCompleteTextView) findViewById(id.startText));
+        mEndClearButton = ((ImageButton) findViewById(id.endClearBtn));
+        mStartClearButton = ((ImageButton) findViewById(id.startClearBtn));
         mDateText = ((TextView) findViewById(id.dateText));
+        mStartText = ((AutoCompleteTextView) findViewById(id.startText));
+        mTimeText = ((TextView) findViewById(id.timeText));
         {
             View view = findViewById(id.dateText);
             if (view!= null) {
@@ -48,6 +59,36 @@ public final class MainActivity_
                     @Override
                     public void onClick(View view) {
                         MainActivity_.this.pickDate();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = findViewById(id.swapBtn);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.swapAddresses();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = findViewById(id.startClearBtn);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.clearStart();
                     }
 
                 }
@@ -70,6 +111,21 @@ public final class MainActivity_
             }
         }
         {
+            View view = findViewById(id.endClearBtn);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.clearEnd();
+                    }
+
+                }
+                );
+            }
+        }
+        {
             View view = findViewById(id.swapBtn);
             if (view!= null) {
                 view.setOnLongClickListener(new OnLongClickListener() {
@@ -77,7 +133,7 @@ public final class MainActivity_
 
                     @Override
                     public boolean onLongClick(View view) {
-                        MainActivity_.this.onSwapButtonLongClicked();
+                        MainActivity_.this.showSwapHint();
                         return true;
                     }
 
@@ -85,7 +141,53 @@ public final class MainActivity_
                 );
             }
         }
-        initializeUi();
+        {
+            final TextView view = ((TextView) findViewById(id.startText));
+            if (view!= null) {
+                view.addTextChangedListener(new TextWatcher() {
+
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+
+                    @Override
+                    public void onTextChanged(java.lang.CharSequence s, int start, int before, int count) {
+                        MainActivity_.this.onTextChangesOnSomeTextViews(view, s);
+                    }
+
+                    @Override
+                    public void beforeTextChanged(java.lang.CharSequence s, int start, int count, int after) {
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            final TextView view = ((TextView) findViewById(id.endText));
+            if (view!= null) {
+                view.addTextChangedListener(new TextWatcher() {
+
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                    }
+
+                    @Override
+                    public void onTextChanged(java.lang.CharSequence s, int start, int before, int count) {
+                        MainActivity_.this.onTextChangesOnSomeTextViews(view, s);
+                    }
+
+                    @Override
+                    public void beforeTextChanged(java.lang.CharSequence s, int start, int count, int after) {
+                    }
+
+                }
+                );
+            }
+        }
+        initialize();
     }
 
     @Override
@@ -108,6 +210,60 @@ public final class MainActivity_
 
     public static MainActivity_.IntentBuilder_ intent(Context context) {
         return new MainActivity_.IntentBuilder_(context);
+    }
+
+    @Override
+    public void setAddressAdapter(final TextView tv, final ArrayAdapter<Address> adapter) {
+        handler_.post(new Runnable() {
+
+
+            @Override
+            public void run() {
+                try {
+                    MainActivity_.super.setAddressAdapter(tv, adapter);
+                } catch (RuntimeException e) {
+                    Log.e("MainActivity_", "A runtime exception was thrown while executing code in a runnable", e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void fetchToken() {
+        BackgroundExecutor.execute(new Runnable() {
+
+
+            @Override
+            public void run() {
+                try {
+                    MainActivity_.super.fetchToken();
+                } catch (RuntimeException e) {
+                    Log.e("MainActivity_", "A runtime exception was thrown while executing code in a runnable", e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void searchAddresses(final TextView addressInput, final java.lang.CharSequence text) {
+        BackgroundExecutor.execute(new Runnable() {
+
+
+            @Override
+            public void run() {
+                try {
+                    MainActivity_.super.searchAddresses(addressInput, text);
+                } catch (RuntimeException e) {
+                    Log.e("MainActivity_", "A runtime exception was thrown while executing code in a runnable", e);
+                }
+            }
+
+        }
+        );
     }
 
     public static class IntentBuilder_ {

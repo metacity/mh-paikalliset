@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/background"
         android:gravity="left"
         tools:context=".MainActivity"
@@ -24,7 +24,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginTop="3dp"
             android:layout_toRightOf="@+id/startFavouritesBtn"
-            android:background="@drawable/button_shadowed"
+            android:background="@drawable/button_white_orange_shadowed"
             android:drawableLeft="@drawable/ic_locate"
             android:minHeight="30dp"
             android:minWidth="0dp"
@@ -57,7 +57,7 @@
             android:layout_alignTop="@+id/startLocateBtn"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="@drawable/button_shadowed"
+            android:background="@drawable/button_white_orange_shadowed"
             android:drawableLeft="@drawable/ic_favourites"
             android:padding="2dp"
             android:text="@string/fromFavourites"
@@ -73,7 +73,7 @@
             android:layout_above="@+id/timeText"
             android:layout_alignRight="@+id/startLocateBtn"
             android:layout_toRightOf="@+id/swapBtn"
-            android:background="@drawable/button_shadowed"
+            android:background="@drawable/button_white_orange_shadowed"
             android:drawableLeft="@drawable/ic_locate"
             android:minHeight="30dp"
             android:minWidth="0dp"
@@ -93,7 +93,7 @@
             android:layout_alignRight="@+id/startFavouritesBtn"
             android:layout_below="@+id/endText"
             android:layout_marginTop="3dp"
-            android:background="@drawable/button_shadowed"
+            android:background="@drawable/button_white_orange_shadowed"
             android:drawableLeft="@drawable/ic_favourites"
             android:minHeight="30dp"
             android:padding="2dp"
@@ -117,6 +117,7 @@
             android:focusableInTouchMode="false"
             android:gravity="center_vertical"
             android:inputType="time"
+            android:longClickable="false"
             android:minHeight="40dp" >
 
             <requestFocus />
@@ -157,7 +158,7 @@
             android:layout_below="@+id/swapBtn"
             android:background="@drawable/selector_grey_orange_borders"
             android:drawableLeft="@drawable/ic_end_pin"
-            android:ellipsize="end"
+            android:ellipsize="middle"
             android:ems="10"
             android:hint="@string/inputHint"
             android:imeOptions="actionDone"
@@ -186,6 +187,7 @@
             android:focusableInTouchMode="false"
             android:gravity="center_vertical"
             android:inputType="date"
+            android:longClickable="false"
             android:minHeight="40dp" />
 
         <AutoCompleteTextView
@@ -198,7 +200,7 @@
             android:layout_marginRight="5dp"
             android:background="@drawable/selector_grey_orange_borders"
             android:drawableLeft="@drawable/ic_start_pin"
-            android:ellipsize="end"
+            android:ellipsize="middle"
             android:ems="10"
             android:hint="@string/inputHint"
             android:imeOptions="actionNext"
@@ -242,6 +244,24 @@
             android:layout_alignTop="@+id/endText"
             android:background="@null"
             android:src="@drawable/ic_clear_text" />
+
+        <Button
+            android:id="@+id/findRoutesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/timeText"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/button_green_orange_shadowed"
+            android:fontFamily="sans-serif-condensed"
+            android:minHeight="50dp"
+            android:text="@string/findRoutes"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
     </RelativeLayout>
 
 </ScrollView>

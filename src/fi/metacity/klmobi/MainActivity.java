@@ -1,16 +1,29 @@
 package fi.metacity.klmobi;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -21,25 +34,39 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.LongClick;
+import com.googlecode.androidannotations.annotations.TextChange;
+import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockActivity implements OnNavigationListener, 
 OnTimeSetListener, OnDateSetListener {
 
 	private final Calendar mDateTime = GregorianCalendar.getInstance();
-	
+
 	@App
 	MHApp mGlobals;
+
+	@Pref
+	Preferences_ mPreferences;
 
 	@ViewById(R.id.startText)
 	AutoCompleteTextView mStartText;
 
 	@ViewById(R.id.endText)
 	AutoCompleteTextView mEndText;
+	
+	@ViewById(R.id.startClearBtn)
+	ImageButton mStartClearButton;
+	
+	@ViewById(R.id.endClearBtn)
+	ImageButton mEndClearButton;
 
 	@ViewById(R.id.timeText)
 	TextView mTimeText;
@@ -67,34 +94,82 @@ OnTimeSetListener, OnDateSetListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onNavigationItemSelected(int position, long id) {
+		String newBaseUrl = "http://" + Constants.citySubdomains[position] + ".matkahuolto.info/";
+		mPreferences.baseUrl().put(newBaseUrl);
+		
+		mPreferences.selectedCityIndex().put(position);
 		return true;
 	}
 
 	@AfterViews
-	public void initializeUi() {
+	public void initialize() {
+		fetchToken();
+		getSupportActionBar().setSelectedNavigationItem(mPreferences.selectedCityIndex().get());
 		setDateTimeTexts(mDateTime);
+		mStartText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Address address = (Address) mStartText.getAdapter().getItem(position);
+				mGlobals.setStartAddress(address);
+			}
+		});
+		mEndText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Address address = (Address) mEndText.getAdapter().getItem(position);
+				mGlobals.setEndAddress(address);
+			}
+		});
 		mStartText.requestFocus();
 	}
-	
-	private void setDateTimeTexts(Calendar dateTime) {
-		String time = String.format("%02d:%02d", dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
-		String date = dateTime.get(Calendar.DAY_OF_MONTH)+ "." 
-				+ (dateTime.get(Calendar.MONTH) + 1) + "."     // Months in Calendar class are 0-11
-				+ dateTime.get(Calendar.YEAR);
 
-		mTimeText.setText(time);
-		mDateText.setText(date);
+	@TextChange({R.id.startText, R.id.endText})
+	public void onTextChangesOnSomeTextViews(TextView addressInput, CharSequence text) {
+		ImageButton clearBtnToShowOrHide = (addressInput == mStartText) ? mStartClearButton : mEndClearButton;
+		if (text.toString().trim().length() != 0) {
+			clearBtnToShowOrHide.setVisibility(View.VISIBLE);
+			searchAddresses(addressInput, text);		
+		} else {
+			clearBtnToShowOrHide.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	@Click(R.id.startClearBtn)
+	public void clearStart() {
+		mStartText.setText("");
+		mGlobals.setStartAddress(null);
+	}
+	
+	@Click(R.id.endClearBtn)
+	public void clearEnd() {
+		mEndText.setText("");
+		mGlobals.setEndAddress(null);
+	}
+	
+	@Click(R.id.swapBtn)
+	public void swapAddresses() {
+		// Swap texts
+		CharSequence tmpText = mStartText.getText();
+		mStartText.setText(mEndText.getText());
+		mEndText.setText(tmpText);
+		
+		mStartText.dismissDropDown();
+		mEndText.dismissDropDown();
+		
+		// Swap Address objects
+		Address tmpAddress = mGlobals.getStartAddress();
+		mGlobals.setStartAddress(mGlobals.getEndAddress());
+		mGlobals.setEndAddress(tmpAddress);
 	}
 
 	@LongClick(R.id.swapBtn)
-	public void onSwapButtonLongClicked() {
+	public void showSwapHint() {
 		Toast.makeText(this, getString(R.string.swapStartAndEnd), Toast.LENGTH_LONG).show();
 	}
 
@@ -137,5 +212,72 @@ OnTimeSetListener, OnDateSetListener {
 		setDateTimeTexts(mDateTime);
 	}
 
+	private void setDateTimeTexts(Calendar dateTime) {
+		String time = String.format("%02d:%02d", dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
+		String date = dateTime.get(Calendar.DAY_OF_MONTH)+ "." 
+				+ (dateTime.get(Calendar.MONTH) + 1) + "."     // Months in Calendar class are 0-11
+				+ dateTime.get(Calendar.YEAR);
+
+		mTimeText.setText(time);
+		mDateText.setText(date);
+	}
+
+	@Background
+	public void searchAddresses(TextView addressInput, CharSequence text) {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("language", "fi");
+		params.put("maxresults", "30");
+		params.put("token", mGlobals.getToken());
+		params.put("key", text.toString());
+
+		try {
+			String response = HttpUtils.post(mPreferences.baseUrl().get() + "geocode.php", params);
+			JSONObject json = new JSONObject(response);
+			if (json.getInt("status") == 0) {
+				List<Address> locations = new ArrayList<Address>();
+
+				JSONArray locationsJson = json.getJSONObject("data").getJSONArray("locations");
+				for (int i = 0, len = locationsJson.length(); i < len; ++i) {
+					locations.add(new Address(locationsJson.getJSONObject(i)));
+				}
+				// Always make new ArrayAdapter object, won't update suggestions correctly otherwise!
+				ArrayAdapter<Address> locationsAdapter = new ArrayAdapter<Address>(
+						this, 
+						R.layout.sherlock_spinner_dropdown_item, 
+						locations
+						);
+				setAddressAdapter(addressInput, locationsAdapter);
+			} else {
+				//Toast.makeText(context, context.getString(R.string.addressNotFound), Toast.LENGTH_LONG).show();
+				//mSourceView.dismissDropDown();
+			}
+		} catch (IOException ioex) {
+			Log.d("searchAddresses", ioex.toString());
+			ioex.printStackTrace();
+		} catch (JSONException jsonex) {
+			Log.d("searchAddresses", jsonex.toString());
+		}
+	}
+
+	@UiThread
+	public void setAddressAdapter(TextView tv, ArrayAdapter<Address> adapter) {
+		((AutoCompleteTextView) tv).setAdapter(adapter);
+		adapter.notifyDataSetChanged();
+	}
+	
+	@Background
+	public void fetchToken() {
+		try {
+			String response = HttpUtils.get(mPreferences.baseUrl().get() + "fi/config.js.php");
+			JSONObject config = new JSONObject(response.split("=")[1].replace(";", ""));
+			String token = config.getString("token");
+			mGlobals.setToken(token);
+			Toast.makeText(this, "Matkahuolto-token OK", Toast.LENGTH_SHORT).show();
+		} catch (IOException ioex) {
+			//Toast.makeText(this, "HOLDER", Toast.LENGTH_LONG).show();
+		} catch (JSONException jsonex) {
+			//Toast.makeText(this, "ERROR IN JSON, contact developer!", Toast.LENGTH_LONG).show();
+		}
+	}
 
 }

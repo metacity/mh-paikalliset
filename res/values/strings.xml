@@ -21,7 +21,7 @@
     <string name="progressDialogLoadingRoutes">Loading routes&#8230;</string>
     <string name="progressDialogLocating">Locating current location&#8230;</string>
     <string name="accuracy">Accuracy</string>
-    <string name="searchRoutes">Search routes</string>
+    <string name="findRoutes">FIND ROUTES</string>
     <string name="about_settings">About</string>
     <string name="updateToken">Update token</string>
     <string name="routeMapDetailsTitle">Transfer images</string>

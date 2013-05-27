@@ -8,6 +8,8 @@ package fi.metacity.klmobi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import com.googlecode.androidannotations.api.sharedpreferences.EditorHelper;
+import com.googlecode.androidannotations.api.sharedpreferences.IntPrefEditorField;
+import com.googlecode.androidannotations.api.sharedpreferences.IntPrefField;
 import com.googlecode.androidannotations.api.sharedpreferences.SharedPreferencesHelper;
 import com.googlecode.androidannotations.api.sharedpreferences.StringPrefEditorField;
 import com.googlecode.androidannotations.api.sharedpreferences.StringPrefField;
@@ -29,6 +31,10 @@ public final class Preferences_
         return stringField("baseUrl", "http://hameenlinna.matkahuolto.info/");
     }
 
+    public IntPrefField selectedCityIndex() {
+        return intField("selectedCityIndex", 0);
+    }
+
     public final static class PreferencesEditor_
         extends EditorHelper<Preferences_.PreferencesEditor_>
     {
@@ -40,6 +46,10 @@ public final class Preferences_
 
         public StringPrefEditorField<Preferences_.PreferencesEditor_> baseUrl() {
             return stringField("baseUrl");
+        }
+
+        public IntPrefEditorField<Preferences_.PreferencesEditor_> selectedCityIndex() {
+            return intField("selectedCityIndex");
         }
 
     }
