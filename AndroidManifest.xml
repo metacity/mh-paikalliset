@@ -13,9 +13,9 @@
         android:required="true" />
 
     <permission
-		android:name="fi.metacity.klmobi.permission.MAPS_RECEIVE"
-		android:protectionLevel="signature" />
-    
+        android:name="fi.metacity.klmobi.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -23,23 +23,29 @@
     <uses-permission android:name="fi.metacity.klmobi.permission.MAPS_RECEIVE" />
 
     <application
+        android:name="fi.metacity.klmobi.MHApp_"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Styled"
-        android:name=".MHApp_" >
-        
+        android:theme="@style/Theme.Styled" >
         <activity
             android:name="fi.metacity.klmobi.MainActivity_"
             android:label="@string/app_name"
-            android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="fi.metacity.klmobi.RoutesActivity_"
+            android:label="@string/title_activity_route_results"
+            android:parentActivityName="fi.metacity.klmobi.MainActivity_" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="fi.metacity.klmobi.MainActivity_" />
+        </activity>
     </application>
 
 </manifest>
