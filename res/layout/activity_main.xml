@@ -233,7 +233,8 @@
             android:layout_alignRight="@+id/startLocateBtn"
             android:layout_alignTop="@+id/startText"
             android:background="@null"
-            android:src="@drawable/ic_clear_text" />
+            android:src="@drawable/ic_clear_text"
+            android:visibility="invisible" />
 
         <ImageButton
             android:id="@+id/endClearBtn"
@@ -243,7 +244,8 @@
             android:layout_alignRight="@+id/endLocateBtn"
             android:layout_alignTop="@+id/endText"
             android:background="@null"
-            android:src="@drawable/ic_clear_text" />
+            android:src="@drawable/ic_clear_text"
+            android:visibility="invisible" />
 
         <Button
             android:id="@+id/findRoutesBtn"
