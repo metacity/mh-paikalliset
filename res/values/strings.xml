@@ -124,9 +124,15 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+
     <color name="background">#e5e5e5</color>
+
     <string name="fromFavourites">FROM FAVOURITES</string>
+
     <color name="dark_grey">#454c4d</color>
+
     <string name="swapStartAndEnd">Swap start and end points</string>
+    <string name="showAdvancedOptions">Show advanced options</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

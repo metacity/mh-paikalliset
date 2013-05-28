@@ -62,5 +62,6 @@
     <string name="laterLines">Myöhemmät</string>
     <string name="earlierLines">Aikaisemmat</string>
     <string name="fromToNotSet">Mistä/Minne ei asetettu oikein!</string>
+    <string name="showAdvancedOptions">Näytä lisäasetukset</string>
 
 </resources>
