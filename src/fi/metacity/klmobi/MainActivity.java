@@ -16,6 +16,7 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,7 +38,6 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.LongClick;
 import com.googlecode.androidannotations.annotations.TextChange;
 import com.googlecode.androidannotations.annotations.UiThread;
@@ -171,6 +171,30 @@ OnTimeSetListener, OnDateSetListener {
 	@LongClick(R.id.swapBtn)
 	public void showSwapHint() {
 		Toast.makeText(this, getString(R.string.swapStartAndEnd), Toast.LENGTH_LONG).show();
+	}
+	
+	@LongClick(R.id.showAdvancedBtn)
+	public void showAdvancedOptionsHint() {
+		Toast.makeText(this, getString(R.string.showAdvancedOptions), Toast.LENGTH_LONG).show();
+	}
+	
+	@Click(R.id.findRoutesBtn)
+	public void findRoutes() {
+		if (mGlobals.getStartAddress() == null || mGlobals.getEndAddress() == null) {
+			Toast.makeText(this, getString(R.string.fromToNotSet), Toast.LENGTH_LONG).show();
+		} else {
+			Intent intent = new Intent(this, RoutesActivity_.class);
+			intent.putExtra(Constants.EXTRA_DATE, String.format("%d%02d%02d", mDateTime.get(Calendar.YEAR), 
+					mDateTime.get(Calendar.MONTH) + 1, mDateTime.get(Calendar.DAY_OF_MONTH)));
+			intent.putExtra(Constants.EXTRA_TIME, String.format("%02d%02d", mDateTime.get(Calendar.HOUR_OF_DAY), 
+					mDateTime.get(Calendar.MINUTE)));
+			intent.putExtra(Constants.EXTRA_NUMBER_OF_ROUTES, "5");
+			intent.putExtra(Constants.EXTRA_ROUTING_TYPE, "default");
+			intent.putExtra(Constants.EXTRA_WALKING_SPEED, "70");
+			intent.putExtra(Constants.EXTRA_MAX_WALKING_DISTANCE, "1500");
+			intent.putExtra(Constants.EXTRA_CHANGE_MARGIN, "3");
+			startActivity(intent);
+		}
 	}
 
 	@Click(R.id.timeText)
