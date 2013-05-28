@@ -251,11 +251,11 @@
             android:id="@+id/findRoutesBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/timeText"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="40dp"
+            android:layout_toRightOf="@+id/showAdvancedBtn"
             android:background="@drawable/button_green_orange_shadowed"
             android:fontFamily="sans-serif-condensed"
             android:minHeight="50dp"
@@ -263,6 +263,17 @@
             android:textColor="@android:color/background_light"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/showAdvancedBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/findRoutesBtn"
+            android:layout_alignTop="@+id/findRoutesBtn"
+            android:layout_toRightOf="@+id/toText"
+            android:background="@drawable/button_green_orange_shadowed"
+            android:minWidth="45dip"
+            android:src="@drawable/ic_expand" />
 
     </RelativeLayout>
 
