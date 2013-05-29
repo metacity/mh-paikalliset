@@ -5,10 +5,10 @@ import java.util.List;
 public class Route {
 	
 	final List<RouteComponent> routeComponents;
-	final double duration;
-	final double distance;
+	final float duration;
+	final float distance;
 	
-	public Route(List<RouteComponent> routeComponents, double duration, double distance) {
+	public Route(List<RouteComponent> routeComponents, float duration, float distance) {
 		this.routeComponents = routeComponents;
 		this.duration = duration;
 		this.distance = distance;

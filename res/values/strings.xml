@@ -130,6 +130,11 @@
     <string name="fromFavourites">FROM FAVOURITES</string>
 
     <color name="dark_grey">#454c4d</color>
+    <color name="lightGrey">#bdc3c7</color>
+    <color name="lightOrange">#ff8800</color>
+    <color name="orange">#d27000</color>
+    <color name="darkerGreen">#117425</color>
+    <color name="lighterGreen">#1a9633</color>
 
     <string name="swapStartAndEnd">Swap start and end points</string>
     <string name="showAdvancedOptions">Show advanced options</string>

@@ -9,8 +9,8 @@ public class RouteComponent {
 	final String startName;
 	final String endName;
 	
-	final double duration;
-	final double distance;
+	final float duration;
+	final float distance;
 	final Date startDateTime;
 	final Date endDateTime;
 	final List<WayPoint> wayPoints;
@@ -21,8 +21,8 @@ public class RouteComponent {
 			String endName,
 			Date startDateTime, 
 			Date endDateTime, 
-			double duration, 
-			double distance, 
+			float duration, 
+			float distance, 
 			List<WayPoint> wayPoints) {
 		
 		this.code = code;

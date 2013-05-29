@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.json.JSONArray;
@@ -47,7 +48,7 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockActivity implements OnNavigationListener, 
 OnTimeSetListener, OnDateSetListener {
-
+	
 	private final Calendar mDateTime = GregorianCalendar.getInstance();
 
 	@App
@@ -77,6 +78,8 @@ OnTimeSetListener, OnDateSetListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		fetchToken();
 
 		// Set up the action bar to show a dropdown list.
 		final ActionBar actionBar = getSupportActionBar();
@@ -109,7 +112,6 @@ OnTimeSetListener, OnDateSetListener {
 
 	@AfterViews
 	public void initialize() {
-		fetchToken();
 		getSupportActionBar().setSelectedNavigationItem(mPreferences.selectedCityIndex().get());
 		setDateTimeTexts(mDateTime);
 		mStartText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -123,7 +125,7 @@ OnTimeSetListener, OnDateSetListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Address address = (Address) mEndText.getAdapter().getItem(position);
-				mGlobals.setEndAddress(address);
+				mGlobals.setEndAddress(address);				
 			}
 		});
 		mStartText.requestFocus();
@@ -183,6 +185,7 @@ OnTimeSetListener, OnDateSetListener {
 		if (mGlobals.getStartAddress() == null || mGlobals.getEndAddress() == null) {
 			Toast.makeText(this, getString(R.string.fromToNotSet), Toast.LENGTH_LONG).show();
 		} else {
+			mGlobals.getRoutes().clear();
 			Intent intent = new Intent(this, RoutesActivity_.class);
 			intent.putExtra(Constants.EXTRA_DATE, String.format("%d%02d%02d", mDateTime.get(Calendar.YEAR), 
 					mDateTime.get(Calendar.MONTH) + 1, mDateTime.get(Calendar.DAY_OF_MONTH)));
@@ -237,7 +240,7 @@ OnTimeSetListener, OnDateSetListener {
 	}
 
 	private void setDateTimeTexts(Calendar dateTime) {
-		String time = String.format("%02d:%02d", dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
+		String time = String.format(Locale.US, "%02d:%02d", dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
 		String date = dateTime.get(Calendar.DAY_OF_MONTH)+ "." 
 				+ (dateTime.get(Calendar.MONTH) + 1) + "."     // Months in Calendar class are 0-11
 				+ dateTime.get(Calendar.YEAR);
@@ -255,7 +258,7 @@ OnTimeSetListener, OnDateSetListener {
 		params.put("key", text.toString());
 
 		try {
-			String response = HttpUtils.post(mPreferences.baseUrl().get() + "geocode.php", params);
+			String response = Utils.httpPost(mPreferences.baseUrl().get() + "geocode.php", params);
 			JSONObject json = new JSONObject(response);
 			if (json.getInt("status") == 0) {
 				List<Address> locations = new ArrayList<Address>();
@@ -272,8 +275,7 @@ OnTimeSetListener, OnDateSetListener {
 						);
 				setAddressAdapter(addressInput, locationsAdapter);
 			} else {
-				//Toast.makeText(context, context.getString(R.string.addressNotFound), Toast.LENGTH_LONG).show();
-				//mSourceView.dismissDropDown();
+				((AutoCompleteTextView) addressInput).dismissDropDown();
 			}
 		} catch (IOException ioex) {
 			Log.d("searchAddresses", ioex.toString());
@@ -292,16 +294,21 @@ OnTimeSetListener, OnDateSetListener {
 	@Background
 	public void fetchToken() {
 		try {
-			String response = HttpUtils.get(mPreferences.baseUrl().get() + "fi/config.js.php");
+			String response = Utils.httpGet(mPreferences.baseUrl().get() + "fi/config.js.php");
 			JSONObject config = new JSONObject(response.split("=")[1].replace(";", ""));
 			String token = config.getString("token");
 			mGlobals.setToken(token);
-			Toast.makeText(this, "Matkahuolto-token OK", Toast.LENGTH_SHORT).show();
+			showToast("Matkahuolto-token OK!", Toast.LENGTH_SHORT);
 		} catch (IOException ioex) {
 			//Toast.makeText(this, "HOLDER", Toast.LENGTH_LONG).show();
 		} catch (JSONException jsonex) {
 			//Toast.makeText(this, "ERROR IN JSON, contact developer!", Toast.LENGTH_LONG).show();
 		}
+	}
+	
+	@UiThread
+	public void showToast(String text, int duration) {
+		Toast.makeText(this, text, duration).show();
 	}
 
 }

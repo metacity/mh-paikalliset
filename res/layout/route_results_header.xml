@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/resultsHeaderLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/background_light"
+    android:clickable="false"
+    android:gravity="right"
+    android:longClickable="false"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/departure"
+        android:layout_alignBottom="@+id/departure"
+        android:layout_centerHorizontal="true"
+        android:text="@string/duration"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/arrival"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/duration"
+        android:layout_alignBottom="@+id/duration"
+        android:layout_alignParentRight="true"
+        android:text="@string/arrival"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/fromTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/duration"
+        android:ellipsize="middle"
+        android:minLines="1"
+        android:paddingBottom="5dp"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="from"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/toTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/duration"
+        android:ellipsize="middle"
+        android:gravity="right"
+        android:minLines="1"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="to"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/departure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/fromTextView"
+        android:layout_below="@+id/fromTextView"
+        android:text="@string/departure"
+        android:textSize="12sp" />
+
+</RelativeLayout>

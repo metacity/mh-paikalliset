@@ -20,7 +20,7 @@
     <string name="progressDialogLoadingRoutes">Ladataan reittejä&#8230;</string>
     <string name="progressDialogLocating">Paikannetaan nykyistä sijaintia&#8230;</string>
     <string name="accuracy">Tarkkuus</string>
-    <string name="findRoutes">ETSI ROUTES</string>
+    <string name="findRoutes">ETSI REITIT</string>
     <string name="about_settings">Tietoja</string>
     <string name="updateToken">Päivitä token</string>
     <string name="routeMapDetailsTitle">Vaihtokuvat</string>

@@ -1,18 +1,24 @@
 package fi.metacity.klmobi;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class HttpUtils {
+public class Utils {
+	
+	public static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
+	public static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyyMMdd;HHmm", Locale.US);
 
-	public static String post(String endpoint, Map<String, String> params) throws IOException {
+	public static String httpPost(String endpoint, Map<String, String> params) throws IOException {
 		URL url = new URL(endpoint);
 		String response = "";
 		
@@ -30,12 +36,14 @@ public class HttpUtils {
 
 		byte[] bytes = body.getBytes();
 		HttpURLConnection conn = null;
+		System.setProperty("http.keepAlive", "false");
 		try {
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 			conn.setFixedLengthStreamingMode(bytes.length);
 			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Connection", "close");
 			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
 			
 			// Post the request
@@ -44,7 +52,8 @@ public class HttpUtils {
 			out.close();
 			
 			// Getting the InputStream has to happen before getting the status code
-			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()), 8192);
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					new BufferedInputStream(conn.getInputStream()), "UTF-8"), 8192);
 			
 			// Handle the response
 			int status = conn.getResponseCode();
@@ -69,18 +78,21 @@ public class HttpUtils {
 		return response;
 	}
 	
-	public static String get(String endpoint) throws IOException {
+	public static String httpGet(String endpoint) throws IOException {
 		URL url = new URL(endpoint);
 		String response = "";
 		
 		HttpURLConnection conn = null;
+		System.setProperty("http.keepAlive", "false");
 		try {
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Connection", "close");
 			conn.setRequestProperty("Content-Type", "text/html");
 			
 			// Getting the InputStream has to happen before getting the status code
-			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()), 8192);
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					new BufferedInputStream(conn.getInputStream()), "UTF-8"), 8192);
 			
 			// handle the response
 			int status = conn.getResponseCode();
