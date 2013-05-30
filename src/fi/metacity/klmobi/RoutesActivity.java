@@ -74,7 +74,7 @@ public class RoutesActivity extends SherlockFragmentActivity {
 					long delta = lastStart.getTime() - firstStart.getTime();
 					newDateTime = new Date(currentDate.getTime() - delta);
 				} else {
-					newDateTime = new Date(lastStart.getTime() + 60 * 1000); // + 1 minute
+					newDateTime = new Date(lastStart.getTime());
 				}
 				
 				Bundle newArgs = getIntent().getExtras();
