@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_selector_orange"
+    android:padding="10dp" >
+
+    <TextView
+        android:id="@+id/detailsRowType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/detailsRowTypeIcon"
+        android:text="@string/walking"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/detailsRowDist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/detailsRowType"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:minWidth="60dp"
+        android:text="dist"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/detailsRowStartStreet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/detailsRowType"
+        android:layout_below="@+id/detailsRowType"
+        android:layout_marginTop="2dp"
+        android:text="start"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/detailsRowEndStreet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/detailsRowStartStreet"
+        android:layout_below="@+id/detailsRowStartStreet"
+        android:layout_marginTop="2dp"
+        android:text="end"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="13sp" />
+
+    <ImageView
+        android:id="@+id/detailsRowTypeIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="1dp"
+        android:paddingRight="2dp"
+        android:src="@drawable/ic_walk" />
+
+    <TextView
+        android:id="@+id/detailsRowEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/detailsRowEndStreet"
+        android:layout_alignBottom="@+id/detailsRowEndStreet"
+        android:layout_alignRight="@+id/detailsRowStartTime"
+        android:text="endTime"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/detailsRowStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/detailsRowEndStreet"
+        android:layout_alignParentRight="true"
+        android:text="startTime"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/detailsRowSeparator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/detailsRowDist"
+        android:layout_alignTop="@+id/detailsRowDist"
+        android:layout_toLeftOf="@+id/detailsRowDist"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="|"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/detailsRowDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/detailsRowSeparator"
+        android:layout_alignBottom="@+id/detailsRowSeparator"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/detailsRowSeparator"
+        android:text="dur"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="14sp" />
+
+</RelativeLayout>

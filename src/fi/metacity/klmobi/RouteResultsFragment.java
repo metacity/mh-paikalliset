@@ -16,6 +16,7 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.MenuItem;
+import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -46,7 +48,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 	Preferences_ mPreferences;
 
 	@BooleanRes(R.bool.has_two_panes)
-	boolean isDualPane;
+	boolean mIsDualPane;
 
 	@FragmentArg(Constants.EXTRA_DATE)
 	String mDate;
@@ -72,22 +74,21 @@ public class RouteResultsFragment extends SherlockListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		View header = View.inflate(getActivity(), R.layout.route_results_header, null);
+
+		View header = View.inflate(getSherlockActivity(), R.layout.route_results_header, null);
 		header.setClickable(false);
 		header.setFocusable(false);
 		((TextView)header.findViewById(R.id.fromTextView)).setText(mGlobals.getStartAddress().streetOnly());
 		((TextView)header.findViewById(R.id.toTextView)).setText(mGlobals.getEndAddress().streetOnly());
-		
+
 		ListView listView = getListView();
 		listView.addHeaderView(header);
-		
+
 		if (mGlobals.getRoutes().isEmpty()) {
 			fetchRoutes();
 		} else {
 			setRoutesAdapter(mGlobals.getRoutes());
 		}
-		
 	}
 
 	@Background
@@ -109,9 +110,10 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 	@UiThread
 	public void setRoutesAdapter(List<Route> routes) {
-		RouteAdapter adapter = new RouteAdapter(getActivity(), routes);
+		RouteAdapter adapter = new RouteAdapter(getSherlockActivity(), routes);
 		setListAdapter(adapter);
 		setListShown(true);
+		setRightPane(0);
 	}
 
 	private String buildNaviciRequest(Address start, Address end) {
@@ -236,22 +238,21 @@ public class RouteResultsFragment extends SherlockListFragment {
 			return new Date();
 		}
 	}
-	
+
 	@OptionsItem({R.id.earlier_lines, R.id.later_lines})
 	public void showEarlierOrLaterLines(MenuItem item) {
 		setListShown(false);
 		setListAdapter(null);
-		mGlobals.getRoutes().clear();
-		
+
 		List<Route> routes = mGlobals.getRoutes();
 		Route lastRoute = routes.get(routes.size() - 1);
 		Date lastStart = lastRoute.routeComponents.get(0).startDateTime;
-		
+
 		Date newDateTime;
 		if (item.getItemId() == R.id.earlier_lines) {
 			Route firstRoute = routes.get(0);
 			Date firstStart = firstRoute.routeComponents.get(0).startDateTime;
-			
+
 			String currentDateTimeStr = mDate + ";" + mTime;
 			Date currentDate = null;
 			try {
@@ -259,20 +260,42 @@ public class RouteResultsFragment extends SherlockListFragment {
 			} catch (ParseException pex) {
 				// Ignore
 			}
-			
+
 			// Difference between the first and the last of current routes
 			long delta = lastStart.getTime() - firstStart.getTime();
 			newDateTime = new Date(currentDate.getTime() - delta);
 		} else {
 			newDateTime = new Date(lastStart.getTime() + 60 * 1000); // + 1 minute
 		}
-		
+
 		SimpleDateFormat dateSdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
 		mDate = dateSdf.format(newDateTime);
-		
+
 		SimpleDateFormat timeSdf = new SimpleDateFormat("HHmm", Locale.US);
 		mTime = timeSdf.format(newDateTime);
 
+		mGlobals.getRoutes().clear();
 		fetchRoutes();
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		if (mIsDualPane) {			
+			setRightPane(position-1); // Header is 0!
+		}
+	}
+	
+	private void setRightPane(int position) {
+		if (mIsDualPane) {			
+			PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) getSherlockActivity().findViewById(R.id.tabs);
+			ViewPager pager = (ViewPager) getSherlockActivity().findViewById(R.id.pager);
+			if (tabs != null && pager != null) {
+				DetailsPagerAdapter adapter = new DetailsPagerAdapter(getFragmentManager(), 
+						new String[] { "Reittitiedot", "Vaihtokuvat", "Kartta" }, position); 
+				pager.setAdapter(adapter);
+				tabs.setViewPager(pager);
+				pager.setCurrentItem(0, true);
+			}
+		}
 	}
 }

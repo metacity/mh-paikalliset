@@ -15,8 +15,8 @@ import java.util.Map.Entry;
 
 public class Utils {
 	
-	public static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.US);
-	public static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyyMMdd;HHmm", Locale.US);
+	public static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+	public static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyyMMdd;HHmm", Locale.ENGLISH);
 
 	public static String httpPost(String endpoint, Map<String, String> params) throws IOException {
 		URL url = new URL(endpoint);

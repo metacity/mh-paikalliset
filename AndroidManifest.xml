@@ -39,6 +39,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="fi.metacity.klmobi.RoutesActivity_"
             android:label="@string/title_activity_route_results"
@@ -46,6 +47,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fi.metacity.klmobi.MainActivity_" />
+        </activity>
+        
+        <activity
+            android:name="fi.metacity.klmobi.RoutesDetailsActivity_"
+            android:label="@string/title_activity_route_results"
+            android:parentActivityName="fi.metacity.klmobi.RoutesActivity_" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="fi.metacity.klmobi.RoutesActivity_" />
         </activity>
     </application>
 
