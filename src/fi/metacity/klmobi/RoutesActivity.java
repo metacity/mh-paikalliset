@@ -36,7 +36,9 @@ public class RoutesActivity extends SherlockFragmentActivity {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		mExtras = getIntent().getExtras();
-		showResultsFragment(mExtras);
+		if (savedInstanceState == null) {
+			showResultsFragment(mExtras);
+		}
 	}
 
 	@Override
