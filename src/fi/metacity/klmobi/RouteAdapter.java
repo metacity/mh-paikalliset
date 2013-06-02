@@ -105,11 +105,13 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 		holder.stopArrView.setText("(" + lastStopArrivalTime + ")");
 		
 		holder.walkingDistView.setText(Double.toString(Math.round(walkingDistance/100) / 10.0) + " km");
+		
+		v.setBackgroundResource(route.isSelected ? R.color.lightOrange : R.color.background);
 
 		return v;
 	}
 	
-	private static class RouteHolder {
+	public static class RouteHolder {
 		TextView departureView, arrivalView;
 		TextView durationView;
 		TextView stopDepView, stopArrView;

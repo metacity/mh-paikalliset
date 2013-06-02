@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -70,6 +71,9 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 	@FragmentArg(Constants.EXTRA_CHANGE_MARGIN)
 	String mChangeMargin;
+	
+	private int mPreviousSelection = 0;
+	private RouteAdapter mAdapter;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -78,6 +82,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 		View header = View.inflate(getSherlockActivity(), R.layout.route_results_header, null);
 		header.setClickable(false);
 		header.setFocusable(false);
+		header.setBackgroundResource(R.color.background);
 		((TextView)header.findViewById(R.id.fromTextView)).setText(mGlobals.getStartAddress().streetOnly());
 		((TextView)header.findViewById(R.id.toTextView)).setText(mGlobals.getEndAddress().streetOnly());
 
@@ -110,10 +115,12 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 	@UiThread
 	public void setRoutesAdapter(List<Route> routes) {
-		RouteAdapter adapter = new RouteAdapter(getSherlockActivity(), routes);
-		setListAdapter(adapter);
+		mAdapter = new RouteAdapter(getSherlockActivity(), routes);
+		setListAdapter(mAdapter);
 		setListShown(true);
+		
 		setRightPane(0);
+		setSelectionIndication(getListView(), 0);
 	}
 
 	private String buildNaviciRequest(Address start, Address end) {
@@ -279,23 +286,46 @@ public class RouteResultsFragment extends SherlockListFragment {
 	}
 
 	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		if (mIsDualPane) {			
-			setRightPane(position-1); // Header is 0!
+	public void onListItemClick(ListView list, View v, int position, long id) {
+		super.onListItemClick(list, v, position, id);
+		if (position > 0) { // Ignore header click
+			if (mIsDualPane) {
+				setSelectionIndication(list,  position-1);
+				setRightPane(position-1); // Header is 0!
+			} else {
+				// TODO!
+			}
 		}
 	}
 	
+	// Header excluded here already!
 	private void setRightPane(int position) {
 		if (mIsDualPane) {			
 			PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) getSherlockActivity().findViewById(R.id.tabs);
 			ViewPager pager = (ViewPager) getSherlockActivity().findViewById(R.id.pager);
 			if (tabs != null && pager != null) {
-				DetailsPagerAdapter adapter = new DetailsPagerAdapter(getFragmentManager(), 
-						new String[] { "Reittitiedot", "Vaihtokuvat", "Kartta" }, position); 
+				RouteDetailsPagerAdapter adapter = new RouteDetailsPagerAdapter(
+						getFragmentManager(), 
+						new String[] { 
+							getString(R.string.routeDetailsTitle), 
+							getString(R.string.transferImages), 
+							getString(R.string.title_activity_route_gmap) 
+						}, 
+						position
+				); 
 				pager.setAdapter(adapter);
 				tabs.setViewPager(pager);
 				pager.setCurrentItem(0, true);
 			}
 		}
+	}
+	
+	// Header excluded here already!
+	private void setSelectionIndication(ListView list, int position) {
+		mGlobals.getRoutes().get(mPreviousSelection).isSelected = false;
+		mGlobals.getRoutes().get(position).isSelected = true;
+		mPreviousSelection = position;
+
+		mAdapter.notifyDataSetChanged();
 	}
 }

@@ -44,27 +44,12 @@ public final class MainActivity_
     }
 
     private void afterSetContentView_() {
-        mEndText = ((AutoCompleteTextView) findViewById(id.endText));
         mEndClearButton = ((ImageButton) findViewById(id.endClearBtn));
         mStartClearButton = ((ImageButton) findViewById(id.startClearBtn));
-        mDateText = ((TextView) findViewById(id.dateText));
-        mStartText = ((AutoCompleteTextView) findViewById(id.startText));
         mTimeText = ((TextView) findViewById(id.timeText));
-        {
-            View view = findViewById(id.dateText);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.pickDate();
-                    }
-
-                }
-                );
-            }
-        }
+        mStartText = ((AutoCompleteTextView) findViewById(id.startText));
+        mEndText = ((AutoCompleteTextView) findViewById(id.endText));
+        mDateText = ((TextView) findViewById(id.dateText));
         {
             View view = findViewById(id.swapBtn);
             if (view!= null) {
@@ -74,36 +59,6 @@ public final class MainActivity_
                     @Override
                     public void onClick(View view) {
                         MainActivity_.this.swapAddresses();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = findViewById(id.startClearBtn);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.clearStart();
-                    }
-
-                }
-                );
-            }
-        }
-        {
-            View view = findViewById(id.timeText);
-            if (view!= null) {
-                view.setOnClickListener(new OnClickListener() {
-
-
-                    @Override
-                    public void onClick(View view) {
-                        MainActivity_.this.pickTime();
                     }
 
                 }
@@ -126,6 +81,66 @@ public final class MainActivity_
             }
         }
         {
+            View view = findViewById(id.timeText);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.pickTime();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = findViewById(id.findRoutesBtn);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.findRoutes();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = findViewById(id.startClearBtn);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.clearStart();
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = findViewById(id.dateText);
+            if (view!= null) {
+                view.setOnClickListener(new OnClickListener() {
+
+
+                    @Override
+                    public void onClick(View view) {
+                        MainActivity_.this.pickDate();
+                    }
+
+                }
+                );
+            }
+        }
+        {
             View view = findViewById(id.swapBtn);
             if (view!= null) {
                 view.setOnLongClickListener(new OnLongClickListener() {
@@ -134,6 +149,22 @@ public final class MainActivity_
                     @Override
                     public boolean onLongClick(View view) {
                         MainActivity_.this.showSwapHint();
+                        return true;
+                    }
+
+                }
+                );
+            }
+        }
+        {
+            View view = findViewById(id.showAdvancedBtn);
+            if (view!= null) {
+                view.setOnLongClickListener(new OnLongClickListener() {
+
+
+                    @Override
+                    public boolean onLongClick(View view) {
+                        MainActivity_.this.showAdvancedOptionsHint();
                         return true;
                     }
 
@@ -231,14 +262,14 @@ public final class MainActivity_
     }
 
     @Override
-    public void fetchToken() {
-        BackgroundExecutor.execute(new Runnable() {
+    public void showToast(final String text, final int duration) {
+        handler_.post(new Runnable() {
 
 
             @Override
             public void run() {
                 try {
-                    MainActivity_.super.fetchToken();
+                    MainActivity_.super.showToast(text, duration);
                 } catch (RuntimeException e) {
                     Log.e("MainActivity_", "A runtime exception was thrown while executing code in a runnable", e);
                 }
@@ -257,6 +288,24 @@ public final class MainActivity_
             public void run() {
                 try {
                     MainActivity_.super.searchAddresses(addressInput, text);
+                } catch (RuntimeException e) {
+                    Log.e("MainActivity_", "A runtime exception was thrown while executing code in a runnable", e);
+                }
+            }
+
+        }
+        );
+    }
+
+    @Override
+    public void fetchToken() {
+        BackgroundExecutor.execute(new Runnable() {
+
+
+            @Override
+            public void run() {
+                try {
+                    MainActivity_.super.fetchToken();
                 } catch (RuntimeException e) {
                     Log.e("MainActivity_", "A runtime exception was thrown while executing code in a runnable", e);
                 }

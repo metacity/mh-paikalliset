@@ -23,7 +23,7 @@
     <string name="findRoutes">ETSI REITIT</string>
     <string name="about_settings">Tietoja</string>
     <string name="updateToken">Päivitä token</string>
-    <string name="routeMapDetailsTitle">Vaihtokuvat</string>
+    <string name="transferImages">Vaihtokuvat</string>
     <string name="routeDetailsTitle">Vaiheet</string>
     <string name="title_activity_route_details_activity">Reittitiedot</string>
     <string name="walking">Kävely</string>

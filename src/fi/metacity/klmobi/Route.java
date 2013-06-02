@@ -8,6 +8,8 @@ public class Route {
 	final float duration;
 	final float distance;
 	
+	boolean isSelected;
+	
 	public Route(List<RouteComponent> routeComponents, float duration, float distance) {
 		this.routeComponents = routeComponents;
 		this.duration = duration;

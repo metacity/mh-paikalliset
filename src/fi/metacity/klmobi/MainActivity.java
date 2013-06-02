@@ -79,7 +79,9 @@ OnTimeSetListener, OnDateSetListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		fetchToken();
+		if (mGlobals.getToken().length() == 0) {
+			fetchToken();
+		}
 
 		// Set up the action bar to show a dropdown list.
 		final ActionBar actionBar = getSupportActionBar();

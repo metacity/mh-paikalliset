@@ -6,12 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-public class DetailsPagerAdapter extends FragmentStatePagerAdapter {
+public class RouteDetailsPagerAdapter extends FragmentStatePagerAdapter {
 
 	private final String[] mTitles;
 	private int mRouteIndex;
 
-	public DetailsPagerAdapter(FragmentManager fm, String[] titles, int routeIndex) {
+	public RouteDetailsPagerAdapter(FragmentManager fm, String[] titles, int routeIndex) {
 		super(fm);
 		mTitles = titles;
 		mRouteIndex = routeIndex;

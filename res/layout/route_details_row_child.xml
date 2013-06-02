@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/detailsRowChildConnectorIcon"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="12dp"
@@ -16,9 +16,11 @@
     <TextView
         android:id="@+id/detailsRowChildTime"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:paddingBottom="1dp"
         android:paddingRight="10dp"
         android:paddingTop="5dp"
         android:text="time"
@@ -27,10 +29,12 @@
     <TextView
         android:id="@+id/detailsRowChildStreet"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignBottom="@+id/detailsRowChildConnectorIcon"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/detailsRowChildConnectorIcon"
-        android:padding="5dp"
+        android:gravity="center_vertical"
+        android:paddingBottom="1dp"
         android:text="location"
         android:textSize="12sp" />
 

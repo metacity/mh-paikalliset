@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/list_selector_orange"
-    android:gravity="center_horizontal"
-    android:padding="10dp" >
+    android:gravity="center_horizontal" >
 
     <LinearLayout
         android:id="@+id/departureTimesLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:orientation="vertical" >
 
         <TextView
@@ -32,15 +33,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="durTime"
-        android:textSize="13sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/walkingDist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,7 +45,7 @@
     <LinearLayout
         android:id="@+id/routeStepsLayout"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/walkingDist"
         android:layout_centerHorizontal="true"
@@ -62,12 +54,23 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/departureTimesLayout"
+        android:layout_centerHorizontal="true"
+        android:text="durTime"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:id="@+id/arrivalTimesLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/routeStepsLayout"
         android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/duration"
+        android:layout_marginRight="10dp"
         android:orientation="vertical" >
 
         <TextView
@@ -88,7 +91,19 @@
             android:text="(08:43)"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="12sp" />
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/selectedArrowImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/routeStepsLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/resultlist_transparency_gradient"
+        android:maxWidth="30dp"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:minWidth="30dp"
+        android:visibility="visible" />
 
 </RelativeLayout>

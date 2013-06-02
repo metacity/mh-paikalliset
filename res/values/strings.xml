@@ -24,7 +24,7 @@
     <string name="findRoutes">FIND ROUTES</string>
     <string name="about_settings">About</string>
     <string name="updateToken">Update token</string>
-    <string name="routeMapDetailsTitle">Transfer images</string>
+    <string name="transferImages">Transfer images</string>
     <string name="routeDetailsTitle">Stages</string>
     <string name="title_activity_route_details_activity">Route Details</string>
     <string name="walking">Walking</string>
@@ -131,7 +131,7 @@
 
     <color name="dark_grey">#454c4d</color>
     <color name="lightGrey">#bdc3c7</color>
-    <color name="lightOrange">#ff8800</color>
+    <color name="lightOrange">#ff9d29</color>
     <color name="orange">#d27000</color>
     <color name="darkerGreen">#117425</color>
     <color name="lighterGreen">#1a9633</color>
