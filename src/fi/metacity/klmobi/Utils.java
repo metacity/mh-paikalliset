@@ -7,11 +7,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import android.util.Log;
 
 public class Utils {
 	
@@ -27,7 +30,7 @@ public class Utils {
 		while (iterator.hasNext()) {
 			Entry<String, String> param = iterator.next();
 			bodyBuilder.append(param.getKey()).append('=')
-			.append(param.getValue());
+				.append(URLEncoder.encode(param.getValue(), "UTF-8"));
 			if (iterator.hasNext()) {
 				bodyBuilder.append('&');
 			}
@@ -88,7 +91,7 @@ public class Utils {
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Connection", "close");
-			conn.setRequestProperty("Content-Type", "text/html");
+			conn.setRequestProperty("Content-Type", "text/html;charset=UTF-8");
 			
 			// Getting the InputStream has to happen before getting the status code
 			BufferedReader in = new BufferedReader(new InputStreamReader(

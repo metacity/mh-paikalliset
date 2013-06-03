@@ -20,8 +20,11 @@ public class RouteDetailsPagerAdapter extends FragmentStatePagerAdapter {
 	@Override
 	public Fragment getItem(int position) {
 		switch (position) {
-			case 0: case 1: case 2:
+			case 0:
 				return RouteDetailsFragment_.newInstance(mRouteIndex);
+				
+			case 1: case 2:
+				return RouteMapDetailsFragment_.newInstance(mRouteIndex);
 		}
 		return null;
 	}
