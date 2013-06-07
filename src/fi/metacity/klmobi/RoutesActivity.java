@@ -61,16 +61,6 @@ public class RoutesActivity extends SherlockFragmentActivity {
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@AfterViews
-	public void showViewPagerIfNeeded() {
-		if (mPager != null && mTabs != null) {
-			/*DetailsPagerAdapter adapter = new DetailsPagerAdapter(
-					getSupportFragmentManager(), new String[] { "Reittitiedot", "Vaihtokuvat", "Kartta" }, -1);
-			mPager.setAdapter(adapter);
-			mTabs.setViewPager(mPager);*/
-		}
-	}
-	
 	private void showResultsFragment(Bundle args) {
 		Fragment routeResultsFrag = new RouteResultsFragment_();
 		routeResultsFrag.setArguments(args);
