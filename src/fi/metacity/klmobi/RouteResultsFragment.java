@@ -11,7 +11,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
@@ -19,7 +21,6 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
-import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -157,22 +158,24 @@ public class RouteResultsFragment extends SherlockListFragment {
 	}
 
 	private List<Route> buildRouteList(String naviciResponse) {
-		Elements doc = Jsoup.parse(naviciResponse, "", Parser.xmlParser()).select("MTRXML");
-		mGlobals.setDetailsXmlString(doc.outerHtml());
+		Document fullDoc = Jsoup.parse(naviciResponse, "", Parser.xmlParser());
+		fullDoc.outputSettings().charset("UTF-8").indentAmount(0).escapeMode(EscapeMode.xhtml);
+		Elements doc = fullDoc.select("MTRXML");
+		mGlobals.setDetailsXmlString(doc.toString());
 
-		Elements xmlRoutes = doc.select("route");
+		Elements xmlRoutes = doc.select("ROUTE");
 		for (Element xmlRoute : xmlRoutes) {
 			List<RouteComponent> routeComponents = new ArrayList<RouteComponent>(); 
 
-			Element xmlLength = xmlRoute.select("length").first();
+			Element xmlLength = xmlRoute.select("LENGTH").first();
 			float duration = Float.parseFloat(xmlLength.attr("time"));
 			float distance = Float.parseFloat(xmlLength.attr("dist"));
 
-			Elements xmlRouteComponents = xmlRoute.select("walk, line");
+			Elements xmlRouteComponents = xmlRoute.select("WALK, LINE");
 			for (Element xmlComponent : xmlRouteComponents) {
 
-				String code = ("line".equals(xmlComponent.tagName()) ? xmlComponent.attr("code") : "W");
-				Element lengthTag = xmlComponent.select("length").first();
+				String code = ("LINE".equals(xmlComponent.tagName()) ? xmlComponent.attr("code") : "W");
+				Element lengthTag = xmlComponent.select("LENGTH").first();
 				float componentDuration = Float.parseFloat(lengthTag.attr("time"));
 				float componentDistance = Float.parseFloat(lengthTag.attr("dist"));
 				String componentStartName = null;
@@ -180,22 +183,22 @@ public class RouteResultsFragment extends SherlockListFragment {
 				Date componentStartDateTime = null;
 				Date componentEndDateTime = null;
 
-				Elements xmlWayPoints = xmlComponent.select("stop, maploc, point");
+				Elements xmlWayPoints = xmlComponent.select("STOP, MAPLOC, POINT");
 				List<WayPoint> wayPoints = new ArrayList<WayPoint>();
 				int i = 0;
 				int xmlWayPointsLen = xmlWayPoints.size();
 				for (Element xmlWayPoint : xmlWayPoints) {
-					if ("stop".equals(xmlWayPoint.tagName())) {
+					if ("STOP".equals(xmlWayPoint.tagName())) {
 						if (i == 0) {
 							// on first STOP tag, "end"/DEPARTURE-tag implies time correctly
 							componentStartDateTime = dateFromStopOrPoint(xmlWayPoint, false);
-							componentStartName = xmlWayPoint.select("name").first().attr("val");
+							componentStartName = xmlWayPoint.select("NAME").first().attr("val");
 						} else if (i == xmlWayPointsLen-1) {
 							// on last STOP tag, "start"/ARRIVAL-tag implies time correctly
 							componentEndDateTime = dateFromStopOrPoint(xmlWayPoint, true);
-							componentEndName = xmlWayPoint.select("name").first().attr("val");
+							componentEndName = xmlWayPoint.select("NAME").first().attr("val");
 						}
-					} else if ("point".equals(xmlWayPoint.tagName())) {
+					} else if ("POINT".equals(xmlWayPoint.tagName())) {
 						if ("start".equals(xmlWayPoint.attr("uid"))) {
 							componentStartName = mGlobals.getStartAddress().streetOnly();
 							componentStartDateTime = dateFromStopOrPoint(xmlWayPoint, true); 
@@ -205,8 +208,8 @@ public class RouteResultsFragment extends SherlockListFragment {
 						}
 					}
 
-					Element nameTag = xmlWayPoint.select("name").first();
-					String time = xmlWayPoint.select("departure").first().attr("time");
+					Element nameTag = xmlWayPoint.select("NAME").first();
+					String time = xmlWayPoint.select("DEPARTURE").first().attr("time");
 					wayPoints.add(new WayPoint(xmlWayPoint.attr("x"), xmlWayPoint.attr("y"), 
 							(nameTag != null) ? nameTag.attr("val") : "", time));
 
@@ -234,7 +237,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 	private static Date dateFromStopOrPoint(Element element, boolean start) {
 		String date;
 		String time;
-		Element timeOfInterest = element.select(start ? "arrival" : "departure").first();
+		Element timeOfInterest = element.select(start ? "ARRIVAL" : "DEPARTURE").first();
 
 		date = timeOfInterest.attr("date");
 		time = timeOfInterest.attr("time");
