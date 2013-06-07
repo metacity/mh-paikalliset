@@ -37,7 +37,6 @@ public class RouteMapDetailsAdapter extends ArrayAdapter<MapComponent> {
 			holder.typeView = (TextView) v.findViewById(R.id.mapDetailType);
 			holder.locationView = (TextView) v.findViewById(R.id.mapDetailPlace);
 			holder.mapImage = (ImageView) v.findViewById(R.id.mapDetailImage);
-			holder.progressBar = (ProgressBar) v.findViewById(R.id.mapDetailProgress);
 			
 			v.setTag(holder);
 		}
@@ -60,6 +59,5 @@ public class RouteMapDetailsAdapter extends ArrayAdapter<MapComponent> {
 		TextView typeView;
 		TextView locationView;
 		ImageView mapImage;
-		ProgressBar progressBar;
 	}
 }
