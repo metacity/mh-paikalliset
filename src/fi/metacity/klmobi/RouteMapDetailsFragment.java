@@ -2,7 +2,7 @@ package fi.metacity.klmobi;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -30,13 +30,13 @@ public class RouteMapDetailsFragment extends SherlockListFragment {
 
 	@App
 	MHApp mGlobals;
-	
+
 	@Pref
 	Preferences_ mPreferences;
-	
+
 	@FragmentArg(Constants.EXTRA_ROUTE_INDEX)
 	int mRouteIndex;
-	
+
 	private ListAdapter mAdapter;
 
 	public static RouteMapDetailsFragment_ newInstance(int position) {
@@ -46,49 +46,32 @@ public class RouteMapDetailsFragment extends SherlockListFragment {
 		mapsFragment.setArguments(args);
 		return mapsFragment;
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
-		//ListView lv = getListView();
+
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		setListShown(false);
 		fetchMapImages();
 	}
-	
+
 	@Background
 	public void fetchMapImages() {
 		String lang = "fi".equals(Locale.getDefault().getLanguage()) ? "fi" : "en";
 		String detailsXmlRequest = mGlobals.getDetailsXmlRequest();
-		detailsXmlRequest = detailsXmlRequest.replace("mtrxml", "MTRXML");
-		detailsXmlRequest = detailsXmlRequest.replace("route", "ROUTE");
-		detailsXmlRequest = detailsXmlRequest.replace("length", "LENGTH");
-		detailsXmlRequest = detailsXmlRequest.replace("service", "SERVICE");
-		detailsXmlRequest = detailsXmlRequest.replace("<isa", "<ISA");
-		detailsXmlRequest = detailsXmlRequest.replace("maploc", "MAPLOC");
-		detailsXmlRequest = detailsXmlRequest.replace("name", "LANG");
-		detailsXmlRequest = detailsXmlRequest.replace("point", "POINT");
-		detailsXmlRequest = detailsXmlRequest.replace("arrival", "ARRIVAL");
-		detailsXmlRequest = detailsXmlRequest.replace("departure", "DEPARTURE");
-		detailsXmlRequest = detailsXmlRequest.replace("sref", "SREF");
-		detailsXmlRequest = detailsXmlRequest.replace("walk", "WALK");
-		detailsXmlRequest = detailsXmlRequest.replace("stop", "STOP");
-		detailsXmlRequest = detailsXmlRequest.replace("walk", "WALK");
-		detailsXmlRequest = detailsXmlRequest.replace("line", "LINE");
-		detailsXmlRequest = detailsXmlRequest.replace("xtra", "XTRA");
-		
-		Map<String, String> params = new LinkedHashMap<String, String>();
 
+		Map<String, String> params = new HashMap<String, String>();
 		params.put("routeResponse", detailsXmlRequest);
 		params.put("startLocation", mGlobals.getStartAddress().streetOnly());
 		params.put("endLocation", mGlobals.getEndAddress().streetOnly());
 		params.put("routeNumber", String.valueOf(mRouteIndex));
 		params.put("language", lang);
-		
-		// TODO: EI TOIMI
-		
-		Log.i(TAG,  mRouteIndex + " -- " +  detailsXmlRequest.substring(detailsXmlRequest.length()-5, detailsXmlRequest.length()));
-		Log.i(TAG, params.size() + "");
+
 		try {
 			String responseHtml = Utils.httpPost(mPreferences.baseUrl().get() + lang + "/print/", params);
 			List<MapComponent> mapComponents = buildMapList(responseHtml);
@@ -101,15 +84,17 @@ public class RouteMapDetailsFragment extends SherlockListFragment {
 
 	@UiThread
 	public void setMapAdapter(List<MapComponent> mapComponents) {
-		mAdapter = new RouteMapDetailsAdapter(getSherlockActivity(), mapComponents);
-		setListAdapter(mAdapter);
-		setListShown(true);
+		if (getSherlockActivity() != null) {
+			mAdapter = new RouteMapDetailsAdapter(getSherlockActivity(), mapComponents);
+			setListAdapter(mAdapter);
+			setListShown(true);
+		}
 	}
 
 	private List<MapComponent> buildMapList(String responseHtml) {
 		List<MapComponent> mapComponents = new ArrayList<MapComponent>();
 		Document doc = Jsoup.parse(responseHtml);
-		
+
 		String imageUrl = "";
 		String time = "";
 		String type = "";
