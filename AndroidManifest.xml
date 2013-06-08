@@ -50,13 +50,19 @@
         </activity>
         
         <activity
-            android:name="fi.metacity.klmobi.RoutesDetailsActivity_"
-            android:label="@string/title_activity_route_results"
+            android:name="fi.metacity.klmobi.RouteDetailsActivity_"
+            android:label="@string/title_activity_route_details"
             android:parentActivityName="fi.metacity.klmobi.RoutesActivity_" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fi.metacity.klmobi.RoutesActivity_" />
         </activity>
+        
+        
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyBugnWPLcxQaEm5IZHDyJvtdlwzqwks9HU" />
+        
     </application>
 
 </manifest>

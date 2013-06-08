@@ -32,6 +32,13 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/mapDetailType"
         android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/mapDetailType"
+        android:ellipsize="middle"
+        android:gravity="end"
+        android:maxLines="1"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         android:text="place"
         android:textSize="13sp" />
 

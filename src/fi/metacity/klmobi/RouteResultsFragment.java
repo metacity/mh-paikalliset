@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.MenuItem;
@@ -48,7 +49,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 	@Pref
 	Preferences_ mPreferences;
-
+	
 	@BooleanRes(R.bool.has_two_panes)
 	boolean mIsDualPane;
 
@@ -72,8 +73,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 	@FragmentArg(Constants.EXTRA_CHANGE_MARGIN)
 	String mChangeMargin;
-	
-	private int mPreviousSelection = 0;
+
 	private RouteAdapter mAdapter;
 
 	@Override
@@ -120,8 +120,16 @@ public class RouteResultsFragment extends SherlockListFragment {
 		setListAdapter(mAdapter);
 		setListShown(true);
 		
-		setRightPane(0);
-		setSelectionIndication(getListView(), 0);
+		if (mIsDualPane) {
+			setRightPane(0);
+			setSelectionIndication(getListView(), 0);
+		} else { // Clear existing selection indications
+			for (Route route : mGlobals.getRoutes()) {
+				route.isSelected = false;
+			}
+			mAdapter.notifyDataSetChanged();
+		}
+		
 	}
 
 	private String buildNaviciRequest(Address start, Address end) {
@@ -251,6 +259,9 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 	@OptionsItem({R.id.earlier_lines, R.id.later_lines})
 	public void showEarlierOrLaterLines(MenuItem item) {
+		if (mGlobals.getRoutes().size() == 0)
+			return;
+		
 		setListShown(false);
 		setListAdapter(null);
 
@@ -292,43 +303,41 @@ public class RouteResultsFragment extends SherlockListFragment {
 	public void onListItemClick(ListView list, View v, int position, long id) {
 		super.onListItemClick(list, v, position, id);
 		if (position > 0) { // Ignore header click
-			if (mIsDualPane) {
-				setSelectionIndication(list,  position-1);
+			setSelectionIndication(list,  position-1);
+			if (mIsDualPane) {  // SHOW RIGHT PANE
 				setRightPane(position-1); // Header is 0!
-			} else {
-				// TODO!
+			} else { // START DETAILS ACTIVITY
+				RouteDetailsActivity_.intent(getSherlockActivity()).mRouteIndex(position-1).start();
 			}
 		}
 	}
 	
 	// Header excluded here already!
-	private void setRightPane(int position) {
-		if (mIsDualPane) {			
-			PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) getSherlockActivity().findViewById(R.id.tabs);
-			ViewPager pager = (ViewPager) getSherlockActivity().findViewById(R.id.pager);
-			if (tabs != null && pager != null) {
-				RouteDetailsPagerAdapter adapter = new RouteDetailsPagerAdapter(
-						getFragmentManager(), 
-						new String[] { 
-							getString(R.string.routeDetailsTitle), 
-							getString(R.string.transferImages), 
-							getString(R.string.title_activity_route_gmap) 
-						}, 
-						position
-				); 
-				pager.setAdapter(adapter);
-				tabs.setViewPager(pager);
-				pager.setCurrentItem(0, true);
-			}
+	private void setRightPane(int position) {		
+		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) getSherlockActivity().findViewById(R.id.tabs);
+		ViewPager pager = (ViewPager) getSherlockActivity().findViewById(R.id.pager);
+		if (tabs != null && pager != null) {
+			RouteDetailsPagerAdapter adapter = new RouteDetailsPagerAdapter(
+					getFragmentManager(), 
+					new String[] { 
+						getString(R.string.routeDetailsTitle), 
+						getString(R.string.transferImages), 
+						getString(R.string.title_activity_route_gmap) 
+					}, 
+					position
+			); 
+			pager.setAdapter(adapter);
+			tabs.setViewPager(pager);
+			pager.setCurrentItem(0, true);
 		}
 	}
 	
 	// Header excluded here already!
 	private void setSelectionIndication(ListView list, int position) {
-		mGlobals.getRoutes().get(mPreviousSelection).isSelected = false;
+		for (Route route : mGlobals.getRoutes()) {
+			route.isSelected = false;
+		}
 		mGlobals.getRoutes().get(position).isSelected = true;
-		mPreviousSelection = position;
-
 		mAdapter.notifyDataSetChanged();
 	}
 }

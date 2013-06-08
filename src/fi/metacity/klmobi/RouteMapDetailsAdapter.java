@@ -49,7 +49,7 @@ public class RouteMapDetailsAdapter extends ArrayAdapter<MapComponent> {
 		holder.timeView.setText(mapComponent.time);
 		holder.typeView.setText(mapComponent.type);
 		holder.locationView.setText(mapComponent.location);
-		UrlImageViewHelper.setUrlDrawable(holder.mapImage, mapComponent.imageUrl, null, 60000);
+		UrlImageViewHelper.setUrlDrawable(holder.mapImage, mapComponent.imageUrl, null, 5 * 60 * 1000); // Cache 3 mins
 		
 		return v;
 	}

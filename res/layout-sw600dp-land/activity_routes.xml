@@ -8,7 +8,7 @@
     tools:context=".RoutesActivity_" >
 
     <FrameLayout
-        android:id="@+id/route_results_container"
+        android:id="@+id/route_details_container"
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -31,7 +31,7 @@
             app:tabPaddingLeftRight="14dip"
             app:underlineColor="@color/orange" />
 
-        <android.support.v4.view.ViewPager
+        <fi.metacity.klmobi.RouteDetailsPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

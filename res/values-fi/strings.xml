@@ -4,7 +4,6 @@
     <string name="from">Mistä</string>
     <string name="to">Mihin</string>
     <string name="inputHint">Osoite tai pysäkki</string>
-    <string name="datetime">Päivämäärä ja aika</string>
     <string name="numberOfRoutes">Reittien määrä</string>
     <string name="loadingText">Ladataan&#8230;</string>
     <string name="addressNotFound">Osoitetta tai pysäkkiä ei löytynyt!</string>
@@ -25,7 +24,7 @@
     <string name="updateToken">Päivitä token</string>
     <string name="transferImages">Vaihtokuvat</string>
     <string name="routeDetailsTitle">Vaiheet</string>
-    <string name="title_activity_route_details_activity">Reittitiedot</string>
+    <string name="title_activity_route_details">Reittitiedot</string>
     <string name="walking">Kävely</string>
     <string name="bus">Bussi</string>
     <string name="favouritesDialogTitle">Suosikit</string>

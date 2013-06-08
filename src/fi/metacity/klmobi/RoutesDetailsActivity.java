@@ -104,7 +104,7 @@ public class RoutesDetailsActivity extends SherlockFragmentActivity {
 		Fragment routeResultsFrag = new RouteResultsFragment_();
 		routeResultsFrag.setArguments(args);
 		getSupportFragmentManager().beginTransaction().
-			replace(R.id.route_results_container, routeResultsFrag).commit();
+			replace(R.id.route_details_container, routeResultsFrag).commit();
 	}
 
 }

@@ -23,8 +23,11 @@ public class RouteDetailsPagerAdapter extends FragmentStatePagerAdapter {
 			case 0:
 				return RouteDetailsFragment_.newInstance(mRouteIndex);
 				
-			case 1: case 2:
+			case 1:
 				return RouteMapDetailsFragment_.newInstance(mRouteIndex);
+				
+			case 2:
+				return RouteGMapFragment.newInstance(mRouteIndex);
 		}
 		return null;
 	}
