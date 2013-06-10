@@ -39,7 +39,7 @@ public class Utils {
 		}
 		String body = bodyBuilder.toString();
 
-		byte[] bytes = body.getBytes();
+		byte[] bytes = body.getBytes("UTF-8");
 		HttpURLConnection conn = null;
 		System.setProperty("http.keepAlive", "false");
 		try {
