@@ -19,6 +19,8 @@ import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,7 +34,7 @@ import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
@@ -46,9 +48,9 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends SherlockActivity implements OnNavigationListener, 
+public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, 
 OnTimeSetListener, OnDateSetListener {
-	
+
 	private final Calendar mDateTime = GregorianCalendar.getInstance();
 
 	@App
@@ -62,10 +64,10 @@ OnTimeSetListener, OnDateSetListener {
 
 	@ViewById(R.id.endText)
 	AutoCompleteTextView mEndText;
-	
+
 	@ViewById(R.id.startClearBtn)
 	ImageButton mStartClearButton;
-	
+
 	@ViewById(R.id.endClearBtn)
 	ImageButton mEndClearButton;
 
@@ -78,7 +80,7 @@ OnTimeSetListener, OnDateSetListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		if (mGlobals.getToken().length() == 0) {
 			fetchToken();
 		}
@@ -107,7 +109,7 @@ OnTimeSetListener, OnDateSetListener {
 	public boolean onNavigationItemSelected(int position, long id) {
 		String newBaseUrl = "http://" + Constants.citySubdomains[position] + ".matkahuolto.info/";
 		mPreferences.baseUrl().put(newBaseUrl);
-		
+
 		mPreferences.selectedCityIndex().put(position);
 		return true;
 	}
@@ -143,29 +145,69 @@ OnTimeSetListener, OnDateSetListener {
 			clearBtnToShowOrHide.setVisibility(View.INVISIBLE);
 		}
 	}
-	
+
 	@Click(R.id.startClearBtn)
 	public void clearStart() {
 		mStartText.setText("");
 		mGlobals.setStartAddress(null);
 	}
-	
+
 	@Click(R.id.endClearBtn)
 	public void clearEnd() {
 		mEndText.setText("");
 		mGlobals.setEndAddress(null);
 	}
+
+	@Click(R.id.startFavouritesBtn)
+	public void showStartFavourites() {
+		showFavouriteDialog(new FavouritesDialog.OnFavouriteSelectedListener() {
+			@Override
+			public void onFavouriteSelected(Address selectedAddress) {
+				mGlobals.setStartAddress(selectedAddress);
+				mStartText.setText(selectedAddress.toString());
+				mStartText.dismissDropDown();
+			}
+		}, "startFavourites", mGlobals.getStartAddress());
+	}
+
+	@Click(R.id.endFavouritesBtn)
+	public void showEndFavourites() {
+		showFavouriteDialog(new FavouritesDialog.OnFavouriteSelectedListener() {
+			@Override
+			public void onFavouriteSelected(Address selectedAddress) {
+				mGlobals.setEndAddress(selectedAddress);
+				mEndText.setText(selectedAddress.toString());
+				mEndText.dismissDropDown();
+			}
+		}, "endFavourites", mGlobals.getEndAddress());
+	}
 	
+	private void showFavouriteDialog(FavouritesDialog.OnFavouriteSelectedListener selectedListener, 
+			String tag, Address savableAddress) {
+		
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+		Fragment prev = getSupportFragmentManager().findFragmentByTag(tag);
+		if (prev != null) {
+			transaction.remove(prev);
+		}
+		transaction.addToBackStack(null);
+		
+		FavouritesDialog dialog = FavouritesDialog_.builder()
+				.mSaveableFavourite((savableAddress == null) ? "" : savableAddress.json.toString()).build();
+		dialog.setSelectedListener(selectedListener);
+		dialog.show(transaction, tag);
+	}
+
 	@Click(R.id.swapBtn)
 	public void swapAddresses() {
 		// Swap texts
 		CharSequence tmpText = mStartText.getText();
 		mStartText.setText(mEndText.getText());
 		mEndText.setText(tmpText);
-		
+
 		mStartText.dismissDropDown();
 		mEndText.dismissDropDown();
-		
+
 		// Swap Address objects
 		Address tmpAddress = mGlobals.getStartAddress();
 		mGlobals.setStartAddress(mGlobals.getEndAddress());
@@ -176,12 +218,12 @@ OnTimeSetListener, OnDateSetListener {
 	public void showSwapHint() {
 		Toast.makeText(this, getString(R.string.swapStartAndEnd), Toast.LENGTH_LONG).show();
 	}
-	
+
 	@LongClick(R.id.showAdvancedBtn)
 	public void showAdvancedOptionsHint() {
 		Toast.makeText(this, getString(R.string.showAdvancedOptions), Toast.LENGTH_LONG).show();
 	}
-	
+
 	@Click(R.id.findRoutesBtn)
 	public void findRoutes() {
 		if (mGlobals.getStartAddress() == null || mGlobals.getEndAddress() == null) {
@@ -292,7 +334,7 @@ OnTimeSetListener, OnDateSetListener {
 		((AutoCompleteTextView) tv).setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 	}
-	
+
 	@Background
 	public void fetchToken() {
 		try {
@@ -307,7 +349,7 @@ OnTimeSetListener, OnDateSetListener {
 			//Toast.makeText(this, "ERROR IN JSON, contact developer!", Toast.LENGTH_LONG).show();
 		}
 	}
-	
+
 	@UiThread
 	public void showToast(String text, int duration) {
 		Toast.makeText(this, text, duration).show();

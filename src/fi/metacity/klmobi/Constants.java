@@ -11,6 +11,8 @@ public final class Constants {
 	
 	public static final String EXTRA_ROUTE_INDEX = "fi.metacity.klmobi.extra.ROUTE_INDEX";
 	
+	public static final String EXTRA_SAVABLE_FAVOURITE = "fi.metacity.klmobi.extra.SAVABLE_FAVOURITE";
+	
 	public static final String[] citySubdomains = {
 		"hameenlinna",
 		"lappeenranta",

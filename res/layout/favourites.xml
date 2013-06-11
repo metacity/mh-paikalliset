@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FavouritesDialog" >
+
+    <Button
+        android:id="@+id/addFavouriteBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_selector_orange"
+        android:drawableRight="@drawable/ic_add"
+        android:gravity="center_vertical|center_horizontal|start"
+        android:padding="10dp"
+        android:text="Favourite to add" />
+
+    <ListView
+        android:id="@+id/favouritesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+    </ListView>
+
+</LinearLayout>

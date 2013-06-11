@@ -50,6 +50,7 @@
         <item>Pyöräily 300 m/min</item>
     </string-array>
 
+    <string name="favourites">SUOSIKIT</string>
     <string name="showInMap">Näytä kartalla</string>
     <string name="title_activity_route_gmap">Reittikartta</string>
     <string name="playServicesLicense">Play Services -lisenssi</string>

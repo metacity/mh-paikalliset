@@ -63,16 +63,6 @@
         android:text="@string/departure"
         android:textSize="12sp" />
 
-    <ImageView
-        android:id="@+id/selectedArrowImg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/resultlist_transparency_gradient"
-        android:minHeight="?android:attr/listPreferredItemHeight"
-        android:minWidth="30dp" />
-
     <TextView
         android:id="@+id/arrival"
         android:layout_width="wrap_content"

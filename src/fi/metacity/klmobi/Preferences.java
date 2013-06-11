@@ -11,4 +11,7 @@ public interface Preferences {
 	String baseUrl();
 
 	int selectedCityIndex();
+	
+	@DefaultString("[]")
+	String savedFavourites();
 }
