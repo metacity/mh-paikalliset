@@ -7,7 +7,6 @@
     <string name="inputHint">Address or stop</string>
     <string name="when">When</string>
     <string name="numberOfRoutes">Number of routes</string>
-    <string name="loadingText">Loading&#8230;</string>
     <string name="addressNotFound">Address or stop not found!</string>
     <string name="tokenOk">Matkahuolto-token OK!</string>
     <string name="locate">LOCATE</string>
@@ -89,7 +88,7 @@
     <string name="walkingSpeed">Walking speed</string>
     <string name="maxWalkingLength">Max. walking length</string>
     <string name="transferSafetyMargin">Transfer safety margin</string>
-    <string name="noSaveableLocationgFound">No savable location found!</string>
+    <string name="noFavourites">No favourites</string>
 
     <string-array name="matkahuoltoCities">
         <item>Hämeenlinna</item>
@@ -140,5 +139,6 @@
     <string name="showAdvancedOptions">Show advanced options</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_favourites">FavouritesActivity</string>
+    <string name="failedToObtainLocation">Failed to obtain location</string>
 
 </resources>

@@ -18,9 +18,12 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,14 +45,17 @@ import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.LongClick;
+import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.TextChange;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
+import fi.metacity.klmobi.AddressLocationListener.OnLocationFoundListener;
+
 @EActivity(R.layout.activity_main)
 public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, 
-OnTimeSetListener, OnDateSetListener {
+		OnTimeSetListener, OnDateSetListener {
 
 	private final Calendar mDateTime = GregorianCalendar.getInstance();
 
@@ -58,6 +64,9 @@ OnTimeSetListener, OnDateSetListener {
 
 	@Pref
 	Preferences_ mPreferences;
+	
+	@SystemService
+	LocationManager mLocationManager;
 
 	@ViewById(R.id.startText)
 	AutoCompleteTextView mStartText;
@@ -84,7 +93,7 @@ OnTimeSetListener, OnDateSetListener {
 		if (mGlobals.getToken().length() == 0) {
 			fetchToken();
 		}
-
+		
 		// Set up the action bar to show a dropdown list.
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -113,7 +122,7 @@ OnTimeSetListener, OnDateSetListener {
 		mPreferences.selectedCityIndex().put(position);
 		return true;
 	}
-
+	
 	@AfterViews
 	public void initialize() {
 		getSupportActionBar().setSelectedNavigationItem(mPreferences.selectedCityIndex().get());
@@ -132,6 +141,12 @@ OnTimeSetListener, OnDateSetListener {
 				mGlobals.setEndAddress(address);				
 			}
 		});
+		
+		// Enable dictionary suggestions
+		TextKeyListener input = TextKeyListener.getInstance(true, TextKeyListener.Capitalize.SENTENCES);
+		mStartText.setKeyListener(input);
+		mEndText.setKeyListener(input);
+
 		mStartText.requestFocus();
 	}
 
@@ -196,6 +211,69 @@ OnTimeSetListener, OnDateSetListener {
 				.mSaveableFavourite((savableAddress == null) ? "" : savableAddress.json.toString()).build();
 		dialog.setSelectedListener(selectedListener);
 		dialog.show(transaction, tag);
+	}
+	
+	@Click(R.id.startLocateBtn)
+	public void locateStart() {
+		OnLocationFoundListener listener = new OnLocationFoundListener() {
+			@Override
+			public void onLocationFound(Location location) {
+				Address address = Utils.locationToCoordinateAddress(location);
+				if (address != null) {
+					mGlobals.setStartAddress(address);
+					mStartText.setText(address.toString());
+					mStartText.dismissDropDown();
+				}
+			}
+		};
+		startLocating(listener);
+	}
+	
+	@Click(R.id.endLocateBtn)
+	public void locateEnd() {
+		OnLocationFoundListener listener = new OnLocationFoundListener() {
+			@Override
+			public void onLocationFound(Location location) {
+				Address address = Utils.locationToCoordinateAddress(location);
+				if (address != null) {
+					mGlobals.setEndAddress(address);
+					mEndText.setText(address.toString());
+					mEndText.dismissDropDown();
+				}
+			}
+		};
+		startLocating(listener);
+	}
+	
+	private void startLocating(OnLocationFoundListener foundListener) {
+		boolean gpsLocationEnabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		boolean networkLocationEnabled = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		if (!gpsLocationEnabled && !networkLocationEnabled) {
+			Toast.makeText(this, getString(R.string.noLocationingAvailable), Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		String provider = "";
+		if (gpsLocationEnabled) provider += "GPS";
+		if (networkLocationEnabled) {
+			if (provider.length() != 0) {
+				provider += " + ";
+			}
+			provider += getString(R.string.network);
+		}
+		AddressLocationListener locationListener = new AddressLocationListener(
+				this,
+				75, 
+				gpsLocationEnabled ? 30 : 5,
+				provider,
+				foundListener
+		);
+		if (networkLocationEnabled) {
+			mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		}
+		if (gpsLocationEnabled) {
+			mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		}
 	}
 
 	@Click(R.id.swapBtn)

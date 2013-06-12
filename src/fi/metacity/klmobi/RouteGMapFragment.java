@@ -73,11 +73,11 @@ public class RouteGMapFragment extends SupportMapFragment {
 			PolylineOptions componentPolys = new PolylineOptions();
 			for (int j = 0, len_j = component.wayPoints.size(); j < len_j; ++j) {
 				WayPoint kkjWayPoint = component.wayPoints.get(j);
-				CoordinatePoint kjjCoordPoint = new CoordinatePoint(Double.parseDouble(kkjWayPoint.y), 
+				CoordinatePoint kkjCoordPoint = new CoordinatePoint(Double.parseDouble(kkjWayPoint.y), 
 						Double.parseDouble(kkjWayPoint.x));
 				CoordinatePoint wgs84CoordPoint;
 				try {
-					wgs84CoordPoint = CoordinateUtils.convertKKJxyToWGS84lalo(kjjCoordPoint);
+					wgs84CoordPoint = CoordinateUtils.convertKKJxyToWGS84lalo(kkjCoordPoint);
 				} catch (CoordinateConversionFailed ccfex) {
 					Log.d("coord conv fail", ccfex.toString());
 					return;

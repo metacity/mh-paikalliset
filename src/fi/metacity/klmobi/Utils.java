@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -15,8 +14,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import fi.sandman.utils.coordinate.CoordinateConversionFailed;
+import fi.sandman.utils.coordinate.CoordinatePoint;
+import fi.sandman.utils.coordinate.CoordinateUtils;
+
+import android.location.Location;
 import android.net.Uri;
-import android.util.Log;
 
 public class Utils {
 	
@@ -129,4 +135,21 @@ public class Utils {
 		return response;
 	}
 
+	public static Address locationToCoordinateAddress(Location location) {
+		CoordinatePoint wgs84CoordPoint = new CoordinatePoint(location.getLatitude(), location.getLongitude());
+		try {
+			CoordinatePoint kkjCoordPoint = CoordinateUtils.convertWGS84lolaToKKJxy(wgs84CoordPoint);
+			JSONObject json = new JSONObject();
+			json.put("x", kkjCoordPoint.longitude);
+			json.put("y", kkjCoordPoint.latitude);
+			json.put("name", JSONObject.NULL);
+			json.put("city", JSONObject.NULL);
+			return new Address(json);
+		} catch (CoordinateConversionFailed ccfex) {
+			// Ignore
+		} catch (JSONException jsonex) {
+			// Ignore
+		}
+		return null;
+	}
 }

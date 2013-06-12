@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,7 +24,6 @@ import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
-import com.googlecode.androidannotations.annotations.ItemClick;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -84,7 +81,7 @@ public class FavouritesDialog extends SherlockDialogFragment {
 
 		// Set the savable favourites
 		if (favourites.size() == 0 && mSaveableFavourite.length() == 0) {
-			mAddFavourites.setText("Ei suosikkeja");
+			mAddFavourites.setText(getString(R.string.noFavourites));
 			mAddFavourites.setClickable(false);
 			mAddFavourites.setCompoundDrawables(null, null, null, null);
 		} else if (mSaveableFavourite.length() == 0) {

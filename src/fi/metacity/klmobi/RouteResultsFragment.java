@@ -23,7 +23,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.MenuItem;
@@ -35,6 +34,7 @@ import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.UiThread;
+import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.BooleanRes;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -89,6 +89,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 		ListView listView = getListView();
 		listView.addHeaderView(header);
+		listView.setSelector(R.drawable.list_selector_orange);
 
 		if (mGlobals.getRoutes().isEmpty()) {
 			fetchRoutes();
@@ -289,10 +290,10 @@ public class RouteResultsFragment extends SherlockListFragment {
 			newDateTime = new Date(lastStart.getTime() + 60 * 1000); // + 1 minute
 		}
 
-		SimpleDateFormat dateSdf = new SimpleDateFormat("yyyyMMdd", Locale.US);
+		SimpleDateFormat dateSdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
 		mDate = dateSdf.format(newDateTime);
 
-		SimpleDateFormat timeSdf = new SimpleDateFormat("HHmm", Locale.US);
+		SimpleDateFormat timeSdf = new SimpleDateFormat("HHmm", Locale.ENGLISH);
 		mTime = timeSdf.format(newDateTime);
 
 		mGlobals.getRoutes().clear();
@@ -303,8 +304,8 @@ public class RouteResultsFragment extends SherlockListFragment {
 	public void onListItemClick(ListView list, View v, int position, long id) {
 		super.onListItemClick(list, v, position, id);
 		if (position > 0) { // Ignore header click
-			setSelectionIndication(list,  position-1);
 			if (mIsDualPane) {  // SHOW RIGHT PANE
+				setSelectionIndication(list,  position-1);
 				setRightPane(position-1); // Header is 0!
 			} else { // START DETAILS ACTIVITY
 				RouteDetailsActivity_.intent(getSherlockActivity()).mRouteIndex(position-1).start();
