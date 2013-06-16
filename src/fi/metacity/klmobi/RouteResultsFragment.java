@@ -18,14 +18,15 @@ import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.MenuItem;
 import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
@@ -34,13 +35,12 @@ import com.googlecode.androidannotations.annotations.FragmentArg;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.OptionsMenu;
 import com.googlecode.androidannotations.annotations.UiThread;
-import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.res.BooleanRes;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EFragment
 @OptionsMenu(R.menu.routes)
-public class RouteResultsFragment extends SherlockListFragment {
+public class RouteResultsFragment extends ListFragment {
 
 	private static final String TAG = "RouteResultsFragment";
 
@@ -73,14 +73,25 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 	@FragmentArg(Constants.EXTRA_CHANGE_MARGIN)
 	String mChangeMargin;
+	
+	@FragmentArg(Constants.EXTRA_ROUTE_INDEX)
+	int mInitialRouteIndex;
+	
+	private ViewPager mPager;
+	private PagerSlidingTabStrip mTabs;
+	private ImageButton mShowInMapBtn;
 
 	private RouteAdapter mAdapter;
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
+		mPager = (ViewPager) getActivity().findViewById(R.id.pager);
+		mTabs = (PagerSlidingTabStrip) getActivity().findViewById(R.id.tabs);
+		mShowInMapBtn = (ImageButton) getActivity().findViewById(R.id.showInMapBtn);
 
-		View header = View.inflate(getSherlockActivity(), R.layout.route_results_header, null);
+		View header = View.inflate(getActivity(), R.layout.route_results_header, null);
 		header.setClickable(false);
 		header.setFocusable(false);
 		header.setBackgroundResource(R.color.background);
@@ -101,7 +112,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 	@Background
 	public void fetchRoutes() {
 		String naviciRequest = buildNaviciRequest(mGlobals.getStartAddress(), mGlobals.getEndAddress());
-
+		Log.i(TAG, naviciRequest);
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("requestXml", naviciRequest);
 		try {
@@ -117,13 +128,14 @@ public class RouteResultsFragment extends SherlockListFragment {
 
 	@UiThread
 	public void setRoutesAdapter(List<Route> routes) {
-		mAdapter = new RouteAdapter(getSherlockActivity(), routes);
+		mGlobals.setRoutes(routes);
+		mAdapter = new RouteAdapter(getActivity(), routes);
 		setListAdapter(mAdapter);
 		setListShown(true);
 		
 		if (mIsDualPane) {
-			setRightPane(0);
-			setSelectionIndication(getListView(), 0);
+			setRightPane(mInitialRouteIndex);
+			setSelectionIndication(getListView(), mInitialRouteIndex);
 		} else { // Clear existing selection indications
 			for (Route route : mGlobals.getRoutes()) {
 				route.isSelected = false;
@@ -167,6 +179,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 	}
 
 	private List<Route> buildRouteList(String naviciResponse) {
+		List<Route> routes = new ArrayList<Route>();
 		Document fullDoc = Jsoup.parse(naviciResponse, "", Parser.xmlParser());
 		fullDoc.outputSettings().charset("UTF-8").indentAmount(0).escapeMode(EscapeMode.xhtml);
 		Elements doc = fullDoc.select("MTRXML");
@@ -218,7 +231,13 @@ public class RouteResultsFragment extends SherlockListFragment {
 					}
 
 					Element nameTag = xmlWayPoint.select("NAME").first();
-					String time = xmlWayPoint.select("DEPARTURE").first().attr("time");
+					String time = "";
+					if ("WALK".equals(xmlComponent.tagName()) && "STOP".equals(xmlWayPoint.tagName())) {
+						time = xmlWayPoint.select("ARRIVAL").first().attr("time");
+					} else {
+						time = xmlWayPoint.select("DEPARTURE").first().attr("time");
+					}
+							
 					wayPoints.add(new WayPoint(xmlWayPoint.attr("x"), xmlWayPoint.attr("y"), 
 							(nameTag != null) ? nameTag.attr("val") : "", time));
 
@@ -237,10 +256,10 @@ public class RouteResultsFragment extends SherlockListFragment {
 								wayPoints)
 						);
 			}
-			mGlobals.getRoutes().add(new Route(routeComponents, duration, distance)); 
+			routes.add(new Route(routeComponents, duration, distance)); 
 		}
 
-		return mGlobals.getRoutes();
+		return routes;
 	}
 
 	private static Date dateFromStopOrPoint(Element element, boolean start) {
@@ -299,7 +318,7 @@ public class RouteResultsFragment extends SherlockListFragment {
 		mGlobals.getRoutes().clear();
 		fetchRoutes();
 	}
-
+	
 	@Override
 	public void onListItemClick(ListView list, View v, int position, long id) {
 		super.onListItemClick(list, v, position, id);
@@ -308,16 +327,19 @@ public class RouteResultsFragment extends SherlockListFragment {
 				setSelectionIndication(list,  position-1);
 				setRightPane(position-1); // Header is 0!
 			} else { // START DETAILS ACTIVITY
-				RouteDetailsActivity_.intent(getSherlockActivity()).mRouteIndex(position-1).start();
+				RouteDetailsActivity_.intent(getActivity()).mRouteIndex(position-1).start();
 			}
 		}
 	}
 	
+//	@OptionsItem(R.id.showInMap)
+//	public void showInGoogleMap() {
+//		RouteGMapActivity_.intent(getActivity()).mRouteIndex(mP
+//	}
+	
 	// Header excluded here already!
-	private void setRightPane(int position) {		
-		PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) getSherlockActivity().findViewById(R.id.tabs);
-		ViewPager pager = (ViewPager) getSherlockActivity().findViewById(R.id.pager);
-		if (tabs != null && pager != null) {
+	private void setRightPane(int position) {
+		if (mTabs != null && mPager != null) {
 			RouteDetailsPagerAdapter adapter = new RouteDetailsPagerAdapter(
 					getFragmentManager(), 
 					new String[] { 
@@ -326,19 +348,23 @@ public class RouteResultsFragment extends SherlockListFragment {
 						getString(R.string.title_activity_route_gmap) 
 					}, 
 					position
-			); 
-			pager.setAdapter(adapter);
-			tabs.setViewPager(pager);
-			pager.setCurrentItem(0, true);
+			);
+			
+			mPager.setAdapter(adapter);
+			mTabs.setViewPager(mPager);
+			mPager.setCurrentItem(0, true);
+			if (mShowInMapBtn != null) mShowInMapBtn.setVisibility(View.VISIBLE);
 		}
 	}
 	
 	// Header excluded here already!
 	private void setSelectionIndication(ListView list, int position) {
-		for (Route route : mGlobals.getRoutes()) {
-			route.isSelected = false;
+		if (position < mGlobals.getRoutes().size()) {
+			for (Route route : mGlobals.getRoutes()) {
+				route.isSelected = false;
+			}
+			mGlobals.getRoutes().get(position).isSelected = true;
+			mAdapter.notifyDataSetChanged();
 		}
-		mGlobals.getRoutes().get(position).isSelected = true;
-		mAdapter.notifyDataSetChanged();
 	}
 }

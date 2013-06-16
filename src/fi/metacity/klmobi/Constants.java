@@ -13,7 +13,7 @@ public final class Constants {
 	
 	public static final String EXTRA_SAVABLE_FAVOURITE = "fi.metacity.klmobi.extra.SAVABLE_FAVOURITE";
 	
-	public static final String[] citySubdomains = {
+	public static final String[] CITY_SUBDOMAINS = {
 		"hameenlinna",
 		"lappeenranta",
 		"iisalmi",
@@ -36,5 +36,12 @@ public final class Constants {
 		"tampere",
 		"uusimaa",
 		"varkaus"
+	};
+	
+	public static final String[] ROUTING_TYPES = {
+		"default",
+		"fastest",
+		"minchanges",
+		"minwalk"
 	};
 }

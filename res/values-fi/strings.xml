@@ -4,6 +4,7 @@
     <string name="from">Mistä</string>
     <string name="to">Mihin</string>
     <string name="inputHint">Osoite tai pysäkki</string>
+    <string name="when">Milloin</string>
     <string name="numberOfRoutes">Reittien määrä</string>
     <string name="addressNotFound">Osoitetta tai pysäkkiä ei löytynyt!</string>
     <string name="tokenOk">Matkahuolto-token OK!</string>
@@ -60,7 +61,7 @@
     <string name="noFavourites">Ei suosikkeja</string>
     <string name="laterLines">Myöhemmät</string>
     <string name="earlierLines">Aikaisemmat</string>
-    <string name="fromToNotSet">Mistä/Minne ei asetettu oikein!</string>
+    <string name="notSetProperly">ei asetettu oikein!</string>
     <string name="showAdvancedOptions">Näytä lisäasetukset</string>
     <string name="failedToObtainLocation">Paikannus epäonnistui</string>
 

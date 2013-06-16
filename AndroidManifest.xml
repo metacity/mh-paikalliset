@@ -5,7 +5,7 @@
     android:versionName="3.0.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
     <uses-feature
@@ -54,6 +54,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fi.metacity.klmobi.RoutesActivity_" />
+        </activity>
+        
+        <activity
+            android:name="fi.metacity.klmobi.RouteGMapActivity_"
+            android:label="@string/title_activity_route_gmap" >
         </activity>
 
         <meta-data

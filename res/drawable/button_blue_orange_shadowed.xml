@@ -3,7 +3,7 @@
     
     <item android:drawable="@drawable/shadow" />
     <item 
-        android:drawable="@drawable/button_green_orange"
-        android:bottom="2px" />
+        android:drawable="@drawable/button_blue_orange"
+        android:bottom="2dp" />
 
 </layer-list>

@@ -10,6 +10,8 @@ import com.googlecode.androidannotations.annotations.EApplication;
 @EApplication
 public class MHApp extends Application {
 	
+	private final Object mLock = new Object();
+	
 	private String mToken = "";
 	private Address mStartAddress;
 	private Address mEndAddress;
@@ -18,38 +20,63 @@ public class MHApp extends Application {
 	private String mDetailsXmlRequest = "";
 	
 	public String getToken() {
-		return mToken;
+		synchronized (mLock) {
+			return mToken;
+		}
 	}
 	
 	public void setToken(String token) {
-		mToken = token;
+		synchronized (mLock) {
+			mToken = token;
+		}
 	}
 	
 	public Address getStartAddress() {
-		return mStartAddress;
+		synchronized (mLock) {
+			return mStartAddress;
+		}
+		
 	}
 	
 	public void setStartAddress(Address address) {
-		mStartAddress = address;
+		synchronized (mLock) {
+			mStartAddress = address;
+		}
 	}
 	
 	public Address getEndAddress() {
-		return mEndAddress;
+		synchronized (mLock) {
+			return mEndAddress;
+		}
 	}
 	
 	public void setEndAddress(Address address) {
-		mEndAddress = address;
+		synchronized (mLock) {
+			mEndAddress = address;
+		}
 	}
 	
 	public List<Route> getRoutes() {
-		return mRoutes;
+		synchronized (mLock) {
+			return mRoutes;
+		}
+	}
+	
+	public void setRoutes(List<Route> routes) {
+		synchronized (mLock) {
+			mRoutes = routes;
+		}
 	}
 	
 	public String getDetailsXmlRequest() {
-		return mDetailsXmlRequest;
+		synchronized (mLock) {
+			return mDetailsXmlRequest;
+		}
 	}
 	
 	public void setDetailsXmlString(String xmlRequest) {
-		mDetailsXmlRequest = xmlRequest;
+		synchronized (mLock) {
+			mDetailsXmlRequest = xmlRequest;
+		}
 	}
 }

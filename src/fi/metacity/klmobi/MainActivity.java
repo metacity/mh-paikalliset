@@ -13,38 +13,43 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.method.TextKeyListener;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.OnNavigationListener;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.LongClick;
+import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
+import com.googlecode.androidannotations.annotations.SeekBarProgressChange;
 import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.TextChange;
 import com.googlecode.androidannotations.annotations.UiThread;
@@ -54,10 +59,11 @@ import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 import fi.metacity.klmobi.AddressLocationListener.OnLocationFoundListener;
 
 @EActivity(R.layout.activity_main)
-public class MainActivity extends SherlockFragmentActivity implements OnNavigationListener, 
+public class MainActivity extends Activity implements OnNavigationListener, 
 		OnTimeSetListener, OnDateSetListener {
 
-	private final Calendar mDateTime = GregorianCalendar.getInstance();
+	@NonConfigurationInstance
+	Calendar mDateTime = GregorianCalendar.getInstance();
 
 	@App
 	MHApp mGlobals;
@@ -85,6 +91,30 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 
 	@ViewById(R.id.dateText)
 	TextView mDateText;
+	
+	@ViewById(R.id.toggleAdvancedBtn)
+	ImageButton mToggleAdvancedOptionsButton;
+	
+	@ViewById(R.id.advancedOptionsLayout)
+	RelativeLayout mAdvancedOptionsLayout;
+	
+	@ViewById(R.id.numberOfRoutes)
+	TextView mNumberOfRoutes;
+	
+	@ViewById(R.id.numberOfRoutesSeekBar)
+	SeekBar mNumberOfRoutesSeekBar;
+	
+	@ViewById(R.id.walkingSpeedSpinner)
+	Spinner mWalkingSpeedSpinner;
+	
+	@ViewById(R.id.maxWalkingDistanceSpinner)
+	Spinner mMaxWalkingSpeedSpinner;
+	
+	@ViewById(R.id.routeTypeSpinner)
+	Spinner mRouteTypeSpinner;
+	
+	@ViewById(R.id.changeMarginsSpinner)
+	Spinner mChangeMarginsSpinner;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,28 +125,27 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		}
 		
 		// Set up the action bar to show a dropdown list.
-		final ActionBar actionBar = getSupportActionBar();
+		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 		actionBar.setDisplayShowTitleEnabled(false);
 
 		ArrayAdapter<CharSequence> citiesAdapter = ArrayAdapter.createFromResource(
 				actionBar.getThemedContext(), 
 				R.array.matkahuoltoCities,
-				R.layout.sherlock_spinner_item
+				android.R.layout.simple_spinner_dropdown_item
 				);
-		citiesAdapter.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 		actionBar.setListNavigationCallbacks(citiesAdapter, this);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onNavigationItemSelected(int position, long id) {
-		String newBaseUrl = "http://" + Constants.citySubdomains[position] + ".matkahuolto.info/";
+		String newBaseUrl = "http://" + Constants.CITY_SUBDOMAINS[position] + ".matkahuolto.info/";
 		mPreferences.baseUrl().put(newBaseUrl);
 
 		mPreferences.selectedCityIndex().put(position);
@@ -125,28 +154,41 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	
 	@AfterViews
 	public void initialize() {
-		getSupportActionBar().setSelectedNavigationItem(mPreferences.selectedCityIndex().get());
+		// Set saved city
+		getActionBar().setSelectedNavigationItem(mPreferences.selectedCityIndex().get());
+		
+		// Set current date & time
 		setDateTimeTexts(mDateTime);
+		
+		// Set address select handlers
 		mStartText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Address address = (Address) mStartText.getAdapter().getItem(position);
 				mGlobals.setStartAddress(address);
+				mStartText.dismissDropDown();
 			}
 		});
 		mEndText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Address address = (Address) mEndText.getAdapter().getItem(position);
-				mGlobals.setEndAddress(address);				
+				mGlobals.setEndAddress(address);
+				mEndText.dismissDropDown();
 			}
 		});
+		
+		// Set default advanced option values
+		mNumberOfRoutesSeekBar.setProgress(4);
+		mWalkingSpeedSpinner.setSelection(1);
+		mMaxWalkingSpeedSpinner.setSelection(3);
+		mChangeMarginsSpinner.setSelection(3);
 		
 		// Enable dictionary suggestions
 		TextKeyListener input = TextKeyListener.getInstance(true, TextKeyListener.Capitalize.SENTENCES);
 		mStartText.setKeyListener(input);
 		mEndText.setKeyListener(input);
-
+		
 		mStartText.requestFocus();
 	}
 
@@ -200,8 +242,8 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	private void showFavouriteDialog(FavouritesDialog.OnFavouriteSelectedListener selectedListener, 
 			String tag, Address savableAddress) {
 		
-		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		Fragment prev = getSupportFragmentManager().findFragmentByTag(tag);
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag(tag);
 		if (prev != null) {
 			transaction.remove(prev);
 		}
@@ -296,16 +338,31 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	public void showSwapHint() {
 		Toast.makeText(this, getString(R.string.swapStartAndEnd), Toast.LENGTH_LONG).show();
 	}
+	
+	@Click(R.id.toggleAdvancedBtn)
+	public void toggleAdvancedOptions() {
+		if (mAdvancedOptionsLayout.getVisibility() == View.GONE) { // Show if hidden
+			mAdvancedOptionsLayout.setVisibility(View.VISIBLE);
+			mToggleAdvancedOptionsButton.setImageResource(R.drawable.ic_menu_earlier);
+		} else {  // Hide if shown
+			mAdvancedOptionsLayout.setVisibility(View.GONE);
+			mToggleAdvancedOptionsButton.setImageResource(R.drawable.ic_menu_later);
+		}
+	}
 
-	@LongClick(R.id.showAdvancedBtn)
-	public void showAdvancedOptionsHint() {
+	@LongClick(R.id.toggleAdvancedBtn)
+	public void toggleAdvancedOptionsHint() {
 		Toast.makeText(this, getString(R.string.showAdvancedOptions), Toast.LENGTH_LONG).show();
 	}
 
 	@Click(R.id.findRoutesBtn)
 	public void findRoutes() {
-		if (mGlobals.getStartAddress() == null || mGlobals.getEndAddress() == null) {
-			Toast.makeText(this, getString(R.string.fromToNotSet), Toast.LENGTH_LONG).show();
+		if (mGlobals.getStartAddress() == null) {
+			Toast.makeText(this, "\"" + getString(R.string.from) + "\" " + getString(R.string.notSetProperly), 
+					Toast.LENGTH_SHORT).show();
+		} else if (mGlobals.getEndAddress() == null) { 
+			Toast.makeText(this, "\"" + getString(R.string.to) + "\" " + getString(R.string.notSetProperly), 
+					Toast.LENGTH_SHORT).show();
 		} else {
 			mGlobals.getRoutes().clear();
 			Intent intent = new Intent(this, RoutesActivity_.class);
@@ -313,11 +370,15 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 					mDateTime.get(Calendar.MONTH) + 1, mDateTime.get(Calendar.DAY_OF_MONTH)));
 			intent.putExtra(Constants.EXTRA_TIME, String.format("%02d%02d", mDateTime.get(Calendar.HOUR_OF_DAY), 
 					mDateTime.get(Calendar.MINUTE)));
-			intent.putExtra(Constants.EXTRA_NUMBER_OF_ROUTES, "5");
-			intent.putExtra(Constants.EXTRA_ROUTING_TYPE, "default");
-			intent.putExtra(Constants.EXTRA_WALKING_SPEED, "70");
-			intent.putExtra(Constants.EXTRA_MAX_WALKING_DISTANCE, "1500");
-			intent.putExtra(Constants.EXTRA_CHANGE_MARGIN, "3");
+			intent.putExtra(Constants.EXTRA_NUMBER_OF_ROUTES, mNumberOfRoutes.getText().toString());
+			intent.putExtra(Constants.EXTRA_ROUTING_TYPE, 
+					Constants.ROUTING_TYPES[mRouteTypeSpinner.getSelectedItemPosition()]);
+			intent.putExtra(Constants.EXTRA_WALKING_SPEED, 
+					((String)(mWalkingSpeedSpinner.getSelectedItem())).split(" ")[1]);
+			intent.putExtra(Constants.EXTRA_MAX_WALKING_DISTANCE, 
+					((String)(mMaxWalkingSpeedSpinner.getSelectedItem())).split(" ")[0]);
+			intent.putExtra(Constants.EXTRA_CHANGE_MARGIN, 
+					((String)(mChangeMarginsSpinner.getSelectedItem())).split(" ")[0]);
 			startActivity(intent);
 		}
 	}
@@ -370,6 +431,11 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 		mTimeText.setText(time);
 		mDateText.setText(date);
 	}
+	
+	@SeekBarProgressChange(R.id.numberOfRoutesSeekBar)
+	public void onNumberOfRoutesChanged(SeekBar seekBar, int progress) {
+		mNumberOfRoutes.setText(String.valueOf(progress + 1));
+	}
 
 	@Background
 	public void searchAddresses(TextView addressInput, CharSequence text) {
@@ -389,13 +455,7 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 				for (int i = 0, len = locationsJson.length(); i < len; ++i) {
 					locations.add(new Address(locationsJson.getJSONObject(i)));
 				}
-				// Always make new ArrayAdapter object, won't update suggestions correctly otherwise!
-				ArrayAdapter<Address> locationsAdapter = new ArrayAdapter<Address>(
-						this, 
-						R.layout.sherlock_spinner_dropdown_item, 
-						locations
-						);
-				setAddressAdapter(addressInput, locationsAdapter);
+				setAddressAdapter(addressInput, locations);
 			} else {
 				((AutoCompleteTextView) addressInput).dismissDropDown();
 			}
@@ -408,9 +468,17 @@ public class MainActivity extends SherlockFragmentActivity implements OnNavigati
 	}
 
 	@UiThread
-	public void setAddressAdapter(TextView tv, ArrayAdapter<Address> adapter) {
-		((AutoCompleteTextView) tv).setAdapter(adapter);
-		adapter.notifyDataSetChanged();
+	public void setAddressAdapter(TextView tv, List<Address> locations) {
+		// Always make new ArrayAdapter object, won't update suggestions correctly otherwise!
+		ArrayAdapter<Address> locationsAdapter = new ArrayAdapter<Address>(
+				this, 
+				android.R.layout.simple_spinner_dropdown_item, 
+				locations
+				);
+		synchronized (tv) {
+			((AutoCompleteTextView) tv).setAdapter(locationsAdapter);
+		}
+		locationsAdapter.notifyDataSetChanged();
 	}
 
 	@Background

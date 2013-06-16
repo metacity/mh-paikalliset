@@ -2,52 +2,26 @@ package fi.metacity.klmobi;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
-import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
-import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Extra;
-import com.googlecode.androidannotations.annotations.ViewById;
 
 @EActivity(R.layout.activity_routes)
-public class RoutesActivity extends SherlockFragmentActivity {
-	
-	@App
-	MHApp mGlobals;
-	
-	@ViewById(R.id.pager)
-	ViewPager mPager;
-	
-	@ViewById(R.id.tabs)
-	PagerSlidingTabStrip mTabs;
-	
-	@Extra(Constants.EXTRA_DATE)
-	String mDate;
-	
-	@Extra(Constants.EXTRA_TIME)
-	String mTime;
-	
-	private Bundle mExtras; 
-	
+public class RoutesActivity extends FragmentActivity {
+
+	@Extra(Constants.EXTRA_ROUTE_INDEX)
+	int mInitialRouteIndex;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		mExtras = getIntent().getExtras();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		if (savedInstanceState == null) {
-			showResultsFragment(mExtras);
+			showResultsFragment(getIntent().getExtras());
 		}
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		//getSupportMenuInflater().inflate(R.menu.routes, menu);
-		return true;
 	}
 
 	@Override

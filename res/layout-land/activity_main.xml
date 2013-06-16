@@ -3,14 +3,17 @@
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:fillViewport="true" >
 
     <RelativeLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         android:background="@color/background"
         android:gravity="center_horizontal"
+        android:paddingBottom="10dp"
         tools:context=".MainActivity"
         tools:ignore="MergeRootFrame" >
 
@@ -51,22 +54,6 @@
             android:singleLine="true"
             android:textColor="@android:color/black" />
 
-        <Button
-            android:id="@+id/findRoutesBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/dateText"
-            android:layout_below="@+id/timeText"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="25dp"
-            android:layout_toRightOf="@+id/showAdvancedBtn"
-            android:background="@drawable/button_green_orange_shadowed"
-            android:minHeight="50dp"
-            android:text="@string/findRoutes"
-            android:textColor="@android:color/background_light"
-            android:textStyle="bold" />
-
         <AutoCompleteTextView
             android:id="@+id/endText"
             android:layout_width="match_parent"
@@ -101,33 +88,6 @@
             android:layout_marginRight="5dp"
             android:background="@null"
             android:src="@drawable/ic_swap" />
-
-        <TextView
-            android:id="@+id/dateText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/findRoutesBtn"
-            android:layout_toRightOf="@+id/swapBtn"
-            android:background="@drawable/selector_grey_orange_borders"
-            android:drawableLeft="@drawable/ic_date"
-            android:ems="10"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center_vertical"
-            android:inputType="date"
-            android:minHeight="40dp" />
-
-        <ImageButton
-            android:id="@+id/showAdvancedBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/whenText"
-            android:layout_alignTop="@+id/findRoutesBtn"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/button_green_orange_shadowed"
-            android:minHeight="50dp"
-            android:minWidth="45dp"
-            android:src="@drawable/ic_expand" />
 
         <LinearLayout
             android:id="@+id/endButtonsLayout"
@@ -257,21 +217,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/timeText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@+id/startButtonsLayout"
-            android:layout_below="@+id/whenText"
-            android:background="@drawable/selector_grey_orange_borders"
-            android:drawableLeft="@drawable/ic_time"
-            android:ems="10"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:gravity="center_vertical"
-            android:inputType="time"
-            android:minHeight="40dp" />
-
-        <TextView
             android:id="@+id/toText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -283,6 +228,75 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textSize="16sp"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/findRoutesBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/advancedOptionsLayout"
+            android:layout_below="@+id/advancedOptionsLayout"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/toggleAdvancedBtn"
+            android:background="@drawable/button_blue_orange_shadowed"
+            android:minHeight="50dp"
+            android:text="@string/findRoutes"
+            android:textColor="@android:color/background_light"
+            android:textStyle="bold" />
+
+        <include
+            android:id="@+id/advancedOptionsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/whenText"
+            android:layout_alignRight="@+id/dateText"
+            android:layout_below="@+id/timeText"
+            android:layout_marginTop="25dp"
+            layout="@layout/advanced_options"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/whenText"
+            android:layout_toRightOf="@+id/swapBtn"
+            android:background="@drawable/selector_grey_orange_borders"
+            android:drawableLeft="@drawable/ic_date"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="center_vertical"
+            android:inputType="date"
+            android:minHeight="40dp" />
+
+        <TextView
+            android:id="@+id/timeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/whenText"
+            android:layout_toLeftOf="@+id/swapBtn"
+            android:background="@drawable/selector_grey_orange_borders"
+            android:drawableLeft="@drawable/ic_time"
+            android:ems="10"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:gravity="center_vertical"
+            android:inputType="time"
+            android:minHeight="40dp" />
+
+        <ImageButton
+            android:id="@+id/toggleAdvancedBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/timeText"
+            android:layout_alignTop="@+id/findRoutesBtn"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/button_blue_orange_shadowed"
+            android:minHeight="50dp"
+            android:minWidth="45dp"
+            android:src="@drawable/ic_menu_later" />
 
     </RelativeLayout>
 

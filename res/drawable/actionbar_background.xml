@@ -4,7 +4,7 @@
     <!-- Divider -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#0f6922" />
+            <solid android:color="#114f6b" />
         </shape>
     </item>
     
@@ -14,8 +14,8 @@
 		<shape>
 			<gradient
 			    android:angle="90"
-			    android:startColor="@color/darkerGreen"
-			    android:endColor="#1a9633" />
+			    android:startColor="@color/darkerBlue"
+			    android:endColor="@color/lighterBlue" />
 		</shape>
 	</item>
 </layer-list>

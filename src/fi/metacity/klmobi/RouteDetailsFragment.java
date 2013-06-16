@@ -3,19 +3,21 @@ package fi.metacity.klmobi;
 import java.util.List;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EFragment;
 import com.googlecode.androidannotations.annotations.FragmentArg;
 
 @EFragment
-public class RouteDetailsFragment extends SherlockFragment {
+public class RouteDetailsFragment extends Fragment {
 
 	@App
 	MHApp mGlobals;
@@ -33,16 +35,16 @@ public class RouteDetailsFragment extends SherlockFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		ExpandableListView expandableList = new ExpandableListView(getSherlockActivity()); 
+		ExpandableListView expandableList = new ExpandableListView(getActivity()); 
 		expandableList.setLayoutParams(new LayoutParams(	
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		expandableList.setGroupIndicator(null);
 
 		if (mRouteIndex >= 0 && mRouteIndex < mGlobals.getRoutes().size()) {
 			List<RouteComponent> routeComponents = mGlobals.getRoutes().get(mRouteIndex).routeComponents;
-			expandableList.setAdapter(new RouteDetailsAdapter(getSherlockActivity(), routeComponents));
-	
-	
+			expandableList.setAdapter(new RouteDetailsAdapter(getActivity(), routeComponents));
+
+
 			for (int i = expandableList.getExpandableListAdapter().getGroupCount()-1; i >= 0; --i) {
 				expandableList.expandGroup(i);
 			}
@@ -50,5 +52,21 @@ public class RouteDetailsFragment extends SherlockFragment {
 
 		return expandableList;
 	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		ImageButton showInMapButton = (ImageButton) getActivity().findViewById(R.id.showInMapBtn);
+		if (showInMapButton != null) {
+			showInMapButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					RouteGMapActivity_.intent(getActivity()).mRouteIndex(mRouteIndex).start();
+				}
+			});
+		}
+	}
+
+
 
 }

@@ -16,7 +16,7 @@
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/separatorShadow"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginLeft="-20dp"
@@ -34,6 +34,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="48dip"
+            android:layout_alignParentRight="true"
             app:indicatorColor="@color/orange"
             app:tabPaddingLeftRight="14dip"
             app:underlineColor="@color/orange" />
@@ -43,6 +44,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/tabs" />
+
+        <ImageButton
+            android:id="@+id/showInMapBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/pager"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/list_selector_orange"
+            android:padding="8dp"
+            android:src="@drawable/ic_menu_map"
+            android:visibility="invisible" />
         
     </RelativeLayout>
 

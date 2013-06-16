@@ -13,10 +13,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.widget.ListAdapter;
 
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -25,7 +25,7 @@ import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EFragment
-public class RouteMapDetailsFragment extends SherlockListFragment {
+public class RouteMapDetailsFragment extends ListFragment {
 	private static final String TAG = "RouteMapDetailsFragment";
 
 	@App
@@ -84,8 +84,8 @@ public class RouteMapDetailsFragment extends SherlockListFragment {
 
 	@UiThread
 	public void setMapAdapter(List<MapComponent> mapComponents) {
-		if (getSherlockActivity() != null) {
-			mAdapter = new RouteMapDetailsAdapter(getSherlockActivity(), mapComponents);
+		if (getActivity() != null) {
+			mAdapter = new RouteMapDetailsAdapter(getActivity(), mapComponents);
 			setListAdapter(mAdapter);
 			setListShown(true);
 		}

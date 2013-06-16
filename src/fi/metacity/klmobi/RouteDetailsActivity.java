@@ -1,23 +1,30 @@
 package fi.metacity.klmobi;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.MenuItem;
 import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.Extra;
+import com.googlecode.androidannotations.annotations.LongClick;
 import com.googlecode.androidannotations.annotations.ViewById;
+import com.googlecode.androidannotations.annotations.res.BooleanRes;
 
 @EActivity(R.layout.activity_route_details)
-public class RouteDetailsActivity extends SherlockFragmentActivity {
+public class RouteDetailsActivity extends FragmentActivity {
 
 	@App
 	MHApp mGlobals;
+	
+	@BooleanRes(R.bool.has_two_panes)
+	boolean mIsDualPane;
 
 	@Extra(Constants.EXTRA_ROUTE_INDEX)
 	int mRouteIndex;
@@ -31,7 +38,12 @@ public class RouteDetailsActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		if (mIsDualPane) {
+			NavUtils.navigateUpFromSameTask(this);
+			return;
+		}
 	}
 
 	@Override
@@ -58,5 +70,15 @@ public class RouteDetailsActivity extends SherlockFragmentActivity {
 		mPager.setAdapter(adapter);
 		mTabs.setViewPager(mPager);
 		mPager.setCurrentItem(0, true);
+	}
+	
+	@Click(R.id.showInMapBtn)
+	public void showInGoogleMap() {
+		RouteGMapActivity_.intent(this).mRouteIndex(mRouteIndex).start();
+	}
+	
+	@LongClick(R.id.showInMapBtn)
+	public void showInGoogleMapTooltip() {
+		Toast.makeText(this, getString(R.string.showInMap), Toast.LENGTH_SHORT).show();
 	}
 }

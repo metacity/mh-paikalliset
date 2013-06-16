@@ -4,7 +4,7 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.Sherlock.Light">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -18,18 +18,18 @@
     </style>
     
     
-    <style name="Theme.Styled" parent="Theme.Sherlock.Light.DarkActionBar">
-        <item name="actionBarStyle">@style/Widget.Styled.ActionBar</item>
-        <item name="actionMenuTextColor">@android:color/white</item>
+    <style name="Theme.Styled" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/Widget.Styled.ActionBar</item>
+        <item name="android:actionMenuTextColor">@android:color/white</item>
     </style>
     
-    <style name="Widget.Styled.ActionBar" parent="Widget.Sherlock.Light.ActionBar.Solid.Inverse">
-        <item name="background">@drawable/actionbar_background</item>
-        <item name="icon">@drawable/ic_actionbar_icon</item>
-        <item name="titleTextStyle">@style/TitleText</item>
+    <style name="Widget.Styled.ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/actionbar_background</item>
+        <item name="android:icon">@drawable/ic_actionbar_icon</item>
+        <item name="android:titleTextStyle">@style/TitleText</item>
     </style>
     
-    <style name="TitleText" parent="TextAppearance.Sherlock.Widget.ActionBar.Title">
+    <style name="TitleText" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/white</item>
     </style>
     

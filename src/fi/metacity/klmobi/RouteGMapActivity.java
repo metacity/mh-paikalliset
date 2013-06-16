@@ -3,10 +3,7 @@ package fi.metacity.klmobi;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -15,50 +12,88 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.googlecode.androidannotations.annotations.App;
+import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.Extra;
+import com.googlecode.androidannotations.annotations.OptionsMenu;
+import com.googlecode.androidannotations.annotations.res.BooleanRes;
 
-import fi.sandman.utils.coordinate.CoordinateConversionFailed;
-import fi.sandman.utils.coordinate.CoordinatePoint;
-import fi.sandman.utils.coordinate.CoordinateUtils;
+import android.os.Bundle;
+import android.app.AlertDialog;
+import android.graphics.Color;
+import android.util.Log;
+import android.view.MenuItem;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
 
-public class RouteGMapFragment extends SupportMapFragment {
+import fi.sandman.utils.coordinate.*;
 
-	private MHApp mGlobals;
-	private int mRouteIndex;
+@EActivity
+@OptionsMenu(R.menu.activity_route_gmap)
+public class RouteGMapActivity extends FragmentActivity {
+	
+	@App
+	MHApp mGlobals;
+	
+	@BooleanRes(R.bool.has_two_panes)
+	boolean mIsDualPane;
+	
+	@Extra(Constants.EXTRA_ROUTE_INDEX)
+	int mRouteIndex;
+	
 	private GoogleMap mGmap;
-
-	public static RouteGMapFragment newInstance(int routeIndex) {
-		RouteGMapFragment gmapFragment = new RouteGMapFragment();
-		Bundle args = new Bundle();
-		args.putInt(Constants.EXTRA_ROUTE_INDEX, routeIndex);
-		gmapFragment.setArguments(args);
-		return gmapFragment;
-	}
-
+	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mRouteIndex = getArguments().getInt(Constants.EXTRA_ROUTE_INDEX);
+		setContentView(R.layout.activity_route_gmap);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		setUpMapIfNeeded();
 	}
-
+	
 	@Override
-	public void onStart() {
-		super.onStart();
-		mGlobals = (MHApp) getActivity().getApplication();
+	protected void onResume() {
+		super.onResume();
 		setUpMapIfNeeded();
 	}
 
-	private void setUpMapIfNeeded() {
-		// Do a null check to confirm that we have not already instantiated the map.
-		if (mGmap == null) {
-			mGmap = getMap();
-			// Check if we were successful in obtaining the map.
-			if (mGmap != null) {
-				mGmap.setMyLocationEnabled(true);
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				if (mIsDualPane) {
+					NavUtils.navigateUpTo(this, RoutesActivity_.intent(this).mInitialRouteIndex(mRouteIndex).get());
+				} else {
+					NavUtils.navigateUpTo(this, RouteDetailsActivity_.intent(this).mRouteIndex(mRouteIndex).get());
+				}
+				return true;
+		
+			case R.id.play_licence_settings:
 				addRouteLines();
-			}
+				String LicenseInfo = GooglePlayServicesUtil.getOpenSourceSoftwareLicenseInfo(
+				        getApplicationContext());
+				      AlertDialog.Builder LicenseDialog = new AlertDialog.Builder(this);
+				      LicenseDialog.setTitle("Legal Notices");
+				      LicenseDialog.setMessage(LicenseInfo);
+				      LicenseDialog.show();
+				return true;
 		}
+		return super.onOptionsItemSelected(item);
 	}
-
+	
+	public void setUpMapIfNeeded() {
+	    // Do a null check to confirm that we have not already instantiated the map.
+	    if (mGmap == null) {
+	        mGmap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+	        // Check if we were successful in obtaining the map.
+	        if (mGmap != null) {
+	        	mGmap.setMyLocationEnabled(true);
+	        	addRouteLines();
+	        }
+	    }
+	}
+	
 	private void addRouteLines() {
 		BitmapDescriptor busStopMarker = BitmapDescriptorFactory.fromResource(R.drawable.bus_stop_marker);
 
@@ -110,10 +145,10 @@ public class RouteGMapFragment extends SupportMapFragment {
 			mGmap.addMarker(markers.get(i));
 		}
 		for (int i = 0, len = walkingPolylines.size(); i < len; ++i) {
-			mGmap.addPolyline(walkingPolylines.get(i).color(Color.GREEN).width(5));
+			mGmap.addPolyline(walkingPolylines.get(i).color(Color.GREEN).width(3));
 		}
 		for (int i = 0, len = busPolylines.size(); i < len; ++i) {
-			mGmap.addPolyline(busPolylines.get(i).color(Color.BLUE).width(8));
+			mGmap.addPolyline(busPolylines.get(i).color(Color.BLUE).width(4));
 		}
 
 		if (firstLatLng != null) {

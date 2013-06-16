@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -28,7 +28,7 @@ import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EFragment(R.layout.favourites)
-public class FavouritesDialog extends SherlockDialogFragment {
+public class FavouritesDialog extends DialogFragment {
 
 	@Pref
 	Preferences_ mPreferences;
@@ -100,7 +100,7 @@ public class FavouritesDialog extends SherlockDialogFragment {
 			JSONArray favourites = new JSONArray(mPreferences.savedFavourites().get());
 			favourites.put(addressToSave.json);
 			mPreferences.savedFavourites().put(favourites.toString());
-			Toast.makeText(getSherlockActivity(), "\"" + addressToSave.toString() + "\" " 
+			Toast.makeText(getActivity(), "\"" + addressToSave.toString() + "\" " 
 					+ getString(R.string.addedToFavourites), Toast.LENGTH_LONG).show();
 			dismiss();
 		} catch (JSONException jsonex) {
@@ -118,7 +118,7 @@ public class FavouritesDialog extends SherlockDialogFragment {
 				if (i != position) updatedFavourites.put(savedFavourites.getJSONObject(i));
 			}
 			mPreferences.savedFavourites().put(updatedFavourites.toString());
-			Toast.makeText(getSherlockActivity(), "\"" + addressToDelete.toString() + "\" " 
+			Toast.makeText(getActivity(), "\"" + addressToDelete.toString() + "\" " 
 					+ getString(R.string.removedFromFavourites), Toast.LENGTH_LONG).show();
 			dismiss();
 		} catch (JSONException jsonex) {
@@ -143,7 +143,7 @@ public class FavouritesDialog extends SherlockDialogFragment {
 		private final List<Address> mFavourites;
 
 		public FavouriteAdapter(List<Address> favourites) {
-			super(getSherlockActivity(), R.layout.favourites_row, favourites);
+			super(getActivity(), R.layout.favourites_row, favourites);
 			mFavourites = favourites;
 		}
 
@@ -154,7 +154,7 @@ public class FavouritesDialog extends SherlockDialogFragment {
 
 			if (v == null) {
 				holder = new FavouriteHolder();
-				v = View.inflate(getSherlockActivity(), R.layout.favourites_row, null);
+				v = View.inflate(getActivity(), R.layout.favourites_row, null);
 
 				holder.favouriteView = (TextView) v.findViewById(R.id.favouriteText);
 				holder.deleteFavouriteBtn = (ImageButton) v.findViewById(R.id.favouritesRemoveBtn);

@@ -26,15 +26,15 @@ public class RouteDetailsPagerAdapter extends FragmentStatePagerAdapter {
 			case 1:
 				return RouteMapDetailsFragment_.newInstance(mRouteIndex);
 				
-			case 2:
-				return RouteGMapFragment.newInstance(mRouteIndex);
+//			case 2:
+//				return RouteGMapFragment.newInstance(mRouteIndex);
 		}
 		return null;
 	}
 
 	@Override
 	public int getCount() {
-		return 3;
+		return 2;
 	}
 
 	@Override

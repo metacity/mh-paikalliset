@@ -117,7 +117,7 @@
 
     <string name="laterLines">Later</string>
     <string name="earlierLines">Earlier</string>
-    <string name="fromToNotSet">From/To not set properly!</string>
+    <string name="notSetProperly">not set properly!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="title_section1">Section 1</string>
@@ -132,8 +132,10 @@
     <color name="lightGrey">#bdc3c7</color>
     <color name="lightOrange">#DDff9d29</color>
     <color name="orange">#d27000</color>
-    <color name="darkerGreen">#117425</color>
-    <color name="lighterGreen">#1a9633</color>
+    <color name="darkerBlue">#115574</color>
+    <color name="lighterBlue">#1a83b2</color>
+<!--     <color name="darkerGreen">#117425</color> -->
+<!--     <color name="lighterGreen">#1a9633</color> -->
 
     <string name="swapStartAndEnd">Swap start and end points</string>
     <string name="showAdvancedOptions">Show advanced options</string>

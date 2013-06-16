@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background" >
+
+    <TextView
+        android:id="@+id/numberOfRoutesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/numberOfRoutes"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/numberOfRoutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/routeTypeText"
+        android:layout_below="@+id/numberOfRoutesText"
+        android:background="@drawable/selector_grey_orange_borders"
+        android:clickable="false"
+        android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="numberSigned"
+        android:longClickable="false"
+        android:minHeight="30dp"
+        android:text="5" />
+
+    <SeekBar
+        android:id="@+id/numberOfRoutesSeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/numberOfRoutes"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/numberOfRoutes"
+        android:max="14" />
+
+    <Spinner
+        android:id="@+id/walkingSpeedSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/walkingSpeedText"
+        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@+id/maxWalkingDistanceSpinner"
+        android:entries="@array/walkingSpeeds" />
+
+    <TextView
+        android:id="@+id/walkingSpeedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/walkingSpeedSpinner"
+        android:layout_below="@+id/numberOfRoutesSeekBar"
+        android:layout_marginTop="25dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/walkingSpeed"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/maxWalkingDistanceSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/maxWalkingDistanceText"
+        android:layout_below="@+id/maxWalkingDistanceText"
+        android:entries="@array/maxWalkingDistances" />
+
+    <Spinner
+        android:id="@+id/routeTypeSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/walkingSpeedSpinner"
+        android:layout_below="@+id/routeTypeText"
+        android:entries="@array/routingTypes" />
+
+    <TextView
+        android:id="@+id/routeTypeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/maxWalkingDistanceSpinner"
+        android:layout_marginTop="26dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/routeType"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/changeMarginsSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/maxWalkingDistanceSpinner"
+        android:layout_below="@+id/changeMarginsText"
+        android:entries="@array/changeMargins" />
+
+    <TextView
+        android:id="@+id/maxWalkingDistanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/walkingSpeedSpinner"
+        android:layout_alignParentRight="true"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/maxWalkingLength"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/changeMarginsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/routeTypeSpinner"
+        android:layout_toRightOf="@+id/walkingSpeedSpinner"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/transferSafetyMargin"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
