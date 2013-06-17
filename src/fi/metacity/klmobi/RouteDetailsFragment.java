@@ -2,6 +2,7 @@ package fi.metacity.klmobi;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -61,12 +62,11 @@ public class RouteDetailsFragment extends Fragment {
 			showInMapButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					RouteGMapActivity_.intent(getActivity()).mRouteIndex(mRouteIndex).start();
+					RouteGMapActivity_.intent(getActivity()).mRouteIndex(mRouteIndex)
+							.flags(Intent.FLAG_ACTIVITY_NO_HISTORY).start();
 				}
 			});
 		}
 	}
-
-
 
 }

@@ -1,9 +1,11 @@
 package fi.metacity.klmobi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -39,7 +41,6 @@ public class RouteDetailsActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		
 		if (mIsDualPane) {
 			NavUtils.navigateUpFromSameTask(this);
 			return;
@@ -62,8 +63,7 @@ public class RouteDetailsActivity extends FragmentActivity {
 				getSupportFragmentManager(), 
 				new String[] { 
 					getString(R.string.routeDetailsTitle), 
-					getString(R.string.transferImages), 
-					getString(R.string.title_activity_route_gmap) 
+					getString(R.string.transferImages)
 				}, 
 				mRouteIndex
 				); 
@@ -74,7 +74,7 @@ public class RouteDetailsActivity extends FragmentActivity {
 	
 	@Click(R.id.showInMapBtn)
 	public void showInGoogleMap() {
-		RouteGMapActivity_.intent(this).mRouteIndex(mRouteIndex).start();
+		RouteGMapActivity_.intent(this).mRouteIndex(mRouteIndex).flags(Intent.FLAG_ACTIVITY_NO_HISTORY).start();
 	}
 	
 	@LongClick(R.id.showInMapBtn)

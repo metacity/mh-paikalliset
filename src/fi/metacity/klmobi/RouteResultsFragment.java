@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
 import com.googlecode.androidannotations.annotations.App;
@@ -100,7 +101,7 @@ public class RouteResultsFragment extends ListFragment {
 
 		ListView listView = getListView();
 		listView.addHeaderView(header);
-		listView.setSelector(R.drawable.list_selector_orange);
+		//listView.setSelector(R.drawable.list_selector_orange);
 
 		if (mGlobals.getRoutes().isEmpty()) {
 			fetchRoutes();
@@ -332,11 +333,6 @@ public class RouteResultsFragment extends ListFragment {
 		}
 	}
 	
-//	@OptionsItem(R.id.showInMap)
-//	public void showInGoogleMap() {
-//		RouteGMapActivity_.intent(getActivity()).mRouteIndex(mP
-//	}
-	
 	// Header excluded here already!
 	private void setRightPane(int position) {
 		if (mTabs != null && mPager != null) {
@@ -344,8 +340,7 @@ public class RouteResultsFragment extends ListFragment {
 					getFragmentManager(), 
 					new String[] { 
 						getString(R.string.routeDetailsTitle), 
-						getString(R.string.transferImages), 
-						getString(R.string.title_activity_route_gmap) 
+						getString(R.string.transferImages)
 					}, 
 					position
 			);

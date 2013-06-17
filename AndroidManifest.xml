@@ -42,7 +42,8 @@
         <activity
             android:name="fi.metacity.klmobi.RoutesActivity_"
             android:label="@string/title_activity_route_results"
-            android:parentActivityName="fi.metacity.klmobi.MainActivity_" >
+            android:parentActivityName="fi.metacity.klmobi.MainActivity_"
+            android:launchMode="singleTop" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="fi.metacity.klmobi.MainActivity_" />
@@ -58,7 +59,11 @@
         
         <activity
             android:name="fi.metacity.klmobi.RouteGMapActivity_"
-            android:label="@string/title_activity_route_gmap" >
+            android:label="@string/title_activity_route_gmap"
+            android:parentActivityName="fi.metacity.klmobi.RouteDetailsActivity_" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="fi.metacity.klmobi.RouteDetailsActivity_" />
         </activity>
 
         <meta-data

@@ -20,6 +20,7 @@ import com.googlecode.androidannotations.annotations.res.BooleanRes;
 
 import android.os.Bundle;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.MenuItem;
@@ -65,7 +66,10 @@ public class RouteGMapActivity extends FragmentActivity {
 				if (mIsDualPane) {
 					NavUtils.navigateUpTo(this, RoutesActivity_.intent(this).mInitialRouteIndex(mRouteIndex).get());
 				} else {
-					NavUtils.navigateUpTo(this, RouteDetailsActivity_.intent(this).mRouteIndex(mRouteIndex).get());
+					Intent intent = new Intent(this, RouteDetailsActivity_.class);
+					intent.putExtra(Constants.EXTRA_ROUTE_INDEX, mRouteIndex);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
 				}
 				return true;
 		
