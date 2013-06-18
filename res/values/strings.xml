@@ -134,13 +134,13 @@
     <color name="orange">#d27000</color>
     <color name="darkerBlue">#115574</color>
     <color name="lighterBlue">#1a83b2</color>
-<!--     <color name="darkerGreen">#117425</color> -->
-<!--     <color name="lighterGreen">#1a9633</color> -->
 
     <string name="swapStartAndEnd">Swap start and end points</string>
     <string name="showAdvancedOptions">Show advanced options</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_favourites">FavouritesActivity</string>
     <string name="failedToObtainLocation">Failed to obtain location</string>
+    <string name="thirdPartyLicenses">3rd Party Licenses</string>
+    <string name="gettingTokenFailedToast">Failed to retrieve token! Try Menu -> Update token&#8230;</string>
 
 </resources>

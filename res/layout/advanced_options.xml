@@ -5,18 +5,6 @@
     android:background="@color/background" >
 
     <TextView
-        android:id="@+id/numberOfRoutesText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:fontFamily="sans-serif-condensed"
-        android:text="@string/numberOfRoutes"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <TextView
         android:id="@+id/numberOfRoutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +39,9 @@
         android:layout_below="@+id/walkingSpeedText"
         android:layout_marginRight="30dp"
         android:layout_toLeftOf="@+id/maxWalkingDistanceSpinner"
-        android:entries="@array/walkingSpeeds" />
+        android:background="@drawable/selector_grey_orange_borders"
+        android:entries="@array/walkingSpeeds"
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/walkingSpeedText"
@@ -73,7 +63,9 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/maxWalkingDistanceText"
         android:layout_below="@+id/maxWalkingDistanceText"
-        android:entries="@array/maxWalkingDistances" />
+        android:background="@drawable/selector_grey_orange_borders"
+        android:entries="@array/maxWalkingDistances"
+        android:padding="5dp" />
 
     <Spinner
         android:id="@+id/routeTypeSpinner"
@@ -82,7 +74,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@+id/walkingSpeedSpinner"
         android:layout_below="@+id/routeTypeText"
-        android:entries="@array/routingTypes" />
+        android:background="@drawable/selector_grey_orange_borders"
+        android:entries="@array/routingTypes"
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/routeTypeText"
@@ -103,7 +97,9 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/maxWalkingDistanceSpinner"
         android:layout_below="@+id/changeMarginsText"
-        android:entries="@array/changeMargins" />
+        android:background="@drawable/selector_grey_orange_borders"
+        android:entries="@array/changeMargins"
+        android:padding="5dp" />
 
     <TextView
         android:id="@+id/maxWalkingDistanceText"
@@ -125,6 +121,33 @@
         android:layout_toRightOf="@+id/walkingSpeedSpinner"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/transferSafetyMargin"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Switch
+        android:id="@+id/departureArrivalSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Time for "
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textOff="@string/departure"
+        android:textOn="@string/arrival"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/numberOfRoutesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/departureArrivalSwitch"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="@string/numberOfRoutes"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="16sp"
         android:textStyle="bold" />

@@ -152,4 +152,60 @@ public class Utils {
 		}
 		return null;
 	}
+
+	public static String getAndroidAnnotationsLicense() {
+		return "<p>Copyright 2012 eBusiness Information<p>"
+				+ "<p>Licensed under the Apache License, Version 2.0 (the \"License\"); you may not"
+				+ "use this file except in compliance with the License. You may obtain a copy of"
+				+ "the License at</p>"
+				+ "<p>http://www.apache.org/licenses/LICENSE-2.0</p>"
+				+ "<p>Unless required by applicable law or agreed to in writing, software"
+				+ "distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT"
+				+ "WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the"
+				+ "License for the specific language governing permissions and limitations under"
+				+ "the License.<p>"
+				+ "<p>This project uses CodeModel (http://codemodel.java.net/), which is"
+				+ "distributed under the GlassFish Dual License, which means CodeModel is"
+				+ "subject to the terms of either the GNU General Public License Version 2 only"
+				+ "(\"GPL\") or the Common Development and Distribution License(\"CDDL\")."
+				+ "You may obtain a copy of the \"CDDL\" License at</p>"
+				+ "<p>http://www.opensource.org/licenses/cddl1.php</p>"
+				+ "<p>As per section 3.6 (\"Larger Works\") of the \"CDDL\" License, we may create a"
+				+ "Larger Work by combining Covered Software with other code not governed by"
+				+ "the terms of this License and distribute the Larger Work as a single product."
+				+ "We are therefore allowed to distribute CodeModel without Modification as"
+				+ "part of AndroidAnnotations.</p>";
+	}
+	
+	public static String getJsoupLicense() {
+		return "<p>The MIT License<br>" + 
+				"Copyright © 2009 - 2013 Jonathan Hedley (jonathan@hedley.net)</p>" + 
+				"<p>Permission is hereby granted, free of charge, to any person obtaining " +
+				"a copy of this software and associated documentation files (the \"Software\"), " +
+				"to deal in the Software without restriction, including without limitation " +
+				"the rights to use, copy, modify, merge, publish, distribute, sublicense, " +
+				"and/or sell copies of the Software, and to permit persons to whom the Software " +
+				"is furnished to do so, subject to the following conditions:</p>" + 
+				"<p>The above copyright notice and this permission notice shall be included in " +
+				"all copies or substantial portions of the Software.</p>" +
+				"<p>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, " +
+				"EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, " +
+				"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS " +
+				"OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER " +
+				"IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION " +
+				"WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>";
+	}
+	
+	public static String getCoordinateUtilsLicense() {
+		return "<p>Copyright 2012 Jouni Latvatalo</p>"
+				+ "<p>Licensed under the Apache License, Version 2.0 (the \"License\"); "
+				+ "you may not use this file except in compliance with the License. "
+				+ "You may obtain a copy of the License at</p>"
+				+ "<p>http://www.apache.org/licenses/LICENSE-2.0</p>"
+				+ "<p>Unless required by applicable law or agreed to in writing, "
+				+ "software distributed under the License is distributed on an \"AS IS\""
+				+ "BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. "
+				+ "See the License for the specific language governing permissions and limitations "
+				+ "under the License.</p>";
+	}
 }

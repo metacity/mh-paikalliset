@@ -16,18 +16,23 @@ import org.json.JSONObject;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.TextKeyListener;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -49,6 +54,7 @@ import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
 import com.googlecode.androidannotations.annotations.LongClick;
 import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
+import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.SeekBarProgressChange;
 import com.googlecode.androidannotations.annotations.SystemService;
 import com.googlecode.androidannotations.annotations.TextChange;
@@ -199,6 +205,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 			clearBtnToShowOrHide.setVisibility(View.VISIBLE);
 			searchAddresses(addressInput, text);		
 		} else {
+			((AutoCompleteTextView) addressInput).dismissDropDown();
 			clearBtnToShowOrHide.setVisibility(View.INVISIBLE);
 		}
 	}
@@ -436,6 +443,59 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	public void onNumberOfRoutesChanged(SeekBar seekBar, int progress) {
 		mNumberOfRoutes.setText(String.valueOf(progress + 1));
 	}
+	
+	@OptionsItem(R.id.about_settings)
+	public void showAboutDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		String versionName = "???";
+		try {
+			versionName = getPackageManager().getPackageInfo(getPackageName(), 0 ).versionName;
+		} catch (NameNotFoundException nnfex) {
+			// ignore
+		}
+		String message = "MH-Paikalliset\nv. " + versionName +"\n\n"
+				+ "Mikko Oksa \u00a9 " + Calendar.getInstance().get(Calendar.YEAR) + "\nmikkoks@cs.uef.fi\n\n"
+				+ "AndroidAnnotations\nhttp://androidannotations.org/\n\n"
+				+ "jsoup\nhttp://jsoup.org/\n\n"
+				+ "CoordinateUtils\nhttps://github.com/Sandmania/CoordinateUtils";
+		AlertDialog aboutDialog = builder.setMessage(message)
+				.setTitle(R.string.aboutTitle)
+				.setIcon(R.drawable.ic_launcher)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// Just close..
+					}
+				})	       
+				.create();
+		aboutDialog.show();
+
+		TextView messageView = (TextView) aboutDialog.findViewById(android.R.id.message);
+		messageView.setGravity(Gravity.CENTER);
+	}
+	
+	@OptionsItem(R.id.third_party_licenses)
+	public void showThirdPartyLicenses() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		String message = "<b>AndroidAnnotations</b><br>" + Utils.getAndroidAnnotationsLicense()
+				+ "<br><br><b>jsoup</b><br>" + Utils.getJsoupLicense()
+				+ "<br><br><b>CoordinateUtils</b><br>" + Utils.getCoordinateUtilsLicense();
+		AlertDialog aboutDialog = builder.setMessage(Html.fromHtml(message))
+				.setTitle(R.string.thirdPartyLicenses)
+				.setIcon(R.drawable.ic_launcher)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// Just close..
+					}
+				})	       
+				.create();
+		
+		aboutDialog.show();
+	}
+	
+	@OptionsItem(R.id.update_token)
+	public void updateToken() {
+		fetchToken();
+	}
 
 	@Background
 	public void searchAddresses(TextView addressInput, CharSequence text) {
@@ -477,22 +537,29 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				);
 		synchronized (tv) {
 			((AutoCompleteTextView) tv).setAdapter(locationsAdapter);
+			((AutoCompleteTextView) tv).showDropDown();
 		}
 		locationsAdapter.notifyDataSetChanged();
 	}
 
 	@Background
 	public void fetchToken() {
-		try {
-			String response = Utils.httpGet(mPreferences.baseUrl().get() + "fi/config.js.php");
-			JSONObject config = new JSONObject(response.split("=")[1].replace(";", ""));
-			String token = config.getString("token");
-			mGlobals.setToken(token);
-			showToast("Matkahuolto-token OK!", Toast.LENGTH_SHORT);
-		} catch (IOException ioex) {
-			//Toast.makeText(this, "HOLDER", Toast.LENGTH_LONG).show();
-		} catch (JSONException jsonex) {
-			//Toast.makeText(this, "ERROR IN JSON, contact developer!", Toast.LENGTH_LONG).show();
+		for (int i = 0; i < 2 && mGlobals.getToken().length() == 0; ++i) { // Attempt twice
+			try {
+				String response = Utils.httpGet(mPreferences.baseUrl().get() + "fi/config.js.php");
+				JSONObject config = new JSONObject(response.split("=")[1].replace(";", ""));
+				String token = config.getString("token");
+				mGlobals.setToken(token);
+				showToast("Matkahuolto-token OK!", Toast.LENGTH_SHORT);
+			} catch (IOException ioex) {
+				// Ignore
+			} catch (JSONException jsonex) {
+				// Ignore
+			}
+		}
+		
+		if (mGlobals.getToken().length() == 0) {
+			showToast(getString(R.string.gettingTokenFailedToast), Toast.LENGTH_LONG);
 		}
 	}
 

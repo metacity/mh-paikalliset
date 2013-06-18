@@ -64,5 +64,7 @@
     <string name="notSetProperly">ei asetettu oikein!</string>
     <string name="showAdvancedOptions">Näytä lisäasetukset</string>
     <string name="failedToObtainLocation">Paikannus epäonnistui</string>
+    <string name="thirdPartyLicenses">3. Osapuolen Lisenssit</string>
+    <string name="gettingTokenFailedToast">Tokenin lataus epäonnistui! Kokeile Menu -> Päivitä token&#8230;</string>
 
 </resources>

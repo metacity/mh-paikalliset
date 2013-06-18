@@ -101,7 +101,6 @@ public class RouteResultsFragment extends ListFragment {
 
 		ListView listView = getListView();
 		listView.addHeaderView(header);
-		//listView.setSelector(R.drawable.list_selector_orange);
 
 		if (mGlobals.getRoutes().isEmpty()) {
 			fetchRoutes();
