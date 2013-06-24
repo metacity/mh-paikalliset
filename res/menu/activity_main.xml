@@ -5,7 +5,16 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/about_settings"/>
-    <item android:id="@+id/third_party_licenses" android:showAsAction="never" android:title="@string/thirdPartyLicenses" android:orderInCategory="110"></item>
-    <item android:id="@+id/update_token" android:title="@string/updateToken" android:orderInCategory="120"></item>
+    <item
+        android:id="@+id/third_party_licenses"
+        android:orderInCategory="110"
+        android:showAsAction="never"
+        android:title="@string/thirdPartyLicenses">
+    </item>
+    <item
+        android:id="@+id/update_token"
+        android:orderInCategory="120"
+        android:title="@string/updateToken">
+    </item>
 
 </menu>
