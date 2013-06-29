@@ -17,7 +17,6 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:gravity="center_vertical|center_horizontal"
-        android:inputType="numberSigned"
         android:longClickable="false"
         android:minHeight="30dp"
         android:text="5" />

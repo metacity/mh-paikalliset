@@ -75,6 +75,9 @@ public class RouteResultsFragment extends ListFragment {
 	@FragmentArg(Constants.EXTRA_CHANGE_MARGIN)
 	String mChangeMargin;
 	
+	@FragmentArg(Constants.EXTRA_TIME_DIRECTION)
+	String mTimeDirection;
+	
 	@FragmentArg(Constants.EXTRA_ROUTE_INDEX)
 	int mInitialRouteIndex;
 	
@@ -161,7 +164,7 @@ public class RouteResultsFragment extends ListFragment {
 		String naviciRequest = 
 				"<navici_request>"
 						+ "<ajax_request_object object_id=\"1\" service=\"RouteRequests\">"
-						+ "<get_route id=\"1\" language=\"fi\" TimeDirection=\"forward\" Date=\"" + mDate 
+						+ "<get_route id=\"1\" language=\"fi\" TimeDirection=\"" + mTimeDirection + "\" Date=\"" + mDate 
 						+ "\" Time=\"" + mTime + "\" WalkSpeed=\"" + mWalkingSpeed + "\" MaxWalk=\"" 
 						+ mMaxWalkingDistance + "\" RoutingMethod=\"" + mRoutingType + "\" ChangeMargin=\"" 
 						+ mChangeMargin + "\" NumberRoutes=\"" + mNumerOfRoutes + "\" ExcludedLines=\"\" >"

@@ -52,7 +52,7 @@
             android:layout_above="@+id/pager"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/list_selector_orange"
+            android:background="@drawable/selector_orange"
             android:padding="8dp"
             android:src="@drawable/ic_menu_map"
             android:visibility="invisible" />

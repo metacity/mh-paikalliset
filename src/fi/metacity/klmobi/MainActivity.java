@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,15 +35,19 @@ import android.text.method.TextKeyListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -52,7 +57,6 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.LongClick;
 import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.SeekBarProgressChange;
@@ -99,7 +103,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	TextView mDateText;
 	
 	@ViewById(R.id.toggleAdvancedBtn)
-	ImageButton mToggleAdvancedOptionsButton;
+	Button mToggleAdvancedOptionsButton;
 	
 	@ViewById(R.id.advancedOptionsLayout)
 	RelativeLayout mAdvancedOptionsLayout;
@@ -121,6 +125,11 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	
 	@ViewById(R.id.changeMarginsSpinner)
 	Spinner mChangeMarginsSpinner;
+	
+	@ViewById(R.id.departureArrivalSwitch)
+	Switch mDepartureArrivalSwitch;
+	
+	private final AtomicInteger mAddressRequestId = new AtomicInteger();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -203,7 +212,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		ImageButton clearBtnToShowOrHide = (addressInput == mStartText) ? mStartClearButton : mEndClearButton;
 		if (text.toString().trim().length() != 0) {
 			clearBtnToShowOrHide.setVisibility(View.VISIBLE);
-			searchAddresses(addressInput, text);		
+			searchAddresses(addressInput, text, mAddressRequestId.incrementAndGet());		
 		} else {
 			((AutoCompleteTextView) addressInput).dismissDropDown();
 			clearBtnToShowOrHide.setVisibility(View.INVISIBLE);
@@ -221,9 +230,42 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		mEndText.setText("");
 		mGlobals.setEndAddress(null);
 	}
+	
+	@Click({R.id.startOverflowBtn, R.id.endOverflowBtn})
+	public void showAddressOverflowMenu(final View view) {
+		PopupMenu popup = new PopupMenu(this, view);
+		popup.inflate(R.menu.address_overflow);
+		popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				switch (item.getItemId()) {
+					
+					case R.id.overflow_favourites:
+						if (view.getId() == R.id.startOverflowBtn) {
+							showStartFavourites();
+						} else {
+							showEndFavourites();
+						}
+						return true;
+					
+					case R.id.overflow_locate:
+						if (view.getId() == R.id.startOverflowBtn) {
+							locateStart();
+						} else {
+							locateEnd();
+						}
+						return true;
+					
+					default:
+						return false;	
+				}
+			}
+		});
+		popup.show();
+	}
 
-	@Click(R.id.startFavouritesBtn)
-	public void showStartFavourites() {
+	private void showStartFavourites() {
 		showFavouriteDialog(new FavouritesDialog.OnFavouriteSelectedListener() {
 			@Override
 			public void onFavouriteSelected(Address selectedAddress) {
@@ -234,8 +276,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		}, "startFavourites", mGlobals.getStartAddress());
 	}
 
-	@Click(R.id.endFavouritesBtn)
-	public void showEndFavourites() {
+	private void showEndFavourites() {
 		showFavouriteDialog(new FavouritesDialog.OnFavouriteSelectedListener() {
 			@Override
 			public void onFavouriteSelected(Address selectedAddress) {
@@ -262,7 +303,6 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		dialog.show(transaction, tag);
 	}
 	
-	@Click(R.id.startLocateBtn)
 	public void locateStart() {
 		OnLocationFoundListener listener = new OnLocationFoundListener() {
 			@Override
@@ -278,7 +318,6 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		startLocating(listener);
 	}
 	
-	@Click(R.id.endLocateBtn)
 	public void locateEnd() {
 		OnLocationFoundListener listener = new OnLocationFoundListener() {
 			@Override
@@ -325,7 +364,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		}
 	}
 
-	@Click(R.id.swapBtn)
+	@OptionsItem(R.id.swap_menu_item)
 	public void swapAddresses() {
 		// Swap texts
 		CharSequence tmpText = mStartText.getText();
@@ -340,29 +379,19 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		mGlobals.setStartAddress(mGlobals.getEndAddress());
 		mGlobals.setEndAddress(tmpAddress);
 	}
-
-	@LongClick(R.id.swapBtn)
-	public void showSwapHint() {
-		Toast.makeText(this, getString(R.string.swapStartAndEnd), Toast.LENGTH_LONG).show();
-	}
 	
 	@Click(R.id.toggleAdvancedBtn)
 	public void toggleAdvancedOptions() {
 		if (mAdvancedOptionsLayout.getVisibility() == View.GONE) { // Show if hidden
 			mAdvancedOptionsLayout.setVisibility(View.VISIBLE);
-			mToggleAdvancedOptionsButton.setImageResource(R.drawable.ic_menu_earlier);
+			mToggleAdvancedOptionsButton.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_collapse, 0, 0);
 		} else {  // Hide if shown
 			mAdvancedOptionsLayout.setVisibility(View.GONE);
-			mToggleAdvancedOptionsButton.setImageResource(R.drawable.ic_menu_later);
+			mToggleAdvancedOptionsButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_expand);	
 		}
 	}
 
-	@LongClick(R.id.toggleAdvancedBtn)
-	public void toggleAdvancedOptionsHint() {
-		Toast.makeText(this, getString(R.string.showAdvancedOptions), Toast.LENGTH_LONG).show();
-	}
-
-	@Click(R.id.findRoutesBtn)
+	@OptionsItem(R.id.find_routes_menu_item)
 	public void findRoutes() {
 		if (mGlobals.getStartAddress() == null) {
 			Toast.makeText(this, "\"" + getString(R.string.from) + "\" " + getString(R.string.notSetProperly), 
@@ -386,6 +415,9 @@ public class MainActivity extends Activity implements OnNavigationListener,
 					((String)(mMaxWalkingSpeedSpinner.getSelectedItem())).split(" ")[0]);
 			intent.putExtra(Constants.EXTRA_CHANGE_MARGIN, 
 					((String)(mChangeMarginsSpinner.getSelectedItem())).split(" ")[0]);
+			intent.putExtra(Constants.EXTRA_TIME_DIRECTION, 
+					mDepartureArrivalSwitch.isChecked() ? "backward" : "forward");
+			
 			startActivity(intent);
 		}
 	}
@@ -444,7 +476,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		mNumberOfRoutes.setText(String.valueOf(progress + 1));
 	}
 	
-	@OptionsItem(R.id.about_settings)
+	@OptionsItem(R.id.about_menu_item)
 	public void showAboutDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		String versionName = "???";
@@ -457,7 +489,8 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				+ "Mikko Oksa \u00a9 " + Calendar.getInstance().get(Calendar.YEAR) + "\nmikkoks@cs.uef.fi\n\n"
 				+ "AndroidAnnotations\nhttp://androidannotations.org/\n\n"
 				+ "jsoup\nhttp://jsoup.org/\n\n"
-				+ "CoordinateUtils\nhttps://github.com/Sandmania/CoordinateUtils";
+				+ "CoordinateUtils\nhttps://github.com/Sandmania/CoordinateUtils"
+				+ "UrlImageViewHelper\nhttps://github.com/koush/UrlImageViewHelper";
 		AlertDialog aboutDialog = builder.setMessage(message)
 				.setTitle(R.string.aboutTitle)
 				.setIcon(R.drawable.ic_launcher)
@@ -473,32 +506,29 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		messageView.setGravity(Gravity.CENTER);
 	}
 	
-	@OptionsItem(R.id.third_party_licenses)
+	@OptionsItem(R.id.third_party_licenses_menu_item)
 	public void showThirdPartyLicenses() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		String message = "<b>AndroidAnnotations</b><br>" + Utils.getAndroidAnnotationsLicense()
 				+ "<br><br><b>jsoup</b><br>" + Utils.getJsoupLicense()
-				+ "<br><br><b>CoordinateUtils</b><br>" + Utils.getCoordinateUtilsLicense();
+				+ "<br><br><b>CoordinateUtils</b><br>" + Utils.getCoordinateUtilsLicense()
+				+ "<br><br><b>UrlImageViewHelper</b><br>" + Utils.getUrlImageViewHelperLicense();
 		AlertDialog aboutDialog = builder.setMessage(Html.fromHtml(message))
 				.setTitle(R.string.thirdPartyLicenses)
 				.setIcon(R.drawable.ic_launcher)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// Just close..
-					}
-				})	       
+				.setPositiveButton("OK", null)	       
 				.create();
 		
 		aboutDialog.show();
 	}
 	
-	@OptionsItem(R.id.update_token)
+	@OptionsItem(R.id.update_token_menu_item)
 	public void updateToken() {
 		fetchToken();
 	}
 
 	@Background
-	public void searchAddresses(TextView addressInput, CharSequence text) {
+	public void searchAddresses(TextView addressInput, CharSequence text, int requestId) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("language", "fi");
 		params.put("maxresults", "30");
@@ -515,7 +545,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				for (int i = 0, len = locationsJson.length(); i < len; ++i) {
 					locations.add(new Address(locationsJson.getJSONObject(i)));
 				}
-				setAddressAdapter(addressInput, locations);
+				setAddressAdapter(addressInput, locations, requestId);
 			} else {
 				((AutoCompleteTextView) addressInput).dismissDropDown();
 			}
@@ -528,18 +558,19 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	}
 
 	@UiThread
-	public void setAddressAdapter(TextView tv, List<Address> locations) {
+	public void setAddressAdapter(TextView tv, List<Address> locations, int requestId) {
 		// Always make new ArrayAdapter object, won't update suggestions correctly otherwise!
-		ArrayAdapter<Address> locationsAdapter = new ArrayAdapter<Address>(
-				this, 
-				android.R.layout.simple_spinner_dropdown_item, 
-				locations
-				);
-		synchronized (tv) {
-			((AutoCompleteTextView) tv).setAdapter(locationsAdapter);
-			((AutoCompleteTextView) tv).showDropDown();
+		if (mAddressRequestId.get() == requestId) {
+			ArrayAdapter<Address> locationsAdapter = new ArrayAdapter<Address>(
+					this, 
+					android.R.layout.simple_spinner_dropdown_item, 
+					locations
+					);
+			synchronized (tv) {
+				((AutoCompleteTextView) tv).setAdapter(locationsAdapter);
+			}
+			locationsAdapter.notifyDataSetChanged();
 		}
-		locationsAdapter.notifyDataSetChanged();
 	}
 
 	@Background

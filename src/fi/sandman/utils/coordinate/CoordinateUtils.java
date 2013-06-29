@@ -18,6 +18,8 @@ package fi.sandman.utils.coordinate;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.util.SparseArray;
+
 /**
  * <p>
  * A coordinate utility to convert between different coordinate systems.
@@ -225,7 +227,7 @@ public class CoordinateUtils {
 		return pointKKJLaLo;
 	}
 
-	private static final Map<Integer, double[]> KKJ_ZONE_INFO = new HashMap<Integer, double[]>() {
+	private static final SparseArray<double[]> KKJ_ZONE_INFO = new SparseArray<double[]>() {
 		private static final long serialVersionUID = 1L;
 		{
 			put(0, new double[] { 18.0, 500000.0 });

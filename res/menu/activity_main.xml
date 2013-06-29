@@ -1,20 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/about_settings"
+        android:id="@+id/about_menu_item"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/about_settings"/>
     <item
-        android:id="@+id/third_party_licenses"
+        android:id="@+id/third_party_licenses_menu_item"
         android:orderInCategory="110"
         android:showAsAction="never"
         android:title="@string/thirdPartyLicenses">
     </item>
     <item
-        android:id="@+id/update_token"
+        android:id="@+id/update_token_menu_item"
         android:orderInCategory="120"
         android:title="@string/updateToken">
     </item>
+    <item android:id="@+id/swap_menu_item" android:title="@string/swapStartAndEnd" android:showAsAction="ifRoom" android:orderInCategory="90" android:icon="@drawable/ic_menu_swap"></item>
+    <item android:id="@+id/find_routes_menu_item" android:orderInCategory="95" android:title="@string/findRoutes" android:showAsAction="always|withText"></item>
 
 </menu>

@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    
+    <item
+        android:id="@+id/overflow_favourites"
+        android:orderInCategory="100"
+        android:title="@string/favourites">
+    </item>
+    
+    <item
+        android:id="@+id/overflow_locate"
+        android:orderInCategory="110"
+        android:title="@string/locate">
+    </item>
+
+
+</menu>

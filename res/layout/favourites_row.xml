@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:background="@drawable/list_selector_orange" >
+    android:background="@drawable/selector_orange" >
 
     <TextView
         android:id="@+id/favouritesSeparator"
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/list_selector_orange"
+        android:background="@drawable/selector_orange"
         android:padding="10dp"
         android:src="@drawable/ic_remove" />
 

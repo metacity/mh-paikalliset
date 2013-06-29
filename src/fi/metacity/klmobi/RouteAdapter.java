@@ -106,7 +106,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 		
 		holder.walkingDistView.setText(Double.toString(Math.round(walkingDistance/100) / 10.0) + " km");
 		
-		v.setBackgroundResource(route.isSelected ? R.color.lightOrange : R.drawable.list_selector_orange);
+		v.setBackgroundResource(route.isSelected ? R.color.lightOrange : R.drawable.selector_orange);
 
 		return v;
 	}

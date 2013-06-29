@@ -8,6 +8,7 @@ public final class Constants {
 	public static final String EXTRA_WALKING_SPEED = "fi.metacity.klmobi.extra.WALKING_SPEED";
 	public static final String EXTRA_MAX_WALKING_DISTANCE = "fi.metacity.klmobi.extra.MAX_WALKING_DISTANCE";
 	public static final String EXTRA_CHANGE_MARGIN = "fi.metacity.klmobi.extra.CHANGE_MARGIN";
+	public static final String EXTRA_TIME_DIRECTION = "fi.metacity.klmobi.extra.TIME_DIRECTION";
 	
 	public static final String EXTRA_ROUTE_INDEX = "fi.metacity.klmobi.extra.ROUTE_INDEX";
 	

@@ -45,7 +45,6 @@ public class FavouritesDialog extends DialogFragment {
 	private ArrayAdapter<Address> mAdapter;
 	private OnFavouriteSelectedListener mSelectedListener;
 
-
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		Dialog dialog = super.onCreateDialog(savedInstanceState);
@@ -77,7 +76,7 @@ public class FavouritesDialog extends DialogFragment {
 		}
 		mAdapter = new FavouriteAdapter(favourites);
 		mFavouritesList.setAdapter(mAdapter);
-		mFavouritesList.setSelector(R.drawable.list_selector_orange);
+		mFavouritesList.setSelector(R.drawable.selector_orange);
 
 		// Set the savable favourites
 		if (favourites.size() == 0 && mSaveableFavourite.length() == 0) {
