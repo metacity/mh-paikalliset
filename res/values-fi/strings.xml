@@ -5,11 +5,10 @@
     <string name="to">Mihin</string>
     <string name="inputHint">Osoite tai pysäkki</string>
     <string name="when">Milloin</string>
+    <string name="loadingText">Ladataan&#8230;</string>
     <string name="numberOfRoutes">Reittien määrä</string>
-    <string name="addressNotFound">Osoitetta tai pysäkkiä ei löytynyt!</string>
     <string name="tokenOk">Matkahuolto-token OK!</string>
     <string name="locate">Paikanna</string>
-    <string name="reverseDirection">Käänteinen reitti</string>
     <string name="extraOptions">LISÄASETUKSET</string>
     <string name="title_activity_route_results">Reitit</string>
     <string name="departure">Lähtö</string>
@@ -54,6 +53,7 @@
     <string name="showInMap">Näytä kartalla</string>
     <string name="title_activity_route_gmap">Reittikartta</string>
     <string name="playServicesLicense">Play Services -lisenssi</string>
+    <string name="timeType">Aikatyyppi</string>
     <string name="routeType">Reittityyppi</string>
     <string name="walkingSpeed">Kävelynopeus</string>
     <string name="maxWalkingLength">Kävelymatka enintään</string>
@@ -62,9 +62,10 @@
     <string name="laterLines">Myöhemmät</string>
     <string name="earlierLines">Aikaisemmat</string>
     <string name="notSetProperly">ei asetettu oikein!</string>
-    <string name="showAdvancedOptions">Näytä lisäasetukset</string>
+    <string name="swapStartAndEnd">Vaihda alku ja loppu</string>
     <string name="failedToObtainLocation">Paikannus epäonnistui</string>
     <string name="thirdPartyLicenses">3. osapuolen lisenssit</string>
     <string name="gettingTokenFailedToast">Tokenin lataus epäonnistui! Kokeile Menu -> Päivitä token&#8230;</string>
+    <string name="updatingToken">Päivitetään Matkahuolto-tokenia&#8230;</string>
 
 </resources>

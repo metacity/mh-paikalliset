@@ -7,18 +7,42 @@
     <color name="lightOrange">#DDff9d29</color>
     <color name="orange">#d27000</color>
     <color name="darkerBlue">#115574</color>
-    <color name="lighterBlue">#1a83b2</color>
+    <color name="lighterBlue">#13648a</color>
+    
+    <string-array name="matkahuoltoCities">
+        <item>Hämeenlinna</item>
+        <item>Imatra / Lappeenranta</item>
+        <item>Iisalmi</item>
+        <item>Jyväskylä</item>
+        <item>Kajaani</item>
+        <item>Kotka</item>
+        <item>Kouvola</item>
+        <item>Kuopio</item>
+        <item>Lahti</item>
+        <item>Mikkeli</item>
+        <item>Pori</item>
+        <item>Porvoo</item>
+        <item>Raahe</item>
+        <item>Rauma</item>
+        <item>Riihimäki</item>
+        <item>Rovaniemi</item>
+        <item>Salo</item>
+        <item>Savonlinna</item>
+        <item>Seinäjoki</item>
+        <item>Tampere</item>
+        <item>Uusimaa</item>
+        <item>Varkaus</item>
+    </string-array>
     
     <string name="app_name">MH-Paikalliset</string>
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="inputHint">Address or stop</string>
     <string name="when">When</string>
+    <string name="loadingText">Loading&#8230;</string>
     <string name="numberOfRoutes">Number of routes</string>
-    <string name="addressNotFound">Address or stop not found!</string>
     <string name="tokenOk">Matkahuolto-token OK!</string>
     <string name="locate">Locate</string>
-    <string name="reverseDirection">Reverse direction</string>
     <string name="extraOptions">ADVANCED</string>
     <string name="title_activity_route_results">Routes</string>
     <string name="departure">Departure</string>
@@ -92,46 +116,21 @@
     <string name="showInMap">Show on map</string>
     <string name="title_activity_route_gmap">Route Map</string>
     <string name="playServicesLicense">Play Services license</string>
+    <string name="timeType">Time type</string>
     <string name="routeType">Route type</string>
     <string name="walkingSpeed">Walking speed</string>
     <string name="maxWalkingLength">Max. walking length</string>
     <string name="transferSafetyMargin">Transfer safety margin</string>
     <string name="noFavourites">No favourites</string>
 
-    <string-array name="matkahuoltoCities">
-        <item>Hämeenlinna</item>
-        <item>Imatra / Lappeenranta</item>
-        <item>Iisalmi</item>
-        <item>Jyväskylä</item>
-        <item>Kajaani</item>
-        <item>Kotka</item>
-        <item>Kouvola</item>
-        <item>Kuopio</item>
-        <item>Lahti</item>
-        <item>Mikkeli</item>
-        <item>Pori</item>
-        <item>Porvoo</item>
-        <item>Raahe</item>
-        <item>Rauma</item>
-        <item>Riihimäki</item>
-        <item>Rovaniemi</item>
-        <item>Salo</item>
-        <item>Savonlinna</item>
-        <item>Seinäjoki</item>
-        <item>Tampere</item>
-        <item>Uusimaa</item>
-        <item>Varkaus</item>
-    </string-array>
-
     <string name="laterLines">Later</string>
     <string name="earlierLines">Earlier</string>
     <string name="notSetProperly">not set properly!</string>
     <string name="favourites">Favourites</string>
     <string name="swapStartAndEnd">Swap start and end points</string>
-    <string name="showAdvancedOptions">Show advanced options</string>
-    <string name="hello_world">Hello world!</string>
     <string name="failedToObtainLocation">Failed to obtain location</string>
     <string name="thirdPartyLicenses">3rd party licenses</string>
     <string name="gettingTokenFailedToast">Failed to retrieve token! Try Menu -> Update token&#8230;</string>
+    <string name="updatingToken">Updating Matkahuolto token&#8230;</string>
 
 </resources>

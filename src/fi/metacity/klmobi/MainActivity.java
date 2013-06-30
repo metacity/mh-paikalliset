@@ -22,6 +22,7 @@ import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
 import android.content.DialogInterface;
@@ -30,6 +31,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
 import android.text.method.TextKeyListener;
 import android.util.Log;
@@ -52,6 +54,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.googlecode.androidannotations.annotations.AfterTextChange;
 import com.googlecode.androidannotations.annotations.AfterViews;
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
@@ -61,7 +64,6 @@ import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.SeekBarProgressChange;
 import com.googlecode.androidannotations.annotations.SystemService;
-import com.googlecode.androidannotations.annotations.TextChange;
 import com.googlecode.androidannotations.annotations.UiThread;
 import com.googlecode.androidannotations.annotations.ViewById;
 import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
@@ -129,15 +131,13 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	@ViewById(R.id.departureArrivalSwitch)
 	Switch mDepartureArrivalSwitch;
 	
+	private final List<Address> mAddressResults = new ArrayList<Address>();
 	private final AtomicInteger mAddressRequestId = new AtomicInteger();
+	private ProgressDialog mTokenDownloadingDialog; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (mGlobals.getToken().length() == 0) {
-			fetchToken();
-		}
 		
 		// Set up the action bar to show a dropdown list.
 		final ActionBar actionBar = getActionBar();
@@ -150,6 +150,12 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				android.R.layout.simple_spinner_dropdown_item
 				);
 		actionBar.setListNavigationCallbacks(citiesAdapter, this);
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+		fetchTokenIfNeeded(false);
 	}
 
 	@Override
@@ -179,7 +185,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		mStartText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Address address = (Address) mStartText.getAdapter().getItem(position);
+				Address address = mAddressResults.get(position);
 				mGlobals.setStartAddress(address);
 				mStartText.dismissDropDown();
 			}
@@ -187,7 +193,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		mEndText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Address address = (Address) mEndText.getAdapter().getItem(position);
+				Address address = mAddressResults.get(position);
 				mGlobals.setEndAddress(address);
 				mEndText.dismissDropDown();
 			}
@@ -207,11 +213,17 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		mStartText.requestFocus();
 	}
 
-	@TextChange({R.id.startText, R.id.endText})
-	public void onTextChangesOnSomeTextViews(TextView addressInput, CharSequence text) {
+	@AfterTextChange({R.id.startText, R.id.endText})
+	public void onAddressSearchStringChanged(TextView addressInput, Editable text) {
 		ImageButton clearBtnToShowOrHide = (addressInput == mStartText) ? mStartClearButton : mEndClearButton;
 		if (text.toString().trim().length() != 0) {
 			clearBtnToShowOrHide.setVisibility(View.VISIBLE);
+			ArrayAdapter<String> loadingTextAdapter = new ArrayAdapter<String>(
+					this, 
+					android.R.layout.simple_list_item_1, 
+					new String[] { getString(R.string.loadingText) }
+					);
+			((AutoCompleteTextView) addressInput).setAdapter(loadingTextAdapter);					
 			searchAddresses(addressInput, text, mAddressRequestId.incrementAndGet());		
 		} else {
 			((AutoCompleteTextView) addressInput).dismissDropDown();
@@ -489,16 +501,13 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				+ "Mikko Oksa \u00a9 " + Calendar.getInstance().get(Calendar.YEAR) + "\nmikkoks@cs.uef.fi\n\n"
 				+ "AndroidAnnotations\nhttp://androidannotations.org/\n\n"
 				+ "jsoup\nhttp://jsoup.org/\n\n"
-				+ "CoordinateUtils\nhttps://github.com/Sandmania/CoordinateUtils"
+				+ "CoordinateUtils\nhttps://github.com/Sandmania/CoordinateUtils\n\n"
+				+ "Pager Sliding TabStrip\nhttps://github.com/astuetz/PagerSlidingTabStrip\n\n"
 				+ "UrlImageViewHelper\nhttps://github.com/koush/UrlImageViewHelper";
 		AlertDialog aboutDialog = builder.setMessage(message)
 				.setTitle(R.string.aboutTitle)
 				.setIcon(R.drawable.ic_launcher)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						// Just close..
-					}
-				})	       
+				.setPositiveButton("OK", null)	       
 				.create();
 		aboutDialog.show();
 
@@ -512,6 +521,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		String message = "<b>AndroidAnnotations</b><br>" + Utils.getAndroidAnnotationsLicense()
 				+ "<br><br><b>jsoup</b><br>" + Utils.getJsoupLicense()
 				+ "<br><br><b>CoordinateUtils</b><br>" + Utils.getCoordinateUtilsLicense()
+				+ "<br><br><b>Pager Sliding TabStrip</b><br>" + Utils.getPagerSlidingTabStripLicense()
 				+ "<br><br><b>UrlImageViewHelper</b><br>" + Utils.getUrlImageViewHelperLicense();
 		AlertDialog aboutDialog = builder.setMessage(Html.fromHtml(message))
 				.setTitle(R.string.thirdPartyLicenses)
@@ -524,7 +534,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	
 	@OptionsItem(R.id.update_token_menu_item)
 	public void updateToken() {
-		fetchToken();
+		fetchTokenIfNeeded(true);
 	}
 
 	@Background
@@ -532,68 +542,88 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("language", "fi");
 		params.put("maxresults", "30");
-		params.put("token", mGlobals.getToken());
+		params.put("token", mPreferences.token().get());
 		params.put("key", text.toString());
 
 		try {
 			String response = Utils.httpPost(mPreferences.baseUrl().get() + "geocode.php", params);
-			JSONObject json = new JSONObject(response);
-			if (json.getInt("status") == 0) {
-				List<Address> locations = new ArrayList<Address>();
-
-				JSONArray locationsJson = json.getJSONObject("data").getJSONArray("locations");
-				for (int i = 0, len = locationsJson.length(); i < len; ++i) {
-					locations.add(new Address(locationsJson.getJSONObject(i)));
-				}
-				setAddressAdapter(addressInput, locations, requestId);
-			} else {
-				((AutoCompleteTextView) addressInput).dismissDropDown();
-			}
+			setAddressAdapter(addressInput, response, requestId);
 		} catch (IOException ioex) {
 			Log.d("searchAddresses", ioex.toString());
 			ioex.printStackTrace();
-		} catch (JSONException jsonex) {
-			Log.d("searchAddresses", jsonex.toString());
 		}
 	}
 
 	@UiThread
-	public void setAddressAdapter(TextView tv, List<Address> locations, int requestId) {
-		// Always make new ArrayAdapter object, won't update suggestions correctly otherwise!
+	public void setAddressAdapter(TextView tv, String jsonResponse, int requestId) {
 		if (mAddressRequestId.get() == requestId) {
-			ArrayAdapter<Address> locationsAdapter = new ArrayAdapter<Address>(
-					this, 
-					android.R.layout.simple_spinner_dropdown_item, 
-					locations
-					);
-			synchronized (tv) {
-				((AutoCompleteTextView) tv).setAdapter(locationsAdapter);
+			try {
+				JSONObject json = new JSONObject(jsonResponse);
+				if (json.getInt("status") == 0) {
+					mAddressResults.clear();
+					JSONArray locationsJson = json.getJSONObject("data").getJSONArray("locations");
+					for (int i = 0, len = locationsJson.length(); i < len; ++i) {
+						mAddressResults.add(new Address(locationsJson.getJSONObject(i)));
+					}
+					// Always make new ArrayAdapter object, won't update suggestions correctly otherwise!
+					ArrayAdapter<Address> locationsAdapter = new ArrayAdapter<Address>(
+							this, 
+							android.R.layout.simple_list_item_1, 
+							mAddressResults
+							);
+					((AutoCompleteTextView) tv).setAdapter(locationsAdapter);
+					locationsAdapter.notifyDataSetChanged();
+				} else {
+					((AutoCompleteTextView) tv).dismissDropDown();
+				}
+			} catch (JSONException jsonex) {
+				Log.d("searchAddresses", jsonex.toString());
 			}
-			locationsAdapter.notifyDataSetChanged();
 		}
 	}
 
 	@Background
-	public void fetchToken() {
-		for (int i = 0; i < 2 && mGlobals.getToken().length() == 0; ++i) { // Attempt twice
+	public void fetchTokenIfNeeded(boolean force) {
+		Calendar now = Calendar.getInstance();
+		Calendar tokenLastSyncTime = Calendar.getInstance();
+		tokenLastSyncTime.setTimeInMillis(mPreferences.tokenLastSyncTime().get());
+		if (now.get(Calendar.YEAR) > tokenLastSyncTime.get(Calendar.YEAR)
+		 || now.get(Calendar.DAY_OF_YEAR) > tokenLastSyncTime.get(Calendar.DAY_OF_YEAR)
+		 || force) {
+			showTokenDownloadDialog();
 			try {
 				String response = Utils.httpGet(mPreferences.baseUrl().get() + "fi/config.js.php");
 				JSONObject config = new JSONObject(response.split("=")[1].replace(";", ""));
 				String token = config.getString("token");
-				mGlobals.setToken(token);
-				showToast("Matkahuolto-token OK!", Toast.LENGTH_SHORT);
-			} catch (IOException ioex) {
-				// Ignore
-			} catch (JSONException jsonex) {
-				// Ignore
+				mPreferences.token().put(token);
+				mPreferences.tokenLastSyncTime().put(System.currentTimeMillis());
+				showToast(getString(R.string.tokenOk), Toast.LENGTH_SHORT);
+			} catch (Exception ex) {
+				showToast(getString(R.string.gettingTokenFailedToast), Toast.LENGTH_LONG);
+			} finally {
+				dismissTokenDownloadDialog();
 			}
-		}
-		
-		if (mGlobals.getToken().length() == 0) {
-			showToast(getString(R.string.gettingTokenFailedToast), Toast.LENGTH_LONG);
 		}
 	}
 
+	@UiThread
+	public void showTokenDownloadDialog() {
+		mTokenDownloadingDialog = ProgressDialog.show(
+				this, 
+				getString(R.string.progressDialogTitle), 
+				getString(R.string.updatingToken), 
+				true, 
+				false
+				);
+	}
+	
+	@UiThread
+	public void dismissTokenDownloadDialog() {
+		if (mTokenDownloadingDialog != null) {
+			mTokenDownloadingDialog.dismiss();
+		}
+	}
+	
 	@UiThread
 	public void showToast(String text, int duration) {
 		Toast.makeText(this, text, duration).show();

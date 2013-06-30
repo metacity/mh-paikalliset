@@ -50,12 +50,6 @@ public class RouteMapDetailsFragment extends ListFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-	}
-
-	@Override
-	public void onStart() {
-		super.onStart();
 		setListShown(false);
 		fetchMapImages();
 	}

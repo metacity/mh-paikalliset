@@ -131,7 +131,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:fontFamily="sans-serif-condensed"
-        android:text="Time for "
+        android:text="@string/timeType"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textOff="@string/departure"
         android:textOn="@string/arrival"

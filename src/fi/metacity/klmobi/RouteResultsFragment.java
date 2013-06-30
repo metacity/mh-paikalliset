@@ -120,7 +120,7 @@ public class RouteResultsFragment extends ListFragment {
 		params.put("requestXml", naviciRequest);
 		try {
 			String naviciResponse = Utils.httpPost(mPreferences.baseUrl().get() + "ajaxRequest.php?token=" 
-					+ mGlobals.getToken(), params);
+					+ mPreferences.token().get(), params);
 			List<Route> routes = buildRouteList(naviciResponse);
 			setRoutesAdapter(routes);
 		} catch (IOException ioex) {

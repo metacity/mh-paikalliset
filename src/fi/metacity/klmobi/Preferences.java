@@ -14,4 +14,9 @@ public interface Preferences {
 	
 	@DefaultString("[]")
 	String savedFavourites();
+	
+	@DefaultString("")
+	String token();
+	
+	long tokenLastSyncTime();
 }

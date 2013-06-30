@@ -12,30 +12,16 @@ public class MHApp extends Application {
 	
 	private final Object mLock = new Object();
 	
-	private String mToken = "";
 	private Address mStartAddress;
 	private Address mEndAddress;
 	
 	private List<Route> mRoutes = new ArrayList<Route>();
 	private String mDetailsXmlRequest = "";
 	
-	public String getToken() {
-		synchronized (mLock) {
-			return mToken;
-		}
-	}
-	
-	public void setToken(String token) {
-		synchronized (mLock) {
-			mToken = token;
-		}
-	}
-	
 	public Address getStartAddress() {
 		synchronized (mLock) {
 			return mStartAddress;
 		}
-		
 	}
 	
 	public void setStartAddress(Address address) {
