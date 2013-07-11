@@ -124,19 +124,7 @@ public class FavouritesDialog extends DialogFragment {
 			Log.e("FAVS", jsonex.toString());
 		}
 	}
-
-//	@Override
-//	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//		mSelectedListener.onFavouriteSelected(mAdapter.getItem(position));
-//		Log.i("click", "listened called..");
-//		dismiss();
-//	}
-
-	//	@ItemClick(R.id.favouritesList)
-	//	public void onFavouriteSelected(int position) {
-	//		
-	//	}
-
+	
 
 	private class FavouriteAdapter extends ArrayAdapter<Address> {
 		private final List<Address> mFavourites;
