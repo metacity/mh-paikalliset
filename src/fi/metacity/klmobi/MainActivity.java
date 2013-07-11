@@ -13,6 +13,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
@@ -25,7 +27,6 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
@@ -592,7 +593,11 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		 || force) {
 			showTokenDownloadDialog();
 			try {
-				String response = Utils.httpGet(mPreferences.baseUrl().get() + "fi/config.js.php");
+				String mainpage = Utils.httpGet(mPreferences.baseUrl().get());
+				Document doc = Jsoup.parse(mainpage);
+				String hash = doc.select("link[href^=/css]").first().attr("href").split("_")[1].split("\\.")[0];
+				
+				String response = Utils.httpGet(mPreferences.baseUrl().get() + "fi/config_" + hash + ".js.php");
 				JSONObject config = new JSONObject(response.split("=")[1].replace(";", ""));
 				String token = config.getString("token");
 				mPreferences.token().put(token);
