@@ -7,4 +7,4 @@
     class="com.google.android.gms.maps.SupportMapFragment"
     map:cameraTargetLat="62.278146"
     map:cameraTargetLng="25.708008"
-    map:cameraZoom="13" />
+    map:cameraZoom="14" />
