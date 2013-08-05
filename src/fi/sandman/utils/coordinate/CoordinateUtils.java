@@ -15,9 +15,6 @@
  */
 package fi.sandman.utils.coordinate;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import android.util.SparseArray;
 
 /**
@@ -228,7 +225,6 @@ public class CoordinateUtils {
 	}
 
 	private static final SparseArray<double[]> KKJ_ZONE_INFO = new SparseArray<double[]>() {
-		private static final long serialVersionUID = 1L;
 		{
 			put(0, new double[] { 18.0, 500000.0 });
 			put(1, new double[] { 21.0, 1500000.0 });
