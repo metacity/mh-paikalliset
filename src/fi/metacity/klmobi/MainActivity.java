@@ -167,7 +167,12 @@ public class MainActivity extends Activity implements OnNavigationListener,
 
 	@Override
 	public boolean onNavigationItemSelected(int position, long id) {
-		String newBaseUrl = "http://" + Constants.CITY_SUBDOMAINS[position] + ".matkahuolto.info/";
+		String newBaseUrl = "";
+		if (position == 20) { // TURKU
+			newBaseUrl = Constants.TURKU_BASE_URL;
+		} else {
+			newBaseUrl = "http://" + Constants.CITY_SUBDOMAINS[position] + ".matkahuolto.info/";
+		}
 		mPreferences.baseUrl().put(newBaseUrl);
 
 		mPreferences.selectedCityIndex().put(position);
@@ -597,7 +602,13 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				Document doc = Jsoup.parse(mainpage);
 				String hash = doc.select("link[href^=/css]").first().attr("href").split("_")[1].split("\\.")[0];
 				
-				String response = Utils.httpGet(mPreferences.baseUrl().get() + "fi/config_" + hash + ".js.php");
+				String url = "";
+				if (mPreferences.selectedCityIndex().get() == 20) { // If TURKU
+					url = mPreferences.baseUrl().get() + "fi/config.js_" + hash + ".php";
+				} else {
+					url = mPreferences.baseUrl().get() + "fi/config_" + hash + ".js.php";
+				}
+				String response = Utils.httpGet(url);
 				JSONObject config = new JSONObject(response.split("=")[1].replace(";", ""));
 				String token = config.getString("token");
 				mPreferences.token().put(token);

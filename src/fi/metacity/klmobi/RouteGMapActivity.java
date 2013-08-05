@@ -100,6 +100,8 @@ public class RouteGMapActivity extends FragmentActivity {
 	
 	private void addRouteLines() {
 		BitmapDescriptor busStopMarker = BitmapDescriptorFactory.fromResource(R.drawable.bus_stop_marker);
+		BitmapDescriptor busStopMarkerStart = BitmapDescriptorFactory.fromResource(R.drawable.bus_stop_marker_start);
+		BitmapDescriptor busStopMarkerEnd = BitmapDescriptorFactory.fromResource(R.drawable.bus_stop_marker_end);
 
 		List<MarkerOptions> markers = new ArrayList<MarkerOptions>();
 		List<PolylineOptions> walkingPolylines = new ArrayList<PolylineOptions>();
@@ -129,12 +131,19 @@ public class RouteGMapActivity extends FragmentActivity {
 				}
 
 				if (!"W".equals(component.code)) {
-					markers.add(new MarkerOptions()
+					MarkerOptions markerOptions = new MarkerOptions()
 					.position(wayPointLatLng)
 					.title(kkjWayPoint.name)
-					.icon(busStopMarker)
 					.draggable(false)
-					.snippet(kkjWayPoint.time.substring(0, 2) + ":" + kkjWayPoint.time.substring(2, 4)));
+					.snippet(kkjWayPoint.time.substring(0, 2) + ":" + kkjWayPoint.time.substring(2, 4));
+					if (j == 0) {
+						markerOptions.icon(busStopMarkerStart);
+					} else if (j == len_j - 1) {
+						markerOptions.icon(busStopMarkerEnd);
+					} else {
+						markerOptions.icon(busStopMarker);
+					}
+					markers.add(markerOptions);
 				}
 			}
 
@@ -156,7 +165,7 @@ public class RouteGMapActivity extends FragmentActivity {
 		}
 
 		if (firstLatLng != null) {
-			mGmap.animateCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 14));
+			mGmap.animateCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 15));
 		}
 	}
 

@@ -16,7 +16,9 @@ public class MHApp extends Application {
 	private Address mEndAddress;
 	
 	private List<Route> mRoutes = new ArrayList<Route>();
+	
 	private String mDetailsXmlRequest = "";
+	private String mTurkuMapQueryString = "";
 	
 	public Address getStartAddress() {
 		synchronized (mLock) {
@@ -63,6 +65,18 @@ public class MHApp extends Application {
 	public void setDetailsXmlString(String xmlRequest) {
 		synchronized (mLock) {
 			mDetailsXmlRequest = xmlRequest;
+		}
+	}
+	
+	public void setTurkuMapQueryString(String queryString) {
+		synchronized (mLock) {
+			mTurkuMapQueryString = queryString;
+		}
+	}
+	
+	public String getTurkuMapQueryString() {
+		synchronized (mLock) {
+			return mTurkuMapQueryString;
 		}
 	}
 }

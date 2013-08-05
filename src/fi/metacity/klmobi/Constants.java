@@ -35,9 +35,12 @@ public final class Constants {
 		"savonlinna",
 		"seinajoki",
 		"tampere",
+		"TURKU_DUMMY_DOMAIN",
 		"uusimaa",
 		"varkaus"
 	};
+	
+	public static final String TURKU_BASE_URL = "http://reittiopas.turku.fi/";
 	
 	public static final String[] ROUTING_TYPES = {
 		"default",

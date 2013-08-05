@@ -57,23 +57,32 @@ public class RouteMapDetailsFragment extends ListFragment {
 	@Background
 	public void fetchMapImages() {
 		String lang = "fi".equals(Locale.getDefault().getLanguage()) ? "fi" : "en";
-		String detailsXmlRequest = mGlobals.getDetailsXmlRequest();
-
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("routeResponse", detailsXmlRequest);
-		params.put("startLocation", mGlobals.getStartAddress().streetOnly());
-		params.put("endLocation", mGlobals.getEndAddress().streetOnly());
-		params.put("routeNumber", String.valueOf(mRouteIndex));
-		params.put("language", lang);
-
+		String url = mPreferences.baseUrl().get() + lang + "/print/";
+		String responseHtml = "";
+		
 		try {
-			String responseHtml = Utils.httpPost(mPreferences.baseUrl().get() + lang + "/print/", params);
-			List<MapComponent> mapComponents = buildMapList(responseHtml);
-			setMapAdapter(mapComponents);
+			if (mPreferences.selectedCityIndex().get() == 20) { // If TURKU
+				responseHtml = Utils.httpGet(url + "?" + mGlobals.getTurkuMapQueryString() 
+						+ "&routenumber=" + mRouteIndex);
+			} else {
+				String detailsXmlRequest = mGlobals.getDetailsXmlRequest();
+				
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("routeResponse", detailsXmlRequest);
+				params.put("startLocation", mGlobals.getStartAddress().streetOnly());
+				params.put("endLocation", mGlobals.getEndAddress().streetOnly());
+				params.put("routeNumber", String.valueOf(mRouteIndex));
+				params.put("language", lang);
+				
+				responseHtml = Utils.httpPost(url, params);
+			}
 		} catch (IOException ioex) {
 			Log.e(TAG, ioex.toString());
 			ioex.printStackTrace();
 		}
+		
+		List<MapComponent> mapComponents = buildMapList(responseHtml);
+		setMapAdapter(mapComponents);
 	}
 
 	@UiThread
@@ -102,6 +111,9 @@ public class RouteMapDetailsFragment extends ListFragment {
 				location = imageRow.select("td[class=LineStartLocation]").text();
 			} else {
 				imageUrl = imageRow.select("img:eq(0)").attr("src");
+				if (mPreferences.selectedCityIndex().get() == 20) { // If TURKU
+					imageUrl = mPreferences.baseUrl().get() + "fi/print/" + imageUrl;
+				}
 				mapComponents.add(new MapComponent(imageUrl, time, type, location));
 			}
 		}

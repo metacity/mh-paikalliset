@@ -1,6 +1,8 @@
 package fi.metacity.klmobi;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -113,13 +115,20 @@ public class RouteResultsFragment extends ListFragment {
 
 	@Background
 	public void fetchRoutes() {
-		String naviciRequest = buildNaviciRequest(mGlobals.getStartAddress(), mGlobals.getEndAddress());
-		Log.i(TAG, naviciRequest);
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("requestXml", naviciRequest);
+		String url = "";
+		
+		if (mPreferences.selectedCityIndex().get() == 20) { // TURKU
+			url = Constants.TURKU_BASE_URL + "getroute.php";
+			putTurkuPostParams(params, mGlobals.getStartAddress(), mGlobals.getEndAddress());
+		} else {
+			url = mPreferences.baseUrl().get() + "ajaxRequest.php?token=" + mPreferences.token().get();
+			String naviciRequest = buildNaviciRequest(mGlobals.getStartAddress(), mGlobals.getEndAddress());
+			params.put("requestXml", naviciRequest);
+		}
+		
 		try {
-			String naviciResponse = Utils.httpPost(mPreferences.baseUrl().get() + "ajaxRequest.php?token=" 
-					+ mPreferences.token().get(), params);
+			String naviciResponse = Utils.httpPost(url, params);
 			List<Route> routes = buildRouteList(naviciResponse);
 			setRoutesAdapter(routes);
 		} catch (IOException ioex) {
@@ -179,13 +188,59 @@ public class RouteResultsFragment extends ListFragment {
 
 		return naviciRequest;
 	}
+	
+	private void putTurkuPostParams(Map<String, String> targetParams, Address start, Address end) {
+		targetParams.put("request[changeMargin]", mChangeMargin);
+		targetParams.put("request[walkSpeed]", mWalkingSpeed);
+		targetParams.put("request[maxTotWalkDist]", mMaxWalkingDistance);
+		targetParams.put("request[timeDirection]", mTimeDirection);
+		targetParams.put("request[numberRoutes]", mNumerOfRoutes);
+		targetParams.put("request[routingMethod]", mRoutingType);
+		targetParams.put("request[start][x]", start.json.optString("x"));
+		targetParams.put("request[start][y]", start.json.optString("y"));
+		targetParams.put("request[end][x]", end.json.optString("x"));
+		targetParams.put("request[end][y]", end.json.optString("y"));
+		targetParams.put("token", mPreferences.token().get());
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmm", Locale.ENGLISH);
+		String timestamp = "";
+		try {
+			timestamp = String.valueOf(sdf.parse(mDate + mTime).getTime()/1000);
+	        targetParams.put("request[timestamp]", timestamp);
+        } catch (ParseException e) {
+	        // Ignore
+        }
+		
+		targetParams.put("request[via]", "null");
+		targetParams.put("request[excludedLines]", "null");
+		targetParams.put("request[includedLines]", "null");
+		
+		// Also build the GET query string for transfer images
+		try {
+			String mapQueryString = "startlocation=" + URLEncoder.encode(mGlobals.getStartAddress().streetOnly(), "UTF-8") +
+					"&endlocation=" + URLEncoder.encode(mGlobals.getEndAddress().streetOnly(), "UTF-8") + 
+					"&changeMargin=" + mChangeMargin + "&walkSpeed=" + mWalkingSpeed + 
+					"&maxTotWalkDist" +	mMaxWalkingDistance + "&timeDirection=" + mTimeDirection + 
+					"&numberRoutes=" + mNumerOfRoutes + "&timestamp=" + timestamp +
+					"&routingMethod" + mRoutingType + "&start[x]=" + start.json.optString("x") +
+					"&start[y]=" + start.json.optString("y") + "&end[x]=" + end.json.optString("x") +
+					"&end[y]=" + end.json.optString("y") + "&via=null" + "&excludedLines=null" + 
+					"&includedLines=null";
+			mGlobals.setTurkuMapQueryString(mapQueryString);
+		} catch (UnsupportedEncodingException useex) {
+			// Ignore
+		}
+		
+	}
 
 	private List<Route> buildRouteList(String naviciResponse) {
 		List<Route> routes = new ArrayList<Route>();
 		Document fullDoc = Jsoup.parse(naviciResponse, "", Parser.xmlParser());
 		fullDoc.outputSettings().charset("UTF-8").indentAmount(0).escapeMode(EscapeMode.xhtml);
 		Elements doc = fullDoc.select("MTRXML");
-		mGlobals.setDetailsXmlString(doc.toString());
+		if (mPreferences.selectedCityIndex().get() != 20) { // If not TURKU
+			mGlobals.setDetailsXmlString(doc.toString());
+		}
 
 		Elements xmlRoutes = doc.select("ROUTE");
 		for (Element xmlRoute : xmlRoutes) {
@@ -233,15 +288,20 @@ public class RouteResultsFragment extends ListFragment {
 					}
 
 					Element nameTag = xmlWayPoint.select("NAME").first();
+					Elements digistopIdTags = xmlWayPoint.select("XTRA[name=digistop_id]");
 					String time = "";
 					if ("WALK".equals(xmlComponent.tagName()) && "STOP".equals(xmlWayPoint.tagName())) {
 						time = xmlWayPoint.select("ARRIVAL").first().attr("time");
 					} else {
 						time = xmlWayPoint.select("DEPARTURE").first().attr("time");
 					}
-							
+					
+					String wayPointName = (nameTag != null) ? nameTag.attr("val") : "";
+					if (digistopIdTags != null && digistopIdTags.size() > 0) {
+						wayPointName += " (" + digistopIdTags.first().attr("val") + ")";
+					}
 					wayPoints.add(new WayPoint(xmlWayPoint.attr("x"), xmlWayPoint.attr("y"), 
-							(nameTag != null) ? nameTag.attr("val") : "", time));
+							wayPointName, time));
 
 					++i;
 				}
