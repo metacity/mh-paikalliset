@@ -2,7 +2,8 @@ package fi.metacity.klmobi;
 
 import java.util.List;
 
-import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class RouteMapDetailsAdapter extends ArrayAdapter<MapComponent> {
@@ -25,10 +27,9 @@ public class RouteMapDetailsAdapter extends ArrayAdapter<MapComponent> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = convertView;
-		MapComponentHolder holder;
 		
 		if (v == null) {
-			holder = new MapComponentHolder();
+			MapComponentHolder holder = new MapComponentHolder();
 			LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = inflater.inflate(R.layout.route_mapdetails_row, null);
 			
@@ -36,19 +37,28 @@ public class RouteMapDetailsAdapter extends ArrayAdapter<MapComponent> {
 			holder.typeView = (TextView) v.findViewById(R.id.mapDetailType);
 			holder.locationView = (TextView) v.findViewById(R.id.mapDetailPlace);
 			holder.mapImage = (ImageView) v.findViewById(R.id.mapDetailImage);
+			holder.progressBar = (ProgressBar) v.findViewById(R.id.mapDetailProgressBar);
 			
 			v.setTag(holder);
-		}
-		else {
-			holder = (MapComponentHolder) v.getTag();
-		}
+		} 
+		final MapComponentHolder mapHolder = (MapComponentHolder) v.getTag();
 		
 		MapComponent mapComponent = mMapComponents.get(position);
 
-		holder.timeView.setText(mapComponent.time);
-		holder.typeView.setText(mapComponent.type);
-		holder.locationView.setText(mapComponent.location);
-		UrlImageViewHelper.setUrlDrawable(holder.mapImage, mapComponent.imageUrl, null, 5 * 60 * 1000); // Cache 3 mins
+		mapHolder.timeView.setText(mapComponent.time);
+		mapHolder.typeView.setText(mapComponent.type);
+		mapHolder.locationView.setText(mapComponent.location);
+		Picasso.with(mContext).load(mapComponent.imageUrl).into(mapHolder.mapImage, new Callback() {
+
+			@Override
+			public void onSuccess() {
+				mapHolder.progressBar.setVisibility(View.INVISIBLE);
+			}
+
+			@Override
+			public void onError() {
+			}
+		});
 		
 		return v;
 	}
@@ -58,5 +68,6 @@ public class RouteMapDetailsAdapter extends ArrayAdapter<MapComponent> {
 		TextView typeView;
 		TextView locationView;
 		ImageView mapImage;
+		ProgressBar progressBar;
 	}
 }
