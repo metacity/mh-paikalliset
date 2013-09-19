@@ -67,5 +67,6 @@
     <string name="thirdPartyLicenses">3. osapuolen lisenssit</string>
     <string name="gettingTokenFailedToast">Tokenin lataus epäonnistui! Kokeile Menu -> Päivitä token&#8230;</string>
     <string name="updatingToken">Päivitetään Matkahuolto-tokenia&#8230;</string>
+    <string name="favouriteNameOptional">Suosikin nimi (ei-pakollinen)</string>
 
 </resources>
