@@ -17,12 +17,12 @@ import java.util.Map.Entry;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.location.Location;
+import android.net.Uri;
 import fi.sandman.utils.coordinate.CoordinateConversionFailed;
 import fi.sandman.utils.coordinate.CoordinatePoint;
 import fi.sandman.utils.coordinate.CoordinateUtils;
-
-import android.location.Location;
-import android.net.Uri;
 
 public class Utils {
 	
@@ -152,6 +152,11 @@ public class Utils {
 		}
 		return null;
 	}
+	
+	public static int dpsToPixels(Context context, int dps) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int)(dps * scale + 0.5f);
+	}
 
 	public static String getAndroidAnnotationsLicense() {
 		return "<p>Copyright 2012 eBusiness Information<p>"
@@ -209,8 +214,8 @@ public class Utils {
 				+ "under the License.</p>";
 	}
 	
-	public static String getUrlImageViewHelperLicense() {
-		return "<p>Copyright 2012 Koushik Dutta</p><p>Licensed under the Apache License, " +
+	public static String getPicassoLicense() {
+		return "<p>Copyright 2013 Square, Inc.</p><p>Licensed under the Apache License, " +
 				"Version 2.0 (the \"License\"); you may not use this file except in compliance " +
 				"with the License. You may obtain a copy of the License at</p>" +
 				"<p>http://www.apache.org/licenses/LICENSE-2.0</p>" +

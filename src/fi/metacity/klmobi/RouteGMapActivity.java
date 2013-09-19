@@ -52,12 +52,6 @@ public class RouteGMapActivity extends FragmentActivity {
 		
 		setUpMapIfNeeded();
 	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-		setUpMapIfNeeded();
-	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -158,10 +152,10 @@ public class RouteGMapActivity extends FragmentActivity {
 			mGmap.addMarker(markers.get(i));
 		}
 		for (int i = 0, len = walkingPolylines.size(); i < len; ++i) {
-			mGmap.addPolyline(walkingPolylines.get(i).color(Color.GREEN).width(3));
+			mGmap.addPolyline(walkingPolylines.get(i).color(Color.MAGENTA).width(Utils.dpsToPixels(this, 3)));
 		}
 		for (int i = 0, len = busPolylines.size(); i < len; ++i) {
-			mGmap.addPolyline(busPolylines.get(i).color(Color.BLUE).width(4));
+			mGmap.addPolyline(busPolylines.get(i).color(Color.BLUE).width(Utils.dpsToPixels(this, 4)));
 		}
 
 		if (firstLatLng != null) {
