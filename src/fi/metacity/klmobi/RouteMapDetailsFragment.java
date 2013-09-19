@@ -69,8 +69,8 @@ public class RouteMapDetailsFragment extends ListFragment {
 				
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("routeResponse", detailsXmlRequest);
-				params.put("startLocation", mGlobals.getStartAddress().streetOnly());
-				params.put("endLocation", mGlobals.getEndAddress().streetOnly());
+				params.put("startLocation", mGlobals.getStartAddress().shortName());
+				params.put("endLocation", mGlobals.getEndAddress().shortName());
 				params.put("routeNumber", String.valueOf(mRouteIndex));
 				params.put("language", lang);
 				

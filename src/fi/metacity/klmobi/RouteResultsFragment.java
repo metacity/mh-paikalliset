@@ -100,8 +100,8 @@ public class RouteResultsFragment extends ListFragment {
 		header.setClickable(false);
 		header.setFocusable(false);
 		header.setBackgroundResource(R.color.background);
-		((TextView)header.findViewById(R.id.fromTextView)).setText(mGlobals.getStartAddress().streetOnly());
-		((TextView)header.findViewById(R.id.toTextView)).setText(mGlobals.getEndAddress().streetOnly());
+		((TextView)header.findViewById(R.id.fromTextView)).setText(mGlobals.getStartAddress().shortName());
+		((TextView)header.findViewById(R.id.toTextView)).setText(mGlobals.getEndAddress().shortName());
 
 		ListView listView = getListView();
 		listView.addHeaderView(header);
@@ -217,8 +217,8 @@ public class RouteResultsFragment extends ListFragment {
 		
 		// Also build the GET query string for transfer images
 		try {
-			String mapQueryString = "startlocation=" + URLEncoder.encode(mGlobals.getStartAddress().streetOnly(), "UTF-8") +
-					"&endlocation=" + URLEncoder.encode(mGlobals.getEndAddress().streetOnly(), "UTF-8") + 
+			String mapQueryString = "startlocation=" + URLEncoder.encode(mGlobals.getStartAddress().shortName(), "UTF-8") +
+					"&endlocation=" + URLEncoder.encode(mGlobals.getEndAddress().shortName(), "UTF-8") + 
 					"&changeMargin=" + mChangeMargin + "&walkSpeed=" + mWalkingSpeed + 
 					"&maxTotWalkDist" +	mMaxWalkingDistance + "&timeDirection=" + mTimeDirection + 
 					"&numberRoutes=" + mNumerOfRoutes + "&timestamp=" + timestamp +
@@ -279,10 +279,10 @@ public class RouteResultsFragment extends ListFragment {
 						}
 					} else if ("POINT".equals(xmlWayPoint.tagName())) {
 						if ("start".equals(xmlWayPoint.attr("uid"))) {
-							componentStartName = mGlobals.getStartAddress().streetOnly();
+							componentStartName = mGlobals.getStartAddress().shortName();
 							componentStartDateTime = dateFromStopOrPoint(xmlWayPoint, true); 
 						} else {
-							componentEndName = mGlobals.getEndAddress().streetOnly();
+							componentEndName = mGlobals.getEndAddress().shortName();
 							componentEndDateTime = dateFromStopOrPoint(xmlWayPoint, false); 
 						}
 					}
