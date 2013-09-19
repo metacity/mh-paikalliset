@@ -15,8 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +37,18 @@ public class FavouritesDialog extends DialogFragment {
 
 	@FragmentArg(Constants.EXTRA_SAVABLE_FAVOURITE)
 	String mSaveableFavourite;
+	
+	@ViewById(R.id.addFavouriteLayout)
+	RelativeLayout mAddFavouriteLayout;
 
+	@ViewById(R.id.addFavouriteInfoText)
+	TextView mAddFavouritesInfoText;
+	
 	@ViewById(R.id.addFavouriteBtn)
-	Button mAddFavourites;
+	Button mAddFavouritesBtn;
+	
+	@ViewById(R.id.favouriteUserGivenNameField)
+	EditText mUserGivenNameField;
 
 	@ViewById(R.id.favouritesList)
 	ListView mFavouritesList;
@@ -80,15 +91,15 @@ public class FavouritesDialog extends DialogFragment {
 
 		// Set the savable favourites
 		if (favourites.size() == 0 && mSaveableFavourite.length() == 0) {
-			mAddFavourites.setText(getString(R.string.noFavourites));
-			mAddFavourites.setClickable(false);
-			mAddFavourites.setCompoundDrawables(null, null, null, null);
+			mAddFavouritesInfoText.setText(getString(R.string.noFavourites));
+			mAddFavouritesBtn.setVisibility(View.GONE);
+			mUserGivenNameField.setVisibility(View.GONE);
 		} else if (mSaveableFavourite.length() == 0) {
-			mAddFavourites.setVisibility(View.GONE);
+			mAddFavouriteLayout.setVisibility(View.GONE);
 		} else {
 			String addFavText = getString(R.string.addToFavourites) + "\n"
 					+ new Address(new JSONObject(mSaveableFavourite)).toString();
-			mAddFavourites.setText(addFavText);
+			mAddFavouritesInfoText.setText(addFavText);
 		}
 	}
 
@@ -96,6 +107,10 @@ public class FavouritesDialog extends DialogFragment {
 	public void addFavourite() {
 		try {
 			Address addressToSave = new Address(new JSONObject(mSaveableFavourite));
+			String userGivenName = mUserGivenNameField.getText().toString();
+			if (userGivenName.length() > 0) {
+				addressToSave.json.put("user_given_name", userGivenName);
+			}
 			JSONArray favourites = new JSONArray(mPreferences.savedFavourites().get());
 			favourites.put(addressToSave.json);
 			mPreferences.savedFavourites().put(favourites.toString());
@@ -143,7 +158,8 @@ public class FavouritesDialog extends DialogFragment {
 				holder = new FavouriteHolder();
 				v = View.inflate(getActivity(), R.layout.favourites_row, null);
 
-				holder.favouriteView = (TextView) v.findViewById(R.id.favouriteText);
+				holder.favouriteNameText = (TextView) v.findViewById(R.id.favouriteName);
+				holder.favouriteAddressText = (TextView) v.findViewById(R.id.favouriteAddress);
 				holder.deleteFavouriteBtn = (ImageButton) v.findViewById(R.id.favouritesRemoveBtn);
 
 				v.setTag(holder);
@@ -169,13 +185,23 @@ public class FavouritesDialog extends DialogFragment {
 			});
 
 			Address address = mFavourites.get(position);
-			holder.favouriteView.setText(address.toString());
+			String userGivenName = address.userGivenName();
+			String fullAddress = address.fullAddress();
+			if (userGivenName.length() == 0 || userGivenName.trim().equals(fullAddress.trim())) {
+				holder.favouriteNameText.setText(fullAddress);
+				holder.favouriteAddressText.setText("");
+			} else {
+				holder.favouriteNameText.setText(userGivenName);
+				holder.favouriteAddressText.setText(fullAddress);
+			}
+			
 			return v;
 		}
 	}
 
 	private static class FavouriteHolder {
-		TextView favouriteView;
+		TextView favouriteNameText;
+		TextView favouriteAddressText;
 		ImageButton deleteFavouriteBtn;
 	}
 

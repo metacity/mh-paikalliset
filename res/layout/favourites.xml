@@ -6,16 +6,49 @@
     android:orientation="vertical"
     tools:context=".FavouritesDialog" >
 
-    <Button
-        android:id="@+id/addFavouriteBtn"
+    <RelativeLayout
+        android:id="@+id/addFavouriteLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/button_white_orange_shadowed"
-        android:drawableRight="@drawable/ic_add"
-        android:gravity="center_vertical|center_horizontal|start"
-        android:padding="10dp"
-        android:text="Favourite to add" />
+        android:padding="3dp" >
+
+        <TextView
+            android:id="@+id/addFavouriteInfoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="3dp"
+            android:layout_toLeftOf="@+id/addFavouriteBtn"
+            android:background="@null"
+            android:gravity="center_vertical|center_horizontal|start"
+            android:padding="10dp"
+            android:text="Favourite to add"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/favouriteUserGivenNameField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignRight="@+id/addFavouriteInfoText"
+            android:layout_below="@+id/addFavouriteInfoText"
+            android:ems="10"
+            android:hint="@string/favouriteNameOptional"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/addFavouriteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/favouriteUserGivenNameField"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:drawableBottom="@drawable/ic_add"
+            android:text="OK" />
+
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/favouritesList"

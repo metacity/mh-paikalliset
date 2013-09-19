@@ -2,37 +2,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
     android:background="@drawable/selector_orange" >
 
     <TextView
         android:id="@+id/favouritesSeparator"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
         android:layout_toLeftOf="@+id/favouritesRemoveBtn"
         android:background="@color/lightGrey"
         android:minWidth="2dp"
-        android:textSize="26sp" />
+        android:textSize="30sp" />
 
     <TextView
-        android:id="@+id/favouriteText"
+        android:id="@+id/favouriteName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:padding="10dp"
-        android:text="favourite"
-        android:textSize="15sp" />
+        android:layout_margin="5dp"
+        android:text="name"
+        android:textSize="17sp" />
 
     <ImageButton
         android:id="@+id/favouritesRemoveBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:background="@drawable/selector_orange"
         android:padding="10dp"
         android:src="@drawable/ic_remove" />
+
+    <TextView
+        android:id="@+id/favouriteAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/favouriteName"
+        android:layout_below="@+id/favouriteName"
+        android:layout_marginLeft="3dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="12dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="12sp" />
 
 </RelativeLayout>
