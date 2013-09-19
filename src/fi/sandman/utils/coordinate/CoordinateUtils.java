@@ -152,6 +152,7 @@ public class CoordinateUtils {
 	}
 
 	public static int getKKJzoneByLongitude(double longitude) {
+		/*
 		int zoneNumber = 5;
 		while (zoneNumber >= 0) {
 			if (Math.abs(longitude - KKJ_ZONE_INFO.get(zoneNumber)[0]) <= 1.5) {
@@ -160,6 +161,10 @@ public class CoordinateUtils {
 			zoneNumber = zoneNumber - 1;
 		}
 		return zoneNumber;
+		*/
+		
+		// NAVICI USES KKJ3 for everything, thus always return 3
+		return 3;
 	}
 
 	public static CoordinatePoint convertKKJlaloToKKJxy(CoordinatePoint pointKKJLaLo, int zoneNumber) {
