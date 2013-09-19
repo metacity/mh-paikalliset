@@ -61,7 +61,6 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.NonConfigurationInstance;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.SeekBarProgressChange;
 import com.googlecode.androidannotations.annotations.SystemService;
@@ -74,9 +73,6 @@ import fi.metacity.klmobi.AddressLocationListener.OnLocationFoundListener;
 @EActivity(R.layout.activity_main)
 public class MainActivity extends Activity implements OnNavigationListener, 
 		OnTimeSetListener, OnDateSetListener {
-
-	@NonConfigurationInstance
-	Calendar mDateTime = GregorianCalendar.getInstance();
 
 	@App
 	MHApp mGlobals;
@@ -132,9 +128,11 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	@ViewById(R.id.departureArrivalSwitch)
 	Switch mDepartureArrivalSwitch;
 	
+	private ProgressDialog mTokenDownloadingDialog;
+
+	private final Calendar mDateTime = GregorianCalendar.getInstance();
 	private final List<Address> mAddressResults = new ArrayList<Address>();
 	private final AtomicInteger mAddressRequestId = new AtomicInteger();
-	private ProgressDialog mTokenDownloadingDialog; 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -152,11 +150,23 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				);
 		actionBar.setListNavigationCallbacks(citiesAdapter, this);
 	}
-	
+
 	@Override
-	protected void onStart() {
-		super.onStart();
+	protected void onResume() {
+		super.onResume();
 		fetchTokenIfNeeded(false);
+		
+		Address start = mGlobals.getStartAddress();
+		Address end = mGlobals.getEndAddress();
+		mStartText.setText(start != null ? start.toString() : "");
+		mStartText.dismissDropDown();
+		mEndText.setText(end != null ? end.toString() : "");
+		mEndText.dismissDropDown();
+		
+		// Clear the downloaded data (would be replaced anyway if "FIND ROUTES" was pressed)
+		mGlobals.setDetailsXmlString("");
+		mGlobals.setTurkuMapQueryString("");
+		mGlobals.getRoutes().clear();
 	}
 
 	@Override
@@ -229,7 +239,8 @@ public class MainActivity extends Activity implements OnNavigationListener,
 					android.R.layout.simple_list_item_1, 
 					new String[] { getString(R.string.loadingText) }
 					);
-			((AutoCompleteTextView) addressInput).setAdapter(loadingTextAdapter);					
+			((AutoCompleteTextView) addressInput).setAdapter(loadingTextAdapter);
+			((AutoCompleteTextView) addressInput).showDropDown();
 			searchAddresses(addressInput, text, mAddressRequestId.incrementAndGet());		
 		} else {
 			((AutoCompleteTextView) addressInput).dismissDropDown();
@@ -509,7 +520,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				+ "jsoup\nhttp://jsoup.org/\n\n"
 				+ "CoordinateUtils\nhttps://github.com/Sandmania/CoordinateUtils\n\n"
 				+ "Pager Sliding TabStrip\nhttps://github.com/astuetz/PagerSlidingTabStrip\n\n"
-				+ "UrlImageViewHelper\nhttps://github.com/koush/UrlImageViewHelper";
+				+ "Picasso\nhttp://square.github.io/picasso";
 		AlertDialog aboutDialog = builder.setMessage(message)
 				.setTitle(R.string.aboutTitle)
 				.setIcon(R.drawable.ic_launcher)
@@ -528,7 +539,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				+ "<br><br><b>jsoup</b><br>" + Utils.getJsoupLicense()
 				+ "<br><br><b>CoordinateUtils</b><br>" + Utils.getCoordinateUtilsLicense()
 				+ "<br><br><b>Pager Sliding TabStrip</b><br>" + Utils.getPagerSlidingTabStripLicense()
-				+ "<br><br><b>UrlImageViewHelper</b><br>" + Utils.getUrlImageViewHelperLicense();
+				+ "<br><br><b>Picasso</b><br>" + Utils.getPicassoLicense();
 		AlertDialog aboutDialog = builder.setMessage(Html.fromHtml(message))
 				.setTitle(R.string.thirdPartyLicenses)
 				.setIcon(R.drawable.ic_launcher)
