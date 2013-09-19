@@ -57,4 +57,13 @@
         android:scaleType="fitCenter"
         android:visibility="visible" />
 
+    <ProgressBar
+        android:id="@+id/mapDetailProgressBar"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:indeterminate="true" />
+
 </RelativeLayout>
