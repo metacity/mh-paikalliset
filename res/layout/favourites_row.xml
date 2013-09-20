@@ -24,6 +24,7 @@
         android:layout_centerVertical="true"
         android:layout_margin="5dp"
         android:text="name"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="17sp" />
 
     <ImageButton
