@@ -151,11 +151,15 @@ public class RouteGMapActivity extends FragmentActivity {
 		for (int i = 0, len = markers.size(); i < len; ++i) {
 			mGmap.addMarker(markers.get(i));
 		}
+		
+		int walkingLineWidth = Utils.dpsToPixels(this, 3);
 		for (int i = 0, len = walkingPolylines.size(); i < len; ++i) {
-			mGmap.addPolyline(walkingPolylines.get(i).color(Color.MAGENTA).width(Utils.dpsToPixels(this, 3)));
+			mGmap.addPolyline(walkingPolylines.get(i).color(Color.MAGENTA).width(walkingLineWidth));
 		}
+		
+		int busLineWidth = Utils.dpsToPixels(this, 4);
 		for (int i = 0, len = busPolylines.size(); i < len; ++i) {
-			mGmap.addPolyline(busPolylines.get(i).color(Color.BLUE).width(Utils.dpsToPixels(this, 4)));
+			mGmap.addPolyline(busPolylines.get(i).color(Color.BLUE).width(busLineWidth));
 		}
 
 		if (firstLatLng != null) {
