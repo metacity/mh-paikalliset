@@ -4,7 +4,7 @@
     <color name="background">#e5e5e5</color>
     <color name="dark_grey">#454c4d</color>
     <color name="lightGrey">#bdc3c7</color>
-    <color name="lightOrange">#AAff9d29</color>
+    <color name="lightOrange">#DDFFBA69</color>
     <color name="orange">#d27000</color>
     <color name="darkerBlue">#115574</color>
     <color name="lighterBlue">#13648a</color>
@@ -134,5 +134,8 @@
     <string name="gettingTokenFailedToast">Failed to retrieve token! Try Menu -> Update token&#8230;</string>
     <string name="updatingToken">Updating Matkahuolto token&#8230;</string>
     <string name="favouriteNameOptional">Favourite name (optional)</string>
+    <string name="history">History</string>
+    <string name="clearHistory">Clear history</string>
+    <string name="historyCleared">History cleared!</string>
 
 </resources>
