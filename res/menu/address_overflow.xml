@@ -8,6 +8,12 @@
     </item>
     
     <item
+        android:id="@+id/overflow_history"
+        android:orderInCategory="105"
+        android:title="@string/history">
+    </item>
+    
+    <item
         android:id="@+id/overflow_locate"
         android:orderInCategory="110"
         android:title="@string/locate">

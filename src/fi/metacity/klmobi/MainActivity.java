@@ -27,6 +27,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
@@ -272,9 +273,9 @@ public class MainActivity extends Activity implements OnNavigationListener,
 					
 					case R.id.overflow_favourites:
 						if (view.getId() == R.id.startOverflowBtn) {
-							showStartFavourites();
+							startFromFavourites();
 						} else {
-							showEndFavourites();
+							endFromFavourites();
 						}
 						return true;
 					
@@ -283,6 +284,14 @@ public class MainActivity extends Activity implements OnNavigationListener,
 							locateStart();
 						} else {
 							locateEnd();
+						}
+						return true;
+						
+					case R.id.overflow_history:
+						if (view.getId() == R.id.startOverflowBtn) {
+							startFromHistory();
+						} else {
+							endFromHistory();
 						}
 						return true;
 					
@@ -294,7 +303,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		popup.show();
 	}
 
-	private void showStartFavourites() {
+	private void startFromFavourites() {
 		showFavouriteDialog(new FavouritesDialog.OnFavouriteSelectedListener() {
 			@Override
 			public void onFavouriteSelected(Address selectedAddress) {
@@ -305,7 +314,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		}, "startFavourites", mGlobals.getStartAddress());
 	}
 
-	private void showEndFavourites() {
+	private void endFromFavourites() {
 		showFavouriteDialog(new FavouritesDialog.OnFavouriteSelectedListener() {
 			@Override
 			public void onFavouriteSelected(Address selectedAddress) {
@@ -328,6 +337,41 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		
 		FavouritesDialog dialog = FavouritesDialog_.builder()
 				.mSaveableFavourite((savableAddress == null) ? "" : savableAddress.json.toString()).build();
+		dialog.setSelectedListener(selectedListener);
+		dialog.show(transaction, tag);
+	}
+	
+	private void startFromHistory() {
+		showHistoryDialog(new HistoryDialog.OnHistorySelectedListener() {
+			@Override
+			public void onHistorySelected(Address selectedAddress) {
+				mGlobals.setStartAddress(selectedAddress);
+				mStartText.setText(selectedAddress.toString());
+				mStartText.dismissDropDown();
+			}
+		}, "startHistory");
+	}
+
+	private void endFromHistory() {
+		showHistoryDialog(new HistoryDialog.OnHistorySelectedListener() {
+			@Override
+			public void onHistorySelected(Address selectedAddress) {
+				mGlobals.setEndAddress(selectedAddress);
+				mEndText.setText(selectedAddress.toString());
+				mEndText.dismissDropDown();
+			}
+		}, "endFavourites");
+	}
+	
+	private void showHistoryDialog(HistoryDialog.OnHistorySelectedListener selectedListener, String tag) {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		Fragment prev = getFragmentManager().findFragmentByTag(tag);
+		if (prev != null) {
+			transaction.remove(prev);
+		}
+		transaction.addToBackStack(null);
+		
+		HistoryDialog dialog = new HistoryDialog_();
 		dialog.setSelectedListener(selectedListener);
 		dialog.show(transaction, tag);
 	}
@@ -429,6 +473,31 @@ public class MainActivity extends Activity implements OnNavigationListener,
 			Toast.makeText(this, "\"" + getString(R.string.to) + "\" " + getString(R.string.notSetProperly), 
 					Toast.LENGTH_SHORT).show();
 		} else {
+			
+			// Put to history
+			try {
+				Address start = mGlobals.getStartAddress();
+				Address end = mGlobals.getEndAddress();
+				
+				JSONArray newHistory = new JSONArray();
+				newHistory.put(start.json);
+				newHistory.put(end.json);
+				JSONArray historyJson = new JSONArray(mPreferences.addressHistory().get());
+				for (int i = 0; i < historyJson.length(); i++) {
+					Address historyAddress = new Address(historyJson.getJSONObject(i));
+					String coordinates = historyAddress.coordinatesOnly();
+					if (newHistory.length() < 10 
+					 && !coordinates.equals(start.coordinatesOnly()) 
+					 && !coordinates.equals(end.coordinatesOnly())) {
+						newHistory.put(historyAddress.json);
+					}
+				}
+				mPreferences.addressHistory().put(newHistory.toString());
+			} catch (JSONException jsonex) {
+				Log.e("MainActivity", jsonex.toString());
+			}
+			
+			
 			mGlobals.getRoutes().clear();
 			Intent intent = new Intent(this, RoutesActivity_.class);
 			intent.putExtra(Constants.EXTRA_DATE, String.format("%d%02d%02d", mDateTime.get(Calendar.YEAR), 
@@ -524,12 +593,18 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		AlertDialog aboutDialog = builder.setMessage(message)
 				.setTitle(R.string.aboutTitle)
 				.setIcon(R.drawable.ic_launcher)
-				.setPositiveButton("OK", null)	       
+				.setPositiveButton("OK", null)  
 				.create();
 		aboutDialog.show();
 
 		TextView messageView = (TextView) aboutDialog.findViewById(android.R.id.message);
 		messageView.setGravity(Gravity.CENTER);
+	}
+	
+	@OptionsItem(R.id.clear_history_menu_item)
+	public void clearHistory() {
+		mPreferences.addressHistory().put("[]");
+		Toast.makeText(this, getString(R.string.historyCleared), Toast.LENGTH_SHORT).show();
 	}
 	
 	@OptionsItem(R.id.third_party_licenses_menu_item)
@@ -607,6 +682,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		if (now.get(Calendar.YEAR) > tokenLastSyncTime.get(Calendar.YEAR)
 		 || now.get(Calendar.DAY_OF_YEAR) > tokenLastSyncTime.get(Calendar.DAY_OF_YEAR)
 		 || force) {
+			dismissTokenDownloadDialog();
 			showTokenDownloadDialog();
 			try {
 				String mainpage = Utils.httpGet(mPreferences.baseUrl().get());
@@ -640,7 +716,13 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				getString(R.string.progressDialogTitle), 
 				getString(R.string.updatingToken), 
 				true, 
-				false
+				true,
+				new DialogInterface.OnCancelListener() {
+					@Override
+					public void onCancel(DialogInterface dialog) {
+						Toast.makeText(MainActivity.this, getString(R.string.gettingTokenFailedToast), Toast.LENGTH_LONG).show();
+					}
+				}
 				);
 	}
 	

@@ -15,6 +15,10 @@ public interface Preferences {
 	@DefaultString("[]")
 	String savedFavourites();
 	
+	
+	@DefaultString("[]")
+	String addressHistory();
+	
 	@DefaultString("")
 	String token();
 	
