@@ -241,7 +241,6 @@ public class MainActivity extends Activity implements OnNavigationListener,
 					new String[] { getString(R.string.loadingText) }
 					);
 			((AutoCompleteTextView) addressInput).setAdapter(loadingTextAdapter);
-			((AutoCompleteTextView) addressInput).showDropDown();
 			searchAddresses(addressInput, text, mAddressRequestId.incrementAndGet());		
 		} else {
 			((AutoCompleteTextView) addressInput).dismissDropDown();
