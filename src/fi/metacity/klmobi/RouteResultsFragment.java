@@ -220,9 +220,9 @@ public class RouteResultsFragment extends ListFragment {
 			String mapQueryString = "startlocation=" + URLEncoder.encode(mGlobals.getStartAddress().shortName(), "UTF-8") +
 					"&endlocation=" + URLEncoder.encode(mGlobals.getEndAddress().shortName(), "UTF-8") + 
 					"&changeMargin=" + mChangeMargin + "&walkSpeed=" + mWalkingSpeed + 
-					"&maxTotWalkDist" +	mMaxWalkingDistance + "&timeDirection=" + mTimeDirection + 
+					"&maxTotWalkDist=" + mMaxWalkingDistance + "&timeDirection=" + mTimeDirection + 
 					"&numberRoutes=" + mNumerOfRoutes + "&timestamp=" + timestamp +
-					"&routingMethod" + mRoutingType + "&start[x]=" + start.json.optString("x") +
+					"&routingMethod=" + mRoutingType + "&start[x]=" + start.json.optString("x") +
 					"&start[y]=" + start.json.optString("y") + "&end[x]=" + end.json.optString("x") +
 					"&end[y]=" + end.json.optString("y") + "&via=null" + "&excludedLines=null" + 
 					"&includedLines=null";
