@@ -11,6 +11,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class RouteAdapter extends ArrayAdapter<Route> {
@@ -32,6 +33,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 			holder = new RouteHolder();
 			v = View.inflate(mContext, R.layout.route_results_row, null);
 			
+			holder.rowLayout = (RelativeLayout) v.findViewById(R.id.routeRowLayout);
 			holder.departureView = (TextView) v.findViewById(R.id.departure);
 			holder.arrivalView = (TextView) v.findViewById(R.id.arrival);
 			holder.durationView = (TextView) v.findViewById(R.id.duration);
@@ -56,7 +58,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 		holder.arrivalView.setText(arrivalTime);
 
 		long duration = Math.round(route.duration);
-		holder.durationView.setText((duration > 59 ? Long.toString(duration / 60) + " h " : "") 
+		holder.durationView.setText((duration > 59 ? String.valueOf(duration / 60) + " h " : "") 
 				+ String.valueOf(duration % 60) + " min");
 		
 		holder.routeStepsLayout.removeAllViews();
@@ -105,13 +107,16 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 		holder.stopArrView.setText("(" + lastStopArrivalTime + ")");
 		
 		holder.walkingDistView.setText(Double.toString(Math.round(walkingDistance/100) / 10.0) + " km");
-		
-		v.setBackgroundResource(route.isSelected ? R.color.lightOrange : R.drawable.selector_orange);
+		holder.rowLayout.setBackgroundResource(route.isSelected ? R.drawable.button_orange_shadowed 
+				: R.drawable.button_white_orange_shadowed);
+		//v.setBackgroundResource(R.drawable.button_white_orange_shadowed);
+		//v.setBackgroundResource(route.isSelected ? R.color.lightOrange : R.drawable.selector_orange);
 
 		return v;
 	}
 	
 	public static class RouteHolder {
+		RelativeLayout rowLayout;
 		TextView departureView, arrivalView;
 		TextView durationView;
 		TextView stopDepView, stopArrView;

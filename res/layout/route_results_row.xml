@@ -1,95 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/MarginContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal" >
+    android:background="@color/background" >
 
-    <LinearLayout
-        android:id="@+id/departureTimesLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/routeRowLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical" >
+        android:layout_marginRight="10dp"
+        android:background="@drawable/button_white_orange_shadowed"
+        android:gravity="center_horizontal" >
 
-        <TextView
-            android:id="@+id/departure"
+        <LinearLayout
+            android:id="@+id/departureTimesLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="depTime"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/departure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="depTime"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/stopDep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="(06:43)"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/walkingDist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/duration"
+            android:layout_centerHorizontal="true"
+            android:text="[PH]"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:id="@+id/routeStepsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/walkingDist"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/departureTimesLayout"
+            android:layout_centerHorizontal="true"
+            android:text="durTime"
             android:textSize="13sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/stopDep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="(06:43)"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/walkingDist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/duration"
-        android:layout_centerHorizontal="true"
-        android:text="[PH]"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="12sp" />
-
-    <LinearLayout
-        android:id="@+id/routeStepsLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/walkingDist"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:padding="5dp" >
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/departureTimesLayout"
-        android:layout_centerHorizontal="true"
-        android:text="durTime"
-        android:textSize="13sp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:id="@+id/arrivalTimesLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@+id/duration"
-        android:layout_marginRight="10dp"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/arrival"
+        <LinearLayout
+            android:id="@+id/arrivalTimesLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_gravity="center_horizontal"
-            android:text="arrTime"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            android:layout_alignTop="@+id/duration"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/stopArr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="(08:43)"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="12sp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/arrival"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_horizontal"
+                android:text="arrTime"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/stopArr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="(08:43)"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>
