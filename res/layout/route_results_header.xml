@@ -2,21 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/resultsHeaderLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@android:color/background_light"
     android:clickable="false"
     android:gravity="right"
     android:longClickable="false" >
-
-    <TextView
-        android:id="@+id/duration"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/departure"
-        android:layout_alignBottom="@+id/departure"
-        android:layout_centerHorizontal="true"
-        android:text="@string/duration"
-        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/fromTextView"
@@ -24,9 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@+id/duration"
+        android:layout_margin="10dp"
+        android:layout_toLeftOf="@+id/textView1"
         android:ellipsize="middle"
         android:minLines="1"
         android:paddingBottom="5dp"
@@ -37,14 +26,25 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="\u2192"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="20sp" />
+
+    <TextView
         android:id="@+id/toTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/fromTextView"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/fromTextView"
+        android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/duration"
+        android:layout_toRightOf="@+id/textView1"
         android:ellipsize="middle"
         android:gravity="right"
         android:minLines="1"
@@ -53,23 +53,5 @@
         android:text="to"
         android:textSize="13sp"
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/departure"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/fromTextView"
-        android:layout_below="@+id/fromTextView"
-        android:text="@string/departure"
-        android:textSize="12sp" />
-
-    <TextView
-        android:id="@+id/arrival"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/toTextView"
-        android:layout_below="@+id/fromTextView"
-        android:text="@string/arrival"
-        android:textSize="12sp" />
 
 </RelativeLayout>
