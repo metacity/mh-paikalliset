@@ -71,5 +71,6 @@
     <string name="history">Historia</string>
     <string name="clearHistory">Tyhjennä historia</string>
     <string name="historyCleared">Historia tyhjennetty!</string>
+    <string name="map">KARTTA\u0020\u0020</string>
 
 </resources>

@@ -137,5 +137,6 @@
     <string name="history">History</string>
     <string name="clearHistory">Clear history</string>
     <string name="historyCleared">History cleared!</string>
+    <string name="map">MAP\u0020\u0020</string>
 
 </resources>
