@@ -25,14 +25,18 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/tabs" />
 
-    <ImageButton
+    <Button
         android:id="@+id/showInMapBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:background="@drawable/selector_orange"
+        android:drawableRight="@drawable/ic_menu_map"
         android:padding="8dp"
-        android:src="@drawable/ic_menu_map" />
+        android:text="@string/map"
+        android:textColor="#666666"
+        android:textSize="13sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>

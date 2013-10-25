@@ -45,7 +45,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/tabs" />
 
-        <ImageButton
+        <Button
             android:id="@+id/showInMapBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,10 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/selector_orange"
             android:padding="8dp"
-            android:src="@drawable/ic_menu_map"
+            android:text="@string/map"
+            android:textColor="#666666"
+            android:textSize="13sp"
+            android:textStyle="bold"
             android:visibility="invisible" />
         
     </RelativeLayout>
