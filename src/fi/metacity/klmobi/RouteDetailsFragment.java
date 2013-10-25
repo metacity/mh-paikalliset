@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 
 import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.EFragment;
@@ -57,7 +57,7 @@ public class RouteDetailsFragment extends Fragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		ImageButton showInMapButton = (ImageButton) getActivity().findViewById(R.id.showInMapBtn);
+		Button showInMapButton = (Button) getActivity().findViewById(R.id.showInMapBtn);
 		if (showInMapButton != null) {
 			showInMapButton.setOnClickListener(new OnClickListener() {
 				@Override
