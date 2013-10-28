@@ -8,6 +8,8 @@
     <color name="orange">#d27000</color>
     <color name="darkerBlue">#115574</color>
     <color name="lighterBlue">#13648a</color>
+    <color name="tabPressedColor">#6633B5E5</color>
+    <color name="lightTextColor">#8E8E8E</color>
     
     <string-array name="matkahuoltoCities">
         <item>Hämeenlinna</item>
