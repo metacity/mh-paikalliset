@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/button_white_orange_shadowed"
+        android:background="@drawable/button_white_orange_bordered"
         android:padding="3dp" >
 
         <TextView
