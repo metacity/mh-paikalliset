@@ -17,12 +17,13 @@
         android:layout_margin="10dp"
         android:layout_toLeftOf="@+id/textView1"
         android:ellipsize="middle"
+        android:fontFamily="sans-serif-condensed"
         android:minLines="1"
         android:paddingBottom="5dp"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="from"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     <TextView
@@ -31,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
         android:text="\u2192"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="20sp" />
@@ -46,12 +48,13 @@
         android:layout_marginRight="10dp"
         android:layout_toRightOf="@+id/textView1"
         android:ellipsize="middle"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="right"
         android:minLines="1"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="to"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
 </RelativeLayout>

@@ -25,7 +25,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -84,7 +84,7 @@ public class RouteResultsFragment extends ListFragment {
 	
 	private ViewPager mPager;
 	private PagerSlidingTabStrip mTabs;
-	private ImageButton mShowInMapBtn;
+	private Button mShowInMapBtn;
 
 	private RouteAdapter mAdapter;
 
@@ -92,9 +92,14 @@ public class RouteResultsFragment extends ListFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
+		if (mGlobals.getStartAddress() == null) {
+			getActivity().finish();
+			return;
+		}
+		
 		mPager = (ViewPager) getActivity().findViewById(R.id.pager);
 		mTabs = (PagerSlidingTabStrip) getActivity().findViewById(R.id.tabs);
-		mShowInMapBtn = (ImageButton) getActivity().findViewById(R.id.showInMapBtn);
+		mShowInMapBtn = (Button) getActivity().findViewById(R.id.showInMapBtn);
 
 		View header = View.inflate(getActivity(), R.layout.route_results_header, null);
 		header.setClickable(false);

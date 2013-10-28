@@ -18,10 +18,16 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 	private final List<Route> mRoutes;
 	private final Context mContext;
 	
+	private final Typeface mRobotoCondensedBold;
+	private final int m3Dps;
+	
 	public RouteAdapter(Context context, List<Route> routes) {
 		super(context, R.layout.route_results_row, routes);
 		mRoutes = routes;
 		mContext = context;
+		
+		mRobotoCondensedBold = Typeface.create("sans-serif-condensed", Typeface.BOLD);
+		m3Dps = Utils.dpsToPixels(context, 3);
 	}
 	
 	@Override
@@ -39,6 +45,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 			holder.durationView = (TextView) v.findViewById(R.id.duration);
 			holder.stopDepView = (TextView) v.findViewById(R.id.stopDep);
 			holder.stopArrView = (TextView) v.findViewById(R.id.stopArr);
+			holder.smallDashView = (TextView) v.findViewById(R.id.smallDash);
 			holder.walkingDistView = (TextView) v.findViewById(R.id.walkingDist);
 			holder.routeStepsLayout = (LinearLayout) v.findViewById(R.id.routeStepsLayout);
 			
@@ -58,8 +65,8 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 		holder.arrivalView.setText(arrivalTime);
 
 		long duration = Math.round(route.duration);
-		holder.durationView.setText((duration > 59 ? String.valueOf(duration / 60) + " h " : "") 
-				+ String.valueOf(duration % 60) + " min");
+		holder.durationView.setText("(" + (duration > 59 ? String.valueOf(duration / 60) + " h " : "") 
+				+ String.valueOf(duration % 60) + " min)");
 		
 		holder.routeStepsLayout.removeAllViews();
 		float walkingDistance = 0.0f;
@@ -69,7 +76,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 			if ("W".equals(routeComp.code)) { // Walking
 				ImageView walkIcon = new ImageView(this.mContext);
 				walkIcon.setImageResource(R.drawable.ic_walk);
-				walkIcon.setPadding(5, 5, 5, 5);
+				walkIcon.setPadding(m3Dps, m3Dps, m3Dps, m3Dps);
 				holder.routeStepsLayout.addView(walkIcon);
 				walkingDistance += routeComp.distance;
 			} else { // Bus
@@ -81,15 +88,15 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 				LinearLayout busIconLayout = new LinearLayout(this.mContext);
 				busIconLayout.setOrientation(LinearLayout.VERTICAL);
 				busIconLayout.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				busIconLayout.setPadding(5, 5, 5, 5);
+				busIconLayout.setPadding(m3Dps, m3Dps, m3Dps, m3Dps);
 				
 				ImageView busIcon = new ImageView(mContext);
 				busIcon.setImageResource(R.drawable.ic_bus);
 				busIconLayout.addView(busIcon);
 				
 				TextView lineNumber = new TextView(mContext);
-				lineNumber.setTextSize(13);
-				lineNumber.setTypeface(null, Typeface.BOLD);
+				lineNumber.setTextSize(14);
+				lineNumber.setTypeface(mRobotoCondensedBold, Typeface.BOLD);
 				lineNumber.setText(routeComp.code);
 				lineNumber.setGravity(Gravity.CENTER_HORIZONTAL);
 				busIconLayout.addView(lineNumber);
@@ -98,19 +105,24 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 				holder.routeStepsLayout.addView(busIconLayout);
 			}
 		}
-		String firstStopDepartureTime = (firstBusIndex == -1) ? "-" : Utils.timeFormat.format(
-				route.routeComponents.get(firstBusIndex).startDateTime);
-		holder.stopDepView.setText("(" + firstStopDepartureTime + ")");
 		
-		String lastStopArrivalTime = (lastBusIndex == -1) ? "-" : Utils.timeFormat.format(
-				route.routeComponents.get(lastBusIndex).endDateTime);
-		holder.stopArrView.setText("(" + lastStopArrivalTime + ")");
-		
-		holder.walkingDistView.setText(Double.toString(Math.round(walkingDistance/100) / 10.0) + " km");
-		holder.rowLayout.setBackgroundResource(route.isSelected ? R.drawable.button_orange_shadowed 
-				: R.drawable.button_white_orange_shadowed);
-		//v.setBackgroundResource(R.drawable.button_white_orange_shadowed);
-		//v.setBackgroundResource(route.isSelected ? R.color.lightOrange : R.drawable.selector_orange);
+		if (firstBusIndex != -1 && lastBusIndex != -1) {
+			String firstStopDepartureTime = Utils.timeFormat.format(
+					route.routeComponents.get(firstBusIndex).startDateTime);
+			holder.stopDepView.setText(" " + firstStopDepartureTime);
+			
+			String lastStopArrivalTime = Utils.timeFormat.format(
+					route.routeComponents.get(lastBusIndex).endDateTime);
+			holder.stopArrView.setText(lastStopArrivalTime + " ");
+		} else {
+			holder.stopDepView.setVisibility(View.INVISIBLE);
+			holder.smallDashView.setVisibility(View.INVISIBLE);
+			holder.stopArrView.setVisibility(View.INVISIBLE);
+		}
+
+		holder.walkingDistView.setText(Double.toString(Math.round(walkingDistance/100) / 10.0) + " km ");
+		holder.rowLayout.setBackgroundResource(route.isSelected ? R.drawable.button_orange_bordered 
+				: R.drawable.button_white_orange_bordered);
 
 		return v;
 	}
@@ -119,7 +131,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 		RelativeLayout rowLayout;
 		TextView departureView, arrivalView;
 		TextView durationView;
-		TextView stopDepView, stopArrView;
+		TextView stopDepView, stopArrView, smallDashView;
 		TextView walkingDistView;
 		LinearLayout routeStepsLayout;
 	}
