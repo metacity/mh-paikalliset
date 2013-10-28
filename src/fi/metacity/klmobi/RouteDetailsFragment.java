@@ -36,6 +36,11 @@ public class RouteDetailsFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		if (mGlobals.getStartAddress() == null) {
+			getActivity().finish();
+			return super.onCreateView(inflater, container, savedInstanceState);
+		}
+		
 		ExpandableListView expandableList = new ExpandableListView(getActivity()); 
 		expandableList.setLayoutParams(new LayoutParams(	
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
@@ -44,7 +49,6 @@ public class RouteDetailsFragment extends Fragment {
 		if (mRouteIndex >= 0 && mRouteIndex < mGlobals.getRoutes().size()) {
 			List<RouteComponent> routeComponents = mGlobals.getRoutes().get(mRouteIndex).routeComponents;
 			expandableList.setAdapter(new RouteDetailsAdapter(getActivity(), routeComponents));
-
 
 			for (int i = expandableList.getExpandableListAdapter().getGroupCount()-1; i >= 0; --i) {
 				expandableList.expandGroup(i);
