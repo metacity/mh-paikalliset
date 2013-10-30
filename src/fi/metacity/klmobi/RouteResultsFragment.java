@@ -19,6 +19,7 @@ import org.jsoup.nodes.Entities.EscapeMode;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
@@ -141,7 +142,7 @@ public class RouteResultsFragment extends ListFragment {
 			setRoutesAdapter(routes);
 		} catch (IOException ioex) {
 			Log.e(TAG, ioex.toString());
-			ioex.printStackTrace();
+			showNetworkErrorDialog();
 		}
 	}
 
@@ -430,5 +431,12 @@ public class RouteResultsFragment extends ListFragment {
 			mGlobals.getRoutes().get(position).isSelected = true;
 			mAdapter.notifyDataSetChanged();
 		}
+	}
+	
+	@UiThread
+	public void showNetworkErrorDialog() {
+		new AlertDialog.Builder(getActivity())
+			.setMessage(R.string.networkErrorOccurred).setPositiveButton("OK", null).show();
+		setListShown(true);
 	}
 }
