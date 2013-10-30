@@ -113,7 +113,6 @@ public class RouteResultsFragment extends ListFragment {
 		listView.addHeaderView(header);
 		listView.setBackgroundResource(R.color.background);
 		listView.setDivider(getResources().getDrawable(android.R.color.transparent));
-		//listView.setDividerHeight(Utils.dpsToPixels(getActivity(), 10));
 
 		if (mGlobals.getRoutes().isEmpty()) {
 			fetchRoutes();
