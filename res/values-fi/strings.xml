@@ -72,5 +72,10 @@
     <string name="clearHistory">Tyhjennä historia</string>
     <string name="historyCleared">Historia tyhjennetty!</string>
     <string name="map">KARTTA\u0020\u0020</string>
+    <string name="today">Tänään</string>
+    <string name="tomorrow">Huomenna</string>
+    <string name="networkNotAvailable">Verkkoyhteyttä ei saatavilla!</string>
+    <string name="networkErrorOccurred">Verkkovirhe!</string>
+    <string name="setToNow">Aseta tähän hetkeen</string>
 
 </resources>

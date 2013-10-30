@@ -140,5 +140,10 @@
     <string name="clearHistory">Clear history</string>
     <string name="historyCleared">History cleared!</string>
     <string name="map">MAP\u0020\u0020</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="networkNotAvailable">No network connectivity available!</string>
+    <string name="networkErrorOccurred">A network error occurred!</string>
+    <string name="setToNow">Set to current time and date</string>
 
 </resources>
