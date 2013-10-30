@@ -56,8 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:paddingLeft="1dp"
-        android:paddingRight="2dp"
+        android:layout_marginLeft="20dp"
         android:src="@drawable/ic_walk" />
 
     <TextView

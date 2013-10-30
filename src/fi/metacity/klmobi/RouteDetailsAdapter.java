@@ -14,9 +14,13 @@ public class RouteDetailsAdapter extends BaseExpandableListAdapter {
 	private final List<RouteComponent> mRouteComponents;
 	private final Context mContext;
 	
+	private final int m3Dps;
+	
 	public RouteDetailsAdapter(Context context, List<RouteComponent> routeComponents) {
 		mRouteComponents = routeComponents;
 		mContext = context;
+		
+		m3Dps = Utils.dpsToPixels(context, 3);
 	}
 	
 	@Override
@@ -41,11 +45,18 @@ public class RouteDetailsAdapter extends BaseExpandableListAdapter {
 			
 			holder.name = (TextView) v.findViewById(R.id.detailsRowChildStreet);
 			holder.time = (TextView) v.findViewById(R.id.detailsRowChildTime);
+			holder.connectorIcon = (ImageView) v.findViewById(R.id.detailsRowChildConnectorIcon);
 			
 			v.setTag(holder);
 		}
 		else {
 			holder = (WayPointHolder) v.getTag();
+		}
+
+		if ("W".equals(mRouteComponents.get(groupPosition).code)) {
+			holder.connectorIcon.setImageResource(R.drawable.ic_waypoint_connector_walk);
+		} else {
+			holder.connectorIcon.setImageResource(R.drawable.ic_waypoint_connector_bus);
 		}
 		
 		WayPoint wayPoint = (WayPoint) getChild(groupPosition, childPosition);
@@ -110,7 +121,7 @@ public class RouteDetailsAdapter extends BaseExpandableListAdapter {
 		if ("W".equals(routeComponent.code)) {
 			holder.typeView.setText(mContext.getResources().getString(R.string.walking));
 			holder.typeIconView.setImageResource(R.drawable.ic_walk);
-			holder.typeIconView.setPadding(1, 0, 2, 0);
+			holder.typeIconView.setPadding(m3Dps, 0, m3Dps, 0);
 		} else {
 			holder.typeView.setText(mContext.getResources().getString(R.string.bus) + " " + routeComponent.code);
 			holder.typeIconView.setImageResource(R.drawable.ic_bus);
@@ -155,5 +166,6 @@ public class RouteDetailsAdapter extends BaseExpandableListAdapter {
 	private static class WayPointHolder {
 		TextView name;
 		TextView time;
+		ImageView connectorIcon;
 	}
 }

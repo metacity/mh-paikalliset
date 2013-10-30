@@ -44,7 +44,7 @@ public class RouteDetailsFragment extends Fragment {
 		ExpandableListView expandableList = new ExpandableListView(getActivity()); 
 		expandableList.setLayoutParams(new LayoutParams(	
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		expandableList.setGroupIndicator(null);
+		//expandableList.setGroupIndicator(getResources().getDrawable(R.drawable.selector_expandablelist));
 
 		if (mRouteIndex >= 0 && mRouteIndex < mGlobals.getRoutes().size()) {
 			List<RouteComponent> routeComponents = mGlobals.getRoutes().get(mRouteIndex).routeComponents;
