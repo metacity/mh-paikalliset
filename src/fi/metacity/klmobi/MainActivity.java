@@ -32,6 +32,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
@@ -62,6 +64,7 @@ import com.googlecode.androidannotations.annotations.App;
 import com.googlecode.androidannotations.annotations.Background;
 import com.googlecode.androidannotations.annotations.Click;
 import com.googlecode.androidannotations.annotations.EActivity;
+import com.googlecode.androidannotations.annotations.LongClick;
 import com.googlecode.androidannotations.annotations.OptionsItem;
 import com.googlecode.androidannotations.annotations.SeekBarProgressChange;
 import com.googlecode.androidannotations.annotations.SystemService;
@@ -83,6 +86,9 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	
 	@SystemService
 	LocationManager mLocationManager;
+	
+	@SystemService 
+	ConnectivityManager mConnectivityManager;
 
 	@ViewById(R.id.startText)
 	AutoCompleteTextView mStartText;
@@ -150,11 +156,15 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				android.R.layout.simple_spinner_dropdown_item
 				);
 		actionBar.setListNavigationCallbacks(citiesAdapter, this);
+		if (!isNetworkAvailable()) {
+			new AlertDialog.Builder(this).setMessage(R.string.networkNotAvailable).setPositiveButton("OK", null).show();
+		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+
 		fetchTokenIfNeeded(false);
 		
 		Address start = mGlobals.getStartAddress();
@@ -462,6 +472,17 @@ public class MainActivity extends Activity implements OnNavigationListener,
 			mToggleAdvancedOptionsButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.ic_expand);	
 		}
 	}
+	
+	@Click(R.id.resetDatetimeBtn) 
+	public void resetDatetime() {
+		mDateTime.setTime(Calendar.getInstance().getTime());
+		setDateTimeTexts(mDateTime);
+	}
+	
+	@LongClick(R.id.resetDatetimeBtn) 
+	public void showResetDatetimeToast() {
+		Toast.makeText(this, getString(R.string.setToNow), Toast.LENGTH_SHORT).show();
+	}
 
 	@OptionsItem(R.id.find_routes_menu_item)
 	public void findRoutes() {
@@ -560,10 +581,22 @@ public class MainActivity extends Activity implements OnNavigationListener,
 
 	private void setDateTimeTexts(Calendar dateTime) {
 		String time = String.format(Locale.US, "%02d:%02d", dateTime.get(Calendar.HOUR_OF_DAY), dateTime.get(Calendar.MINUTE));
-		String date = dateTime.get(Calendar.DAY_OF_MONTH)+ "." 
-				+ (dateTime.get(Calendar.MONTH) + 1) + "."     // Months in Calendar class are 0-11
-				+ dateTime.get(Calendar.YEAR);
-
+		
+		Calendar now = Calendar.getInstance();
+		String date = "";
+		if (now.get(Calendar.DAY_OF_YEAR) == dateTime.get(Calendar.DAY_OF_YEAR)) {
+			date = getString(R.string.today);
+		} else {
+			now.add(Calendar.DAY_OF_YEAR, 1);
+			if (now.get(Calendar.DAY_OF_YEAR) == dateTime.get(Calendar.DAY_OF_YEAR)) {
+				date = getString(R.string.tomorrow);
+			} else {
+				date = dateTime.get(Calendar.DAY_OF_MONTH) + "." 
+						+ (dateTime.get(Calendar.MONTH) + 1) + "."     // Months in Calendar class are 0-11
+						+ dateTime.get(Calendar.YEAR);
+			}
+		}
+		
 		mTimeText.setText(time);
 		mDateText.setText(date);
 	}
@@ -735,6 +768,12 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	@UiThread
 	public void showToast(String text, int duration) {
 		Toast.makeText(this, text, duration).show();
+	}
+	
+	private boolean isNetworkAvailable() {
+		NetworkInfo activeNetwork = mConnectivityManager.getActiveNetworkInfo();
+		boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+		return isConnected;
 	}
 
 }

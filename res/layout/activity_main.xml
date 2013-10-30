@@ -216,6 +216,16 @@
             android:src="@drawable/ic_clear_text"
             android:visibility="invisible" />
 
+        <ImageButton
+            android:id="@+id/resetDatetimeBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/whenLayoutContainer"
+            android:layout_alignLeft="@+id/endOverflowBtn"
+            android:layout_alignTop="@+id/whenLayoutContainer"
+            android:background="@drawable/selector_orange"
+            android:src="@drawable/ic_reset_datetime" />
+
     </RelativeLayout>
 
 </ScrollView>
