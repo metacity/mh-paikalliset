@@ -584,11 +584,15 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		
 		Calendar now = Calendar.getInstance();
 		String date = "";
-		if (now.get(Calendar.DAY_OF_YEAR) == dateTime.get(Calendar.DAY_OF_YEAR)) {
+		if (now.get(Calendar.DAY_OF_YEAR) == dateTime.get(Calendar.DAY_OF_YEAR)
+		 && now.get(Calendar.YEAR) == dateTime.get(Calendar.YEAR)) {
+			
 			date = getString(R.string.today);
 		} else {
 			now.add(Calendar.DAY_OF_YEAR, 1);
-			if (now.get(Calendar.DAY_OF_YEAR) == dateTime.get(Calendar.DAY_OF_YEAR)) {
+			if (now.get(Calendar.DAY_OF_YEAR) == dateTime.get(Calendar.DAY_OF_YEAR)
+			 && now.get(Calendar.YEAR) == dateTime.get(Calendar.YEAR)) {
+				
 				date = getString(R.string.tomorrow);
 			} else {
 				date = dateTime.get(Calendar.DAY_OF_MONTH) + "." 
