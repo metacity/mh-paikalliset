@@ -45,7 +45,6 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 			holder.durationView = (TextView) v.findViewById(R.id.duration);
 			holder.stopDepView = (TextView) v.findViewById(R.id.stopDep);
 			holder.stopArrView = (TextView) v.findViewById(R.id.stopArr);
-			holder.smallDashView = (TextView) v.findViewById(R.id.smallDash);
 			holder.walkingDistView = (TextView) v.findViewById(R.id.walkingDist);
 			holder.routeStepsLayout = (LinearLayout) v.findViewById(R.id.routeStepsLayout);
 			
@@ -65,8 +64,8 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 		holder.arrivalView.setText(arrivalTime);
 
 		long duration = Math.round(route.duration);
-		holder.durationView.setText("(" + (duration > 59 ? String.valueOf(duration / 60) + " h " : "") 
-				+ String.valueOf(duration % 60) + " min)");
+		holder.durationView.setText((duration > 59 ? String.valueOf(duration / 60) + " h " : "") 
+				+ String.valueOf(duration % 60) + " min");
 		
 		holder.routeStepsLayout.removeAllViews();
 		float walkingDistance = 0.0f;
@@ -95,7 +94,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 				busIconLayout.addView(busIcon);
 				
 				TextView lineNumber = new TextView(mContext);
-				lineNumber.setTextSize(14);
+				lineNumber.setTextSize(15);
 				lineNumber.setTypeface(mRobotoCondensedBold, Typeface.BOLD);
 				lineNumber.setText(routeComp.code);
 				lineNumber.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -110,13 +109,14 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 			String firstStopDepartureTime = Utils.timeFormat.format(
 					route.routeComponents.get(firstBusIndex).startDateTime);
 			holder.stopDepView.setText(" " + firstStopDepartureTime);
+			holder.stopDepView.setVisibility(View.VISIBLE);
 			
 			String lastStopArrivalTime = Utils.timeFormat.format(
 					route.routeComponents.get(lastBusIndex).endDateTime);
 			holder.stopArrView.setText(lastStopArrivalTime + " ");
+			holder.stopArrView.setVisibility(View.VISIBLE);
 		} else {
 			holder.stopDepView.setVisibility(View.INVISIBLE);
-			holder.smallDashView.setVisibility(View.INVISIBLE);
 			holder.stopArrView.setVisibility(View.INVISIBLE);
 		}
 
@@ -131,7 +131,7 @@ public class RouteAdapter extends ArrayAdapter<Route> {
 		RelativeLayout rowLayout;
 		TextView departureView, arrivalView;
 		TextView durationView;
-		TextView stopDepView, stopArrView, smallDashView;
+		TextView stopDepView, stopArrView;
 		TextView walkingDistView;
 		LinearLayout routeStepsLayout;
 	}

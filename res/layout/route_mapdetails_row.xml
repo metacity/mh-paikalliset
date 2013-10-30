@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:text="time"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_alignBottom="@+id/mapDetailTime"
         android:layout_centerHorizontal="true"
         android:text="type"
-        android:textSize="13sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/mapDetailPlace"
@@ -40,7 +40,7 @@
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:text="place"
-        android:textSize="13sp" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/mapDetailImage"

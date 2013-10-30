@@ -9,71 +9,11 @@
         android:id="@+id/routeRowLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/button_white_orange_bordered"
         android:gravity="center_horizontal" >
-
-        <TextView
-            android:id="@+id/departure"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:fontFamily="sans-serif-light"
-            android:text="07:67"
-            android:textSize="19sp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/routeStepsLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@+id/stopDep"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:padding="5dp" >
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/dash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/stopDep"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_toRightOf="@+id/departure"
-            android:fontFamily="sans-serif-light"
-            android:text="\u2013"
-            android:textSize="19sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/arrival"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/dash"
-            android:layout_alignBottom="@+id/dash"
-            android:layout_toRightOf="@+id/dash"
-            android:fontFamily="sans-serif-light"
-            android:text="11:01"
-            android:textSize="19sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/arrival"
-            android:layout_alignTop="@+id/arrival"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@+id/arrival"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center_vertical"
-            android:text="durTime"
-            android:textColor="@color/lightTextColor"
-            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/stopDep"
@@ -82,7 +22,7 @@
             android:layout_alignLeft="@+id/departure"
             android:layout_below="@+id/departure"
             android:drawableLeft="@drawable/bus_stop_icon"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="sans-serif-condensed"
             android:text=" 06:43"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/dark_grey"
@@ -95,39 +35,74 @@
             android:layout_alignRight="@+id/arrival"
             android:layout_below="@+id/duration"
             android:drawableRight="@drawable/bus_stop_icon"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="sans-serif-condensed"
             android:text="08:43 "
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/dark_grey"
             android:textSize="12sp" />
 
         <TextView
+            android:id="@+id/duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/arrival"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-condensed"
+            android:gravity="center_vertical"
+            android:text="durTime"
+            android:textColor="@color/dark_grey"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/departure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="07:67"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/walkingDist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/duration"
-            android:layout_alignBottom="@+id/duration"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:layout_alignTop="@+id/stopDep"
+            android:layout_centerHorizontal="true"
             android:drawableRight="@drawable/ic_walk_icon"
             android:fontFamily="sans-serif-light"
             android:text="[PH]"
             android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/dark_grey"
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/smallDash"
+            android:id="@+id/arrival"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/stopDep"
-            android:layout_toLeftOf="@+id/stopArr"
-            android:layout_toRightOf="@+id/stopDep"
-            android:fontFamily="sans-serif-light"
-            android:gravity="center"
-            android:text="\u2013"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textColor="@color/dark_grey"
-            android:textSize="12sp" />
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="11:01"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/routeStepsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/stopArr"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+        </LinearLayout>
 
     </RelativeLayout>
 

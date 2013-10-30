@@ -22,9 +22,9 @@
         android:gravity="center_vertical"
         android:paddingBottom="1dp"
         android:paddingRight="10dp"
-        android:paddingTop="5dp"
+        android:paddingTop="4dp"
         android:text="time"
-        android:textSize="12sp" />
+        android:textSize="13sp" />
 
     <TextView
         android:id="@+id/detailsRowChildStreet"
@@ -35,7 +35,9 @@
         android:layout_toRightOf="@+id/detailsRowChildConnectorIcon"
         android:gravity="center_vertical"
         android:paddingBottom="1dp"
+        android:paddingRight="10dp"
+        android:paddingTop="4dp"
         android:text="location"
-        android:textSize="12sp" />
+        android:textSize="13sp" />
 
 </RelativeLayout>

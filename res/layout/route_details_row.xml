@@ -13,7 +13,7 @@
         android:layout_marginLeft="15dp"
         android:layout_toRightOf="@+id/detailsRowTypeIcon"
         android:text="@string/walking"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:minWidth="60dp"
         android:text="dist"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="14sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/detailsRowStartStreet"
@@ -37,7 +37,7 @@
         android:layout_marginTop="2dp"
         android:text="start"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/detailsRowEndStreet"
@@ -48,7 +48,7 @@
         android:layout_marginTop="2dp"
         android:text="end"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
     <ImageView
         android:id="@+id/detailsRowTypeIcon"
@@ -68,7 +68,7 @@
         android:layout_alignRight="@+id/detailsRowStartTime"
         android:text="endTime"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/detailsRowStartTime"
@@ -78,7 +78,7 @@
         android:layout_alignParentRight="true"
         android:text="startTime"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="13sp" />
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/detailsRowSeparator"
@@ -91,7 +91,7 @@
         android:paddingRight="5dp"
         android:text="|"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="13sp" />
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/detailsRowDuration"
@@ -103,6 +103,6 @@
         android:layout_toLeftOf="@+id/detailsRowSeparator"
         android:text="dur"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="14sp" />
+        android:textSize="15sp" />
 
 </RelativeLayout>
