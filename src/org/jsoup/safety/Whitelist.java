@@ -154,6 +154,7 @@ public class Whitelist {
 
                 .addProtocols("a", "href", "ftp", "http", "https", "mailto")
                 .addProtocols("blockquote", "cite", "http", "https")
+                .addProtocols("cite", "cite", "http", "https")
                 .addProtocols("img", "src", "http", "https")
                 .addProtocols("q", "cite", "http", "https")
                 ;
@@ -335,7 +336,7 @@ public class Whitelist {
      * @param attr attribute under test
      * @return true if allowed
      */
-    boolean isSafeAttribute(String tagName, Element el, Attribute attr) {
+    protected boolean isSafeAttribute(String tagName, Element el, Attribute attr) {
         TagName tag = TagName.valueOf(tagName);
         AttributeKey key = AttributeKey.valueOf(attr.getKey());
 
@@ -365,7 +366,7 @@ public class Whitelist {
         
         for (Protocol protocol : protocols) {
             String prot = protocol.toString() + ":";
-            if (value.startsWith(prot)) {
+            if (value.toLowerCase().startsWith(prot)) {
                 return true;
             }
         }

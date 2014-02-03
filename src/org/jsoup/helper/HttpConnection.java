@@ -34,6 +34,12 @@ public class HttpConnection implements Connection {
         return con;
     }
 
+	private static String encodeUrl(String url) {
+		if(url == null)
+			return null;
+    	return url.replaceAll(" ", "%20");
+	}
+
     private Connection.Request req;
     private Connection.Response res;
 
@@ -50,7 +56,7 @@ public class HttpConnection implements Connection {
     public Connection url(String url) {
         Validate.notEmpty(url, "Must supply a valid URL");
         try {
-            req.url(new URL(url));
+            req.url(new URL(encodeUrl(url)));
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException("Malformed URL: " + url, e);
         }
@@ -121,6 +127,14 @@ public class HttpConnection implements Connection {
             Validate.notEmpty(key, "Data key must not be empty");
             Validate.notNull(value, "Data value must not be null");
             req.data(KeyVal.create(key, value));
+        }
+        return this;
+    }
+
+    public Connection data(Collection<Connection.KeyVal> data) {
+        Validate.notNull(data, "Data collection must not be null");
+        for (Connection.KeyVal entry: data) {
+            req.data(entry);
         }
         return this;
     }
@@ -439,7 +453,12 @@ public class HttpConnection implements Connection {
                 if (needsRedirect && req.followRedirects()) {
                     req.method(Method.GET); // always redirect with a get. any data param from original req are dropped.
                     req.data().clear();
-                    req.url(new URL(req.url(), res.header("Location")));
+
+                    String location = res.header("Location");
+                    if (location != null && location.startsWith("http:/") && location.charAt(6) != '/') // fix broken Location: http:/temp/AAG_New/en/index.php
+                        location = location.substring(6);
+                    req.url(new URL(req.url(), encodeUrl(location)));
+
                     for (Map.Entry<String, String> cookie : res.cookies.entrySet()) { // add response cookies to request (for e.g. login posts)
                         req.cookie(cookie.getKey(), cookie.getValue());
                     }
