@@ -10,6 +10,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.androidannotations.annotations.AfterTextChange;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.LongClick;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.SeekBarProgressChange;
+import org.androidannotations.annotations.SystemService;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.sharedpreferences.Pref;
+import org.androidannotations.api.BackgroundExecutor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,21 +71,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
-import com.googlecode.androidannotations.annotations.AfterTextChange;
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.Background;
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.LongClick;
-import com.googlecode.androidannotations.annotations.OptionsItem;
-import com.googlecode.androidannotations.annotations.SeekBarProgressChange;
-import com.googlecode.androidannotations.annotations.SystemService;
-import com.googlecode.androidannotations.annotations.UiThread;
-import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
-
 import fi.metacity.klmobi.AddressLocationListener.OnLocationFoundListener;
 
 @EActivity(R.layout.activity_main)
@@ -189,7 +188,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 	@Override
 	public boolean onNavigationItemSelected(int position, long id) {
 		String newBaseUrl = "";
-		if (position == 20) { // TURKU
+		if (position == Constants.TURKU_INDEX) {
 			newBaseUrl = Constants.TURKU_BASE_URL;
 		} else {
 			newBaseUrl = "http://" + Constants.CITY_SUBDOMAINS[position] + ".matkahuolto.info/";
@@ -251,6 +250,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 					new String[] { getString(R.string.loadingText) }
 					);
 			((AutoCompleteTextView) addressInput).setAdapter(loadingTextAdapter);
+			BackgroundExecutor.cancelAll(Constants.ADDRESS_SEARCH_THREAD_POOL_ID, true);
 			searchAddresses(addressInput, text, mAddressRequestId.incrementAndGet());		
 		} else {
 			((AutoCompleteTextView) addressInput).dismissDropDown();
@@ -665,7 +665,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 		fetchTokenIfNeeded(true);
 	}
 
-	@Background
+	@Background(id = Constants.ADDRESS_SEARCH_THREAD_POOL_ID, delay = 250)
 	public void searchAddresses(TextView addressInput, CharSequence text, int requestId) {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("language", "fi");
@@ -726,7 +726,7 @@ public class MainActivity extends Activity implements OnNavigationListener,
 				String hash = doc.select("link[href^=/css]").first().attr("href").split("_")[1].split("\\.")[0];
 				
 				String url = "";
-				if (mPreferences.selectedCityIndex().get() == 20) { // If TURKU
+				if (mPreferences.selectedCityIndex().get() == Constants.TURKU_INDEX) {
 					url = mPreferences.baseUrl().get() + "fi/config.js_" + hash + ".php";
 				} else {
 					url = mPreferences.baseUrl().get() + "fi/config_" + hash + ".js.php";

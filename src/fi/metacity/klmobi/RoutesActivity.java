@@ -1,13 +1,13 @@
 package fi.metacity.klmobi;
 
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
-
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.Extra;
 
 @EActivity(R.layout.activity_routes)
 public class RoutesActivity extends FragmentActivity {

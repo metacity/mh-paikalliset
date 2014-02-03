@@ -1,10 +1,9 @@
 package fi.metacity.klmobi;
 
-import com.googlecode.androidannotations.annotations.sharedpreferences.DefaultString;
-import com.googlecode.androidannotations.annotations.sharedpreferences.SharedPref;
-import com.googlecode.androidannotations.annotations.sharedpreferences.SharedPref.Scope;
+import org.androidannotations.annotations.sharedpreferences.DefaultString;
+import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
-@SharedPref(value=Scope.UNIQUE)
+@SharedPref(value=SharedPref.Scope.UNIQUE)
 public interface Preferences {
 	
 	@DefaultString("http://hameenlinna.matkahuolto.info/")

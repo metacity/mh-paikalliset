@@ -32,11 +32,15 @@
         android:layout_height="match_parent"
         android:layout_alignBottom="@+id/detailsRowChildConnectorIcon"
         android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/detailsRowChildTime"
         android:layout_toRightOf="@+id/detailsRowChildConnectorIcon"
+        android:ellipsize="middle"
         android:gravity="center_vertical"
+        android:maxLines="1"
         android:paddingBottom="1dp"
         android:paddingRight="10dp"
         android:paddingTop="4dp"
+        android:singleLine="true"
         android:text="location"
         android:textSize="13sp" />
 

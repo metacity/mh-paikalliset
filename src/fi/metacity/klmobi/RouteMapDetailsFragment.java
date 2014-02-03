@@ -7,6 +7,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,13 +22,6 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.widget.ListAdapter;
-
-import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.Background;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.FragmentArg;
-import com.googlecode.androidannotations.annotations.UiThread;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
 
 @EFragment
 public class RouteMapDetailsFragment extends ListFragment {
@@ -61,7 +60,7 @@ public class RouteMapDetailsFragment extends ListFragment {
 		String responseHtml = "";
 		
 		try {
-			if (mPreferences.selectedCityIndex().get() == 20) { // If TURKU
+			if (mPreferences.selectedCityIndex().get() == Constants.TURKU_INDEX) {
 				responseHtml = Utils.httpGet(url + "?" + mGlobals.getTurkuMapQueryString() 
 						+ "&routenumber=" + mRouteIndex);
 			} else {
@@ -111,7 +110,7 @@ public class RouteMapDetailsFragment extends ListFragment {
 				location = imageRow.select("td[class=LineStartLocation]").text();
 			} else {
 				imageUrl = imageRow.select("img:eq(0)").attr("src");
-				if (mPreferences.selectedCityIndex().get() == 20) { // If TURKU
+				if (mPreferences.selectedCityIndex().get() == Constants.TURKU_INDEX) {
 					imageUrl = mPreferences.baseUrl().get() + "fi/print/" + imageUrl;
 				}
 				mapComponents.add(new MapComponent(imageUrl, time, type, location));

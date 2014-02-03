@@ -12,6 +12,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
+import org.androidannotations.annotations.OptionsItem;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.res.BooleanRes;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -30,16 +39,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
-import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.Background;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.FragmentArg;
-import com.googlecode.androidannotations.annotations.OptionsItem;
-import com.googlecode.androidannotations.annotations.OptionsMenu;
-import com.googlecode.androidannotations.annotations.UiThread;
-import com.googlecode.androidannotations.annotations.res.BooleanRes;
-import com.googlecode.androidannotations.annotations.sharedpreferences.Pref;
+import com.astuetz.PagerSlidingTabStrip;
 
 @EFragment
 @OptionsMenu(R.menu.routes)
@@ -126,7 +126,7 @@ public class RouteResultsFragment extends ListFragment {
 		Map<String, String> params = new HashMap<String, String>();
 		String url = "";
 		
-		if (mPreferences.selectedCityIndex().get() == 20) { // TURKU
+		if (mPreferences.selectedCityIndex().get() == Constants.TURKU_INDEX) {
 			url = Constants.TURKU_BASE_URL + "getroute.php";
 			putTurkuPostParams(params, mGlobals.getStartAddress(), mGlobals.getEndAddress());
 		} else {
@@ -246,7 +246,7 @@ public class RouteResultsFragment extends ListFragment {
 		Document fullDoc = Jsoup.parse(naviciResponse, "", Parser.xmlParser());
 		fullDoc.outputSettings().charset("UTF-8").indentAmount(0).escapeMode(EscapeMode.xhtml);
 		Elements doc = fullDoc.select("MTRXML");
-		if (mPreferences.selectedCityIndex().get() != 20) { // If not TURKU
+		if (mPreferences.selectedCityIndex().get() != Constants.TURKU_INDEX) {
 			mGlobals.setDetailsXmlString(doc.toString());
 		}
 

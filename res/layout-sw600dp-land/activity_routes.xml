@@ -30,14 +30,14 @@
         android:layout_weight="3"
         android:background="@android:color/background_light" >
 
-        <com.astuetz.viewpager.extensions.PagerSlidingTabStrip
+        <com.astuetz.PagerSlidingTabStrip
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="48dip"
             android:layout_alignParentRight="true"
-            app:indicatorColor="@color/orange"
-            app:tabPaddingLeftRight="14dip"
-            app:underlineColor="@color/orange" />
+            app:pstsIndicatorColor="@color/orange"
+            app:pstsTabPaddingLeftRight="14dip"
+            app:pstsUnderlineColor="@color/orange" />
 
         <fi.metacity.klmobi.RouteDetailsPager
             android:id="@+id/pager"

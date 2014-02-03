@@ -35,6 +35,10 @@
         android:layout_alignLeft="@+id/detailsRowType"
         android:layout_below="@+id/detailsRowType"
         android:layout_marginTop="2dp"
+        android:layout_toLeftOf="@+id/detailsRowStartTime"
+        android:ellipsize="middle"
+        android:maxLines="1"
+        android:singleLine="true"
         android:text="start"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="15sp" />
@@ -44,8 +48,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/detailsRowStartStreet"
+        android:layout_alignRight="@+id/detailsRowStartStreet"
         android:layout_below="@+id/detailsRowStartStreet"
         android:layout_marginTop="2dp"
+        android:ellipsize="middle"
+        android:maxLines="1"
+        android:singleLine="true"
         android:text="end"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="15sp" />
@@ -71,16 +79,6 @@
         android:textSize="15sp" />
 
     <TextView
-        android:id="@+id/detailsRowStartTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/detailsRowEndStreet"
-        android:layout_alignParentRight="true"
-        android:text="startTime"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textSize="15sp" />
-
-    <TextView
         android:id="@+id/detailsRowSeparator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -102,6 +100,17 @@
         android:layout_marginRight="20dp"
         android:layout_toLeftOf="@+id/detailsRowSeparator"
         android:text="dur"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/detailsRowStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/detailsRowStartStreet"
+        android:layout_alignBottom="@+id/detailsRowStartStreet"
+        android:layout_alignRight="@+id/detailsRowDist"
+        android:text="startTime"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textSize="15sp" />
 

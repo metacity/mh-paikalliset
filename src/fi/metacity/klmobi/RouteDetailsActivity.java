@@ -1,5 +1,14 @@
 package fi.metacity.klmobi;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.LongClick;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.res.BooleanRes;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -8,15 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.astuetz.viewpager.extensions.PagerSlidingTabStrip;
-import com.googlecode.androidannotations.annotations.AfterViews;
-import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.Click;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.Extra;
-import com.googlecode.androidannotations.annotations.LongClick;
-import com.googlecode.androidannotations.annotations.ViewById;
-import com.googlecode.androidannotations.annotations.res.BooleanRes;
+import com.astuetz.PagerSlidingTabStrip;
 
 @EActivity(R.layout.activity_route_details)
 public class RouteDetailsActivity extends FragmentActivity {

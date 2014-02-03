@@ -2,6 +2,10 @@ package fi.metacity.klmobi;
 
 import java.util.List;
 
+import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.FragmentArg;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,10 +16,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-
-import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.EFragment;
-import com.googlecode.androidannotations.annotations.FragmentArg;
 
 @EFragment
 public class RouteDetailsFragment extends Fragment {

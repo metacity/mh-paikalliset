@@ -3,9 +3,9 @@ package fi.metacity.klmobi;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Application;
+import org.androidannotations.annotations.EApplication;
 
-import com.googlecode.androidannotations.annotations.EApplication;
+import android.app.Application;
 
 @EApplication
 public class MHApp extends Application {

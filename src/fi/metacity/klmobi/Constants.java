@@ -18,6 +18,7 @@ public final class Constants {
 		"hameenlinna",
 		"lappeenranta",
 		"iisalmi",
+		"joensuu",
 		"jyvaskyla",
 		"kajaani",
 		"kotka",
@@ -41,6 +42,7 @@ public final class Constants {
 	};
 	
 	public static final String TURKU_BASE_URL = "http://reittiopas.turku.fi/";
+	public static final int TURKU_INDEX = 21;
 	
 	public static final String[] ROUTING_TYPES = {
 		"default",
@@ -48,4 +50,6 @@ public final class Constants {
 		"minchanges",
 		"minwalk"
 	};
+	
+	public static final String ADDRESS_SEARCH_THREAD_POOL_ID = "addressSearchThreads";
 }

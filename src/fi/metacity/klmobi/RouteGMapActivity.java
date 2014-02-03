@@ -3,6 +3,21 @@ package fi.metacity.klmobi;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.androidannotations.annotations.App;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OptionsMenu;
+import org.androidannotations.annotations.res.BooleanRes;
+
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
+import android.view.MenuItem;
+
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -12,22 +27,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.googlecode.androidannotations.annotations.App;
-import com.googlecode.androidannotations.annotations.EActivity;
-import com.googlecode.androidannotations.annotations.Extra;
-import com.googlecode.androidannotations.annotations.OptionsMenu;
-import com.googlecode.androidannotations.annotations.res.BooleanRes;
 
-import android.os.Bundle;
-import android.app.AlertDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.util.Log;
-import android.view.MenuItem;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
-
-import fi.sandman.utils.coordinate.*;
+import fi.sandman.utils.coordinate.CoordinateConversionFailed;
+import fi.sandman.utils.coordinate.CoordinatePoint;
+import fi.sandman.utils.coordinate.CoordinateUtils;
 
 @EActivity
 @OptionsMenu(R.menu.activity_route_gmap)

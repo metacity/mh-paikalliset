@@ -7,16 +7,16 @@
     android:orientation="vertical"
     tools:context=".RouteDetailsActivity_" >
 
-    <com.astuetz.viewpager.extensions.PagerSlidingTabStrip
+    <com.astuetz.PagerSlidingTabStrip 
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="48dip"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        app:indicatorColor="@color/orange"
-        app:tabPaddingLeftRight="14dip"
-        app:underlineColor="@color/orange" />
+        app:pstsIndicatorColor="@color/orange"
+        app:pstsTabPaddingLeftRight="14dip"
+        app:pstsUnderlineColor="@color/orange" />
 
     <fi.metacity.klmobi.RouteDetailsPager
         android:id="@+id/pager"
